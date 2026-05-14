@@ -854,13 +854,17 @@
 
             // Build media array: primary image + gallery + video
             const gallery = (() => {
+                let parsed = [];
                 if (!product.gallery) return [];
-                if (Array.isArray(product.gallery)) return product.gallery;
-                if (typeof product.gallery === 'string') {
-                    try { return JSON.parse(product.gallery); }
-                    catch (e) { return product.gallery.split(',').map(s => s.trim()).filter(Boolean); }
+                if (Array.isArray(product.gallery)) parsed = product.gallery;
+                else if (typeof product.gallery === 'string') {
+                    try { parsed = JSON.parse(product.gallery); }
+                    catch (e) { parsed = [product.gallery]; }
                 }
-                return [];
+                
+                // Ensure if a single string contains multiple comma/space separated URLs, we split them.
+                if (!Array.isArray(parsed)) parsed = [parsed];
+                return parsed.flatMap(item => typeof item === 'string' ? item.split(/[\s,]+/) : item).filter(Boolean);
             })();
             const allImages = [product.image, ...gallery.filter(g => g && g !== product.image)].filter(Boolean);
             const hasVideo = !!product.video;
