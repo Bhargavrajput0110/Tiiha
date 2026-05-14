@@ -922,12 +922,12 @@
                         </div>
                         {/* Thumbnail strip */}
                         {mediaItems.length > 1 && (
-                            <div className="flex justify-center gap-2 p-3 bg-black overflow-x-auto scrollbar-hide">
+                            <div className="flex justify-start md:justify-center gap-2 p-3 bg-black overflow-x-auto scrollbar-hide w-full snap-x">
                                 {mediaItems.map((m, i) => (
                                     <button
                                         key={i}
                                         onClick={() => setActiveMediaIdx(i)}
-                                        className={`relative flex-shrink-0 w-16 h-16 overflow-hidden transition-all duration-300 ${activeMediaIdx === i ? 'ring-2 ring-[#A6957A] opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                                        className={`relative flex-shrink-0 w-16 h-16 overflow-hidden transition-all duration-300 snap-center ${activeMediaIdx === i ? 'ring-2 ring-[#A6957A] opacity-100' : 'opacity-40 hover:opacity-70'}`}
                                     >
                                         {m.type === 'video' ? (
                                             <div className="w-full h-full bg-[#1a1a1a] flex items-center justify-center">
