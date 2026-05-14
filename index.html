@@ -853,7 +853,15 @@
             }, [product.id]);
 
             // Build media array: primary image + gallery + video
-            const gallery = (() => { try { return JSON.parse(product.gallery || '[]'); } catch(e) { return []; } })();
+            const gallery = (() => {
+                if (!product.gallery) return [];
+                if (Array.isArray(product.gallery)) return product.gallery;
+                if (typeof product.gallery === 'string') {
+                    try { return JSON.parse(product.gallery); }
+                    catch (e) { return product.gallery.split(',').map(s => s.trim()).filter(Boolean); }
+                }
+                return [];
+            })();
             const allImages = [product.image, ...gallery.filter(g => g && g !== product.image)].filter(Boolean);
             const hasVideo = !!product.video;
             const mediaItems = allImages.map(url => ({ type: 'image', url }));
