@@ -41,7 +41,22 @@ tr:hover td{background:#0f0f0f}
 .img-thumb{width:48px;height:48px;object-fit:cover;border-radius:4px;background:#1a1a1a}
 </style>
 </head>
-<body class="min-h-screen flex">
+<body class="min-h-screen flex overflow-hidden">
+<!-- LOGIN OVERLAY -->
+<div id="login-overlay" class="fixed inset-0 z-[9999] bg-[#0a0a0a] flex flex-col items-center justify-center p-8 transition-opacity duration-1000">
+  <div class="max-w-sm w-full space-y-12 text-center">
+    <div>
+      <h1 class="serif text-5xl tracking-[0.2em] text-[#A6957A] mb-4">TIIHA</h1>
+      <p class="text-[10px] tracking-[0.4em] uppercase text-white/30 font-bold">Admin Secure Access</p>
+    </div>
+    <div class="space-y-4">
+      <input type="password" id="admin-pass" placeholder="ENTER ACCESS CODE" class="text-center !bg-transparent border-b border-white/10 !border-x-0 !border-t-0 focus:border-[#A6957A] !rounded-none py-4 text-xl tracking-widest outline-none transition-all duration-500">
+      <button onclick="checkAdminPass()" class="w-full py-4 bg-[#A6957A] text-black font-bold text-[11px] tracking-[0.4em] uppercase hover:bg-white transition-colors duration-500">Authenticate</button>
+      <p id="login-error" class="text-red-500 text-[10px] tracking-widest uppercase opacity-0 transition-opacity">Incorrect Access Code</p>
+    </div>
+  </div>
+</div>
+
 <!-- SIDEBAR -->
 <aside style="width:220px;min-height:100vh;background:#0d0d0d;border-right:1px solid #1a1a1a;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;padding:0">
   <div style="padding:24px 20px;border-bottom:1px solid #1a1a1a">
@@ -713,5 +728,39 @@ document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e
 
 // Start
 init();
+</script>
+<script>
+  // SECURITY: Admin Password
+  const ADMIN_PASSWORD = 'TIIHA_ADMIN_2024'; 
+
+  function checkAdminPass() {
+    const input = document.getElementById('admin-pass');
+    const error = document.getElementById('login-error');
+    const overlay = document.getElementById('login-overlay');
+
+    if (input.value === ADMIN_PASSWORD) {
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        document.body.classList.remove('overflow-hidden');
+      }, 1000);
+      localStorage.setItem('tiiha_admin_auth', 'true');
+    } else {
+      error.style.opacity = '1';
+      input.value = '';
+      setTimeout(() => { error.style.opacity = '0'; }, 2000);
+    }
+  }
+
+  // Persistence check
+  if (localStorage.getItem('tiiha_admin_auth') === 'true') {
+    document.getElementById('login-overlay').style.display = 'none';
+    document.body.classList.remove('overflow-hidden');
+  }
+
+  // Allow enter key
+  document.getElementById('admin-pass').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') checkAdminPass();
+  });
 </script>
 </body></html>
