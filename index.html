@@ -1112,6 +1112,25 @@
                         })
                     }).catch(e => console.log('Email error:', e));
 
+                    // Trigger Shiprocket Shipment
+                    await fetch('/api/create-shipment', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            orderData: {
+                                customer_name: `${form.firstName} ${form.lastName}`,
+                                customer_email: form.email,
+                                phone: form.phone,
+                                address: form.address,
+                                city: form.city,
+                                zip: form.postal,
+                                state: form.state || 'Delhi'
+                            },
+                            cart: cart,
+                            total: total
+                        })
+                    }).catch(e => console.log('Shiprocket trigger error:', e));
+
                 } catch(e) { console.log('Order save error', e); }
                 setSubmitting(false);
                 setCheckoutStep(4);
