@@ -584,7 +584,8 @@
                             src={product.img}
                             alt={product.name}
                             loading="lazy"
-                            className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:opacity-0 group-hover:scale-105"
+                            onLoad={(e) => e.target.classList.add('opacity-100')}
+                            className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000 group-hover:scale-105"
                           />
                           <img
                             src={product._product.hoverImage}
@@ -1155,7 +1156,7 @@
                     if (!orderData.order_id) {
                         // Fallback for local dev without Netlify
                         const options = {
-                            key: 'rzp_live_YOUR_KEY_HERE',
+                            key: config.razorpay_key_id || 'rzp_live_YOUR_KEY_HERE',
                             amount: Math.round(total * 100),
                             currency: 'INR',
                             name: 'Tiiha',
@@ -1175,7 +1176,7 @@
 
                     // 2. Open Razorpay checkout with server-generated order_id
                     const options = {
-                        key: 'rzp_live_YOUR_KEY_HERE',
+                        key: config.razorpay_key_id || 'rzp_live_YOUR_KEY_HERE',
                         amount: orderData.amount,
                         currency: orderData.currency,
                         order_id: orderData.order_id,
@@ -1649,10 +1650,18 @@
             const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
             const [bannerShown, setBannerShown] = useState(true);
             const [liveProducts, setLiveProducts] = useState(PRODUCTS);
+            const [config, setConfig] = useState({ razorpay_key_id: '' });
             const { setCursor } = useStore();
 
-            // Fetch live products from Supabase via Express API — replaces static fallback
+            // Fetch Configuration & Live Products
             useEffect(() => {
+                // Fetch Public Config
+                fetch('/api/get-config')
+                    .then(r => r.json())
+                    .then(data => setConfig(data))
+                    .catch(e => console.error('Config fetch error:', e));
+
+                // Fetch Products
                 fetch('/api/products')
                     .then(r => r.ok ? r.json() : null)
                     .then(data => {
