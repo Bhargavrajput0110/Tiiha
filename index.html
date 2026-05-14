@@ -49,10 +49,23 @@
         }
     </script>
     <style>
+        /* Global Reset & Horizontal Scroll Lockdown */
+        html, body { 
+            max-width: 100%; 
+            overflow-x: hidden; 
+            position: relative;
+        }
+        
         /* Custom scrollbar hiding */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        body { cursor: none; background-color: #0D0D0D; color: #F0EBE1; overflow-x: hidden; }
+        
+        body { 
+            cursor: none; 
+            background-color: #0D0D0D; 
+            color: #F0EBE1; 
+            width: 100%;
+        }
         ::selection { background: #A6957A; color: #0D0D0D; }
     </style>
 </head>
