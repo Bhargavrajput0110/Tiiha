@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TIIHA | Architectural Fashion — Women's Clothing India</title>
+    <meta name="description" content="TIIHA — Architectural fashion made with intent. Shop premium women's clothing: festive wear, summer dresses, and party outfits. Free delivery across India.">
+    <meta name="keywords" content="Tiiha, women fashion, festive wear, summer dresses, party outfits, Indian fashion brand, women clothing online India">
+    <meta name="theme-color" content="#0D0D0D">
+    <meta property="og:title" content="TIIHA | Architectural Fashion">
+    <meta property="og:description" content="Made with intent, for the woman who wears her confidence as naturally as she wears her clothes.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://tiiha.in">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&auto=format&fit=crop">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="TIIHA | Architectural Fashion">
+    <meta name="twitter:description" content="Made with intent, for the woman who wears her confidence as naturally as she wears her clothes.">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=1200&auto=format&fit=crop">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Analytics 4 — Replace G-XXXXXXXXXX with your Measurement ID from analytics.google.com -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['Cormorant Garamond', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar hiding */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        body { cursor: none; background-color: #0D0D0D; color: #F0EBE1; overflow-x: hidden; }
+        ::selection { background: #A6957A; color: #0D0D0D; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback, createContext, useContext } = React;
+
+        // Simple global cursor context replacing Zustand
+        const CursorContext = createContext({ setCursor: () => {} });
+        const useStore = () => useContext(CursorContext);
+        const useArchiveStore = () => useContext(CursorContext);
+
+        // Wishlist Context
+        const WishlistContext = createContext({ wishlist: [], toggleWishlist: () => {}, isWishlisted: () => false });
+        const useWishlist = () => useContext(WishlistContext);
+
+        // Spring-based floating image — pure rAF, no Framer Motion needed
+        const useSpringFollow = () => {
+            const posRef = useRef({ x: 0, y: 0 });
+            const targetRef = useRef({ x: 0, y: 0 });
+            const velRef = useRef({ x: 0, y: 0 });
+            const elRef = useRef(null);
+            useEffect(() => {
+                const onMove = (e) => { targetRef.current = { x: e.clientX, y: e.clientY }; };
+                window.addEventListener('mousemove', onMove);
+                let raf;
+                const tick = () => {
+                    const dx = targetRef.current.x - posRef.current.x;
+                    const dy = targetRef.current.y - posRef.current.y;
+                    velRef.current.x = velRef.current.x * 0.8 + dx * 0.12;
+                    velRef.current.y = velRef.current.y * 0.8 + dy * 0.12;
+                    posRef.current.x += velRef.current.x;
+                    posRef.current.y += velRef.current.y;
+                    const skew = Math.max(-12, Math.min(12, velRef.current.x * 0.4));
+                    if (elRef.current) {
+                        elRef.current.style.transform = `translate3d(${posRef.current.x - 150}px, ${posRef.current.y - 200}px, 0) skewX(${skew}deg)`;
+                    }
+                    raf = requestAnimationFrame(tick);
+                };
+                tick();
+                return () => { window.removeEventListener('mousemove', onMove); cancelAnimationFrame(raf); };
+            }, []);
+            return elRef;
+        };
+
+        const LucideIcons = {
+            Heart: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
+            HeartFilled: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>,
+            ShoppingBag: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>,
+            X: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>,
+            Menu: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>,
+            ArrowUpRight: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>,
+            Instagram: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>,
+            Twitter: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>,
+            ChevronRight: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>,
+            ArrowRight: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>,
+            Minus: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/></svg>,
+            Plus: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>,
+            Search: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>,
+            Filter: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
+            Play: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>,
+            Globe: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" x2="22" y1="12" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>,
+            Hammer: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 12-8.5 8.5c-.83.83-2.17.83-3 0 0 0 0 0 0 0a2.12 2.12 0 0 1 0-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6l-1.25-1.25c-.6-.6-1.4-.93-2.25-.93h-.86L9 5.14l1.25 1.25c.6.6.93 1.4.93 2.25v.86l2.72 2.72 1.25 1.25c.6.6 1.4.93 2.25.93h.86L21.05 12l-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86l-2.72-2.72-1.25-1.25c-.6-.6-1.4-.93-2.25-.93h-.86L9 5.14"/></svg>,
+            ShieldCheck: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>,
+            Truck: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="16" height="12" x="2" y="6" rx="2"/><circle cx="7" cy="18" r="2"/><circle cx="15" cy="18" r="2"/><path d="M13 6h3l3 3v7h-6V6Z"/></svg>,
+            Eye: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>,
+            ArrowDown: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
+        };
+
+        const { Heart, HeartFilled, ShoppingBag, X, Menu, ArrowUpRight, Instagram, Twitter, ChevronRight, ArrowRight, Minus, Plus, Search, Filter, Play, Globe, Hammer, ShieldCheck, Truck, Eye, ArrowDown } = LucideIcons;
+
+        // --- DATA ---
+        const PRODUCTS = [
+          { id: 'TII-01', name: 'The Cloudnine Dress', category: 'SUMMER EDIT', price: 4890, image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=2883&auto=format&fit=crop', hoverImage: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2820&auto=format&fit=crop', desc: 'The Pinteresty dress of your dreams, this powder blue dress with a structured corset bodice that holds you exactly where it should, softening into a flared skirt that moves with unhurried grace.', detail: 'Fabric: 100% Linen. Silhouette: Corset bodice, square neck, flared midi skirt. Sleeves: Sleeveless with structured shoulder straps. Colour: Powder Blue. Care: Gentle machine wash, cold water. Do not tumble dry. Iron on low heat. SIZE & FIT: The Cloudnine Dress is structured through the bodice and fits true to size. If you prefer a looser fit through the waist, size up.', sizes: 'S, M, L' },
+          { id: 'TII-02', name: 'A Navy Affair', category: 'SUMMER EDIT', price: 5450, image: 'https://images.unsplash.com/photo-1520975954732-57dd22299614?q=80&w=2787&auto=format&fit=crop', hoverImage: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2788&auto=format&fit=crop', desc: 'A one-shoulder dress in a deep navy, features a self-tie waist that cinches without constraining and a flared skirt that follows every step you take. The single puff sleeve is the only detail this dress needs, and it is exactly enough.', detail: 'Fabric: Rayon. Silhouette: One-shoulder midi dress with self-tie waist. Sleeves: Single puff sleeve. Colour: Navy Blue. Care: Gentle machine wash, cold water. Do not wring. Iron on low heat. SIZE & FIT: A Navy Affair fits true to size with a relaxed drape through the skirt. For a more fitted look, size down.', sizes: 'S, M, L' },
+          { id: 'TII-03', name: 'The Muted Sage Co-ord Set', category: 'SUMMER EDIT', price: 6620, image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2788&auto=format&fit=crop', hoverImage: 'https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?q=80&w=2787&auto=format&fit=crop', desc: 'A collared shirt and straight-leg trousers in satin silk, in a colour that sits somewhere between calm and confident. The placket and cuffs are finished with delicate champagne-toned embroidery detail that earns its place without asking for attention. Wear them together for a complete look.', detail: 'Fabric: Satin Silk. Includes: Collared shirt + Straight-leg trousers (sold as a set). Embroidery: Delicate silver embroidery on placket and cuffs. Colour: Muted Sage Green. Care: Dry clean recommended. If hand washing, use cold water and mild detergent. SIZE & FIT: The Muted Sage Set is relaxed through the shirt and straight through the trousers. Fits true to size.', sizes: 'S, M, L' },
+          { id: 'TII-04', name: 'Satin Cinema', category: 'PARTY EDIT', price: 7540, image: 'https://images.unsplash.com/photo-1603005901058-02e1afc98528?q=80&w=2787&auto=format&fit=crop', hoverImage: 'https://images.unsplash.com/photo-1551800410-f12d22b827e8?q=80&w=2800&auto=format&fit=crop', desc: 'A floor-length modal silk slip dress in deep black, paired with a scarf dupatta that carries the drama of 90s cinema. The combination is minimal until the light finds it. Then it is everything. Wear it for the nights that deserve to be remembered.', detail: 'Dress Fabric: Modal Silk. Silhouette: Floor-length slip dress. Colour: Deep Black. Inspiration: 90s Bollywood. Care: Dry clean recommended. SIZE & FIT: Satin Cinema is cut to drape close to the body. It fits true to size. For a more fluid, relaxed fit, size up.', sizes: 'S, M, L' },
+          { id: 'TII-05', name: 'Noor Gharara Set', category: 'FESTIVE EDIT', price: 8100, image: 'https://images.unsplash.com/photo-1550639524-a6f58345a278?q=80&w=2787&auto=format&fit=crop', hoverImage: 'https://images.unsplash.com/photo-1534126416832-a88fdf2911c2?q=80&w=2960&auto=format&fit=crop', desc: 'A deep violet bandhani peplum top paired with a matching flared gharara, finished with gold zari borders that catch the light at every turn. This is a two-piece set designed for the festive evenings that are worth dressing for.', detail: 'Fabric: Modal silk. Craft: Original hand-tied bandhani. Includes: Peplum kurta + Flared gharara (2-piece set). Embellishment: Gold zari borders. Colour: Deep Violet. Care: Dry clean recommended to preserve the bandhani and zari work. SIZE & FIT: The kurta is fitted through the bodice and flares at the peplum. The gharara is relaxed and flared. Both pieces fit true to size.', sizes: 'S, M, L' },
+          { id: 'TII-06', name: 'Chandni Suit Set', category: 'FESTIVE EDIT', price: 8780, image: 'https://images.unsplash.com/photo-1485230405346-71acb9518d9c?q=80&w=2900&auto=format&fit=crop', hoverImage: 'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?q=80&w=2942&auto=format&fit=crop', desc: 'Chandni is an ivory silk kurta set with woven gold detailing with a straight palazzo pant that carries the same quiet opulence. The rani pink bandhani dupatta adds the right amount of beauty to the set. Together, the contrast is exactly what it should be: the stillness of ivory meeting the celebration of rani pink, worn at once, worn with intention.', detail: 'Kurta & Palazzo Pant Fabric: Ivory Silk with woven gold detailing. Dupatta Fabric: Rani Pink Bandhani. Includes: Kurta + Straight Palazzo Pant + Bandhani Dupatta (3-piece set). Colour: Ivory with Rani Pink. Care: Dry clean recommended to preserve the silk and bandhani dupatta. SIZE & FIT: Chandni fits true to size with a relaxed, straight silhouette. For a more oversized drape, size up.', sizes: 'S, M, L' },
+        ];
+
+        // ARCHIVE_PRODUCTS derived from main PRODUCTS catalog (same source of truth)
+        const ARCHIVE_PRODUCTS = PRODUCTS.map(p => ({
+          id: p.id,
+          name: p.name.toUpperCase(),
+          price: p.price,
+          img: p.image,
+          cat: p.category.toUpperCase(),
+          material: p.detail.split('.')[0].toUpperCase(),
+          _product: p,
+        }));
+
+        const COLLECTIONS = [
+          {
+            id: 'festive-edit',
+            name: 'The Festive Edit',
+            subtitle: 'Festivals are moments',
+            desc: 'For the celebrations that deserve to be remembered. Rich fabrics, considered silhouettes, and a certain grace that stays with you.',
+            image: 'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?q=80&w=2942&auto=format&fit=crop',
+            productIds: ['TII-05', 'TII-06']
+          },
+          {
+            id: 'summer-edit',
+            name: 'The Summer Edit',
+            subtitle: 'Light as the season itself',
+            desc: 'Breathable fabrics and effortless prints, made for sun-soaked days and every golden hour that follows.',
+            image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2820&auto=format&fit=crop',
+            productIds: ['TII-01', 'TII-02', 'TII-03']
+          },
+          {
+            id: 'party-edit',
+            name: 'The Party Edit',
+            subtitle: 'Unapologetically you',
+            desc: 'The kind of dressed that needs no introduction. Bold, elegant, unapologetically you.',
+            image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2788&auto=format&fit=crop',
+            productIds: ['TII-04']
+          }
+        ];
+
+        const cinematicEase = [0.76, 0, 0.24, 1];
+
+        // --- UTILITY COMPONENTS ---
+
+        const SizeGuideModal = ({ isOpen, onClose }) => {
+            if (!isOpen) return null;
+            const sizes = [
+                { size: 'XS', bust: '32"', waist: '26"', hips: '35"', bust_cm: '81', waist_cm: '66', hips_cm: '89' },
+                { size: 'S',  bust: '34"', waist: '28"', hips: '37"', bust_cm: '86', waist_cm: '71', hips_cm: '94' },
+                { size: 'M',  bust: '36"', waist: '30"', hips: '39"', bust_cm: '91', waist_cm: '76', hips_cm: '99' },
+                { size: 'L',  bust: '38"', waist: '32"', hips: '41"', bust_cm: '97', waist_cm: '81', hips_cm: '104' },
+                { size: 'XL', bust: '40"', waist: '34"', hips: '43"', bust_cm: '102', waist_cm: '86', hips_cm: '109' },
+            ];
+            return (
+                <div className="fixed inset-0 z-[600] flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={onClose}>
+                    <div className="bg-[#F0EBE1] text-[#0D0D0D] max-w-md w-full mx-4 p-8 relative shadow-2xl animate-[pageFadeIn_0.4s_ease]" onClick={e => e.stopPropagation()}>
+                        <button onClick={onClose} className="absolute top-5 right-5 p-2 hover:rotate-90 transition-transform duration-500"><X className="w-5 h-5" /></button>
+                        <h3 className="font-serif text-2xl uppercase tracking-tight mb-1">Size Guide</h3>
+                        <p className="text-[10px] tracking-[0.2em] uppercase text-black/40 font-bold mb-6">All measurements are body measurements</p>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-[11px] tracking-[0.08em] uppercase border-collapse">
+                                <thead>
+                                    <tr className="border-b-2 border-black/10">
+                                        <th className="text-left py-3 pr-4 font-bold text-black/40">Size</th>
+                                        <th className="text-center py-3 px-2 font-bold text-black/40">Bust</th>
+                                        <th className="text-center py-3 px-2 font-bold text-black/40">Waist</th>
+                                        <th className="text-center py-3 px-2 font-bold text-black/40">Hips</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {sizes.map(row => (
+                                        <tr key={row.size} className="border-b border-black/5 hover:bg-[#A6957A]/5 transition-colors">
+                                            <td className="py-4 pr-4 font-bold text-[#A6957A] text-base font-serif">{row.size}</td>
+                                            <td className="py-4 px-2 text-center">{row.bust} <span className="text-black/30 text-[9px]">/ {row.bust_cm}cm</span></td>
+                                            <td className="py-4 px-2 text-center">{row.waist} <span className="text-black/30 text-[9px]">/ {row.waist_cm}cm</span></td>
+                                            <td className="py-4 px-2 text-center">{row.hips} <span className="text-black/30 text-[9px]">/ {row.hips_cm}cm</span></td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="mt-5 p-4 bg-[#A6957A]/10 border border-[#A6957A]/20">
+                            <p className="text-[10px] tracking-[0.05em] text-black/60 leading-relaxed">💡 <strong>Tip:</strong> If you're between sizes, size up for a relaxed fit or size down for a more fitted silhouette. Still unsure? Chat with us.</p>
+                        </div>
+                        <a href="https://wa.me/919213578396?text=Hi%20Tiiha!%20I%20need%20help%20with%20sizing." target="_blank" rel="noopener noreferrer" className="mt-4 w-full py-3 border-2 border-[#0D0D0D] text-[10px] tracking-[0.3em] uppercase font-bold text-center flex items-center justify-center gap-2 hover:bg-[#0D0D0D] hover:text-white transition-colors duration-300">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            Chat with us on WhatsApp
+                        </a>
+                    </div>
+                </div>
+            );
+        };
+
+        const BackToTop = () => {
+            const [visible, setVisible] = useState(false);
+            useEffect(() => {
+                const onScroll = () => setVisible(window.scrollY > 600);
+                window.addEventListener('scroll', onScroll, { passive: true });
+                return () => window.removeEventListener('scroll', onScroll);
+            }, []);
+            return (
+                <button
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    className={`fixed bottom-28 right-6 z-[400] w-11 h-11 bg-[#0D0D0D] text-[#F0EBE1] rounded-full flex items-center justify-center shadow-xl hover:bg-[#A6957A] transition-all duration-500 hover:scale-110 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+                    title="Back to top"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+                </button>
+            );
+        };
+
+        const WhatsAppButton = () => (
+            <a
+                href="https://wa.me/919213578396?text=Hi%20Tiiha!%20I%20need%20help%20with%20my%20order."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="fixed bottom-6 right-6 z-[400] flex items-center gap-0 bg-[#25D366] text-white rounded-full w-12 h-12 shadow-xl hover:w-auto hover:px-5 hover:gap-3 overflow-hidden transition-all duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group"
+                title="Chat with us on WhatsApp"
+            >
+                <svg className="flex-shrink-0 mx-auto group-hover:mx-0" width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                <span className="text-[11px] tracking-[0.15em] uppercase font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-300">Need Help?</span>
+            </a>
+        );
+
+        const MobileNav = ({ currentPage, handlePageChange, cartLength, wishlistLength, isOpen, onClose, onCartOpen }) => (
+            <>
+                <div className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] transition-opacity duration-500 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} onClick={onClose} />
+                <div className={`fixed top-0 left-0 h-full w-4/5 max-w-xs bg-[#0D0D0D] text-[#F0EBE1] z-[70] flex flex-col transform transition-transform duration-[0.8s] ease-[cubic-bezier(0.19,1,0.22,1)] ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                    <div className="flex justify-between items-center px-8 py-7 border-b border-white/10">
+                        <span className="font-serif text-xl tracking-[0.3em] uppercase">TIIHA</span>
+                        <button onClick={onClose} className="p-2 hover:rotate-90 transition-transform duration-500"><X className="w-5 h-5" /></button>
+                    </div>
+                    <nav className="px-8 py-6 flex flex-col flex-1">
+                        {[['home','Home'],['shop','Collections'],['about','About Us'],['contact','Contact Us']].map(([page, label], i) => (
+                            <button key={page} onClick={() => { handlePageChange(page); onClose(); }}
+                                className={`text-left py-5 border-b border-white/5 font-serif text-2xl italic transition-colors duration-300 ${currentPage === page ? 'text-[#A6957A]' : 'text-white/80 hover:text-[#A6957A]'}`}
+                                style={{ transitionDelay: isOpen ? `${i * 60}ms` : '0ms' }}>
+                                {label}
+                            </button>
+                        ))}
+                        <button onClick={() => { onCartOpen(); onClose(); }} className="text-left py-5 border-b border-white/5 font-serif text-2xl italic text-white/80 hover:text-[#A6957A] transition-colors flex items-center gap-3">
+                            My Bag {cartLength > 0 && <span className="text-sm bg-[#A6957A] text-black rounded-full w-5 h-5 flex items-center justify-center font-sans font-bold not-italic">{cartLength}</span>}
+                        </button>
+                    </nav>
+                    <div className="px-8 pb-10">
+                        <a href="https://wa.me/919213578396" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[10px] tracking-[0.3em] uppercase font-bold text-white/40 hover:text-[#25D366] transition-colors mb-6">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                            WhatsApp Support
+                        </a>
+                        <p className="text-[9px] tracking-[0.2em] uppercase text-white/20">Made with intent © 2026 TIIHA</p>
+                    </div>
+                </div>
+            </>
+        );
+
+        // --- ANNOUNCEMENT BANNER ---
+        const AnnouncementBanner = ({ onDismiss }) => {
+            const msgs = [
+                '🎉 NEW SUMMER EDIT NOW LIVE — Shop the latest drops',
+                '🚚 FREE DELIVERY across all of India on every order',
+                '✨ New customer? Use code WELCOME10 for 10% off your first order',
+                '🔄 Easy 7-day returns — No questions asked',
+            ];
+            const [idx, setIdx] = useState(0);
+            const [fade, setFade] = useState(true);
+            const [dismissed, setDismissed] = useState(false);
+            useEffect(() => {
+                const t = setInterval(() => {
+                    setFade(false);
+                    setTimeout(() => { setIdx(i => (i + 1) % msgs.length); setFade(true); }, 350);
+                }, 4000);
+                return () => clearInterval(t);
+            }, []);
+            if (dismissed) return null;
+            return (
+                <div className="fixed top-0 left-0 w-full z-[55] bg-[#A6957A] text-[#0D0D0D] py-2.5 px-6 flex items-center justify-between">
+                    <div className="flex-1 text-center">
+                        <span className={`text-[10px] tracking-[0.25em] uppercase font-bold transition-opacity duration-300 ${fade ? 'opacity-100' : 'opacity-0'}`}>{msgs[idx]}</span>
+                    </div>
+                    <button onClick={() => { setDismissed(true); if(onDismiss) onDismiss(); }} className="ml-4 opacity-60 hover:opacity-100 transition-opacity flex-shrink-0"><X className="w-3 h-3" /></button>
+                </div>
+            );
+        };
+
+        // --- COMPONENTS ---
+
+        const CustomCursor = () => {
+            const cursorRef = useRef(null);
+            const dotRef = useRef(null);
+            const { cursorVariant, cursorText } = useStore();
+            const mousePos = useRef({ x: window.innerWidth/2, y: window.innerHeight/2 });
+            const cursorDotPos = useRef({ x: window.innerWidth/2, y: window.innerHeight/2 });
+
+            useEffect(() => {
+                const moveCursor = (e) => {
+                    mousePos.current = { x: e.clientX, y: e.clientY };
+                    if (dotRef.current) dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+                };
+                window.addEventListener('mousemove', moveCursor);
+                let reqId;
+                const render = () => {
+                    cursorDotPos.current.x += (mousePos.current.x - cursorDotPos.current.x) * 0.15;
+                    cursorDotPos.current.y += (mousePos.current.y - cursorDotPos.current.y) * 0.15;
+                    if (cursorRef.current) {
+                        cursorRef.current.style.transform = `translate3d(${cursorDotPos.current.x}px, ${cursorDotPos.current.y}px, 0)`;
+                    }
+                    reqId = requestAnimationFrame(render);
+                };
+                render();
+                return () => {
+                    window.removeEventListener('mousemove', moveCursor);
+                    cancelAnimationFrame(reqId);
+                };
+            }, []);
+
+            const variants = {
+                default: 'w-10 h-10 bg-transparent border border-[#A6957A]/40',
+                text: 'w-24 h-24 bg-[#F0EBE1] text-[#0D0D0D] border-transparent scale-100 mix-blend-normal font-bold shadow-2xl',
+                dot: 'w-2 h-2 bg-[#F0EBE1] border-transparent scale-[4]',
+                close: 'w-16 h-16 bg-[#0D0D0D] border border-[#F0EBE1]/20 text-[#F0EBE1] mix-blend-normal shadow-2xl'
+            };
+
+            return (
+                <>
+                    <div ref={cursorRef} className={`fixed top-0 left-0 rounded-full pointer-events-none z-[9999] flex items-center justify-center -translate-x-1/2 -translate-y-1/2 transition-[width,height,background-color,border-color,mix-blend-mode] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] mix-blend-difference ${variants[cursorVariant] || variants.default}`}>
+                        <span className="text-[10px] tracking-[0.3em] font-serif uppercase whitespace-nowrap opacity-100 transition-opacity duration-500">
+                            {cursorVariant === 'close' ? <X className="w-6 h-6" /> : cursorText}
+                        </span>
+                    </div>
+                    <div ref={dotRef} className={`fixed top-0 left-0 w-1.5 h-1.5 bg-[#A6957A] rounded-full pointer-events-none z-[9999] mix-blend-difference -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 ${cursorVariant !== 'default' ? 'opacity-0' : 'opacity-100'}`} />
+                </>
+            );
+        };
+
+        const Reveal = ({ children, delay = 0, className = "", threshold = 0.1 }) => {
+            const [revealed, setRevealed] = useState(false);
+            const ref = useRef(null);
+            useEffect(() => {
+                const observer = new IntersectionObserver(([entry]) => {
+                    if (entry.isIntersecting) setRevealed(true);
+                }, { threshold, rootMargin: '0px 0px -100px 0px' });
+                if (ref.current) observer.observe(ref.current);
+                return () => observer.disconnect();
+            }, [threshold]);
+            return (
+                <div ref={ref} className={className}>
+                    <div style={{
+                        transform: revealed ? 'translateY(0)' : 'translateY(100px)',
+                        opacity: revealed ? 1 : 0,
+                        transition: `transform 2s cubic-bezier(0.16,1,0.3,1) ${delay}ms, opacity 2s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
+                        willChange: 'transform'
+                    }}>
+                        {children}
+                    </div>
+                </div>
+            );
+        };
+
+        const RevealText = ({ children, delay = 0, className = "" }) => {
+            const [revealed, setRevealed] = useState(false);
+            const ref = useRef(null);
+            useEffect(() => {
+                const observer = new IntersectionObserver(([entry]) => {
+                    if (entry.isIntersecting) setRevealed(true);
+                }, { threshold: 0.1 });
+                if (ref.current) observer.observe(ref.current);
+                return () => observer.disconnect();
+            }, []);
+            return (
+                <div ref={ref} className={`overflow-hidden ${className}`}>
+                    <div style={{
+                        transform: revealed ? 'translateY(0) skewY(0deg)' : 'translateY(120%) skewY(8deg)',
+                        opacity: revealed ? 1 : 0,
+                        transition: `transform 2s cubic-bezier(0.19,1,0.22,1) ${delay}ms, opacity 2s cubic-bezier(0.19,1,0.22,1) ${delay}ms`,
+                        willChange: 'transform'
+                    }}>
+                        {children}
+                    </div>
+                </div>
+            );
+        };
+
+        const MagneticButton = ({ children, onClick, className = "" }) => {
+            const ref = useRef(null);
+            const handleMouseMove = (e) => {
+                const el = ref.current;
+                const rect = el.getBoundingClientRect();
+                const x = (e.clientX - rect.left - rect.width / 2) * 0.35;
+                const y = (e.clientY - rect.top - rect.height / 2) * 0.35;
+                el.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+            };
+            const handleMouseLeave = () => { if (ref.current) ref.current.style.transform = `translate3d(0px, 0px, 0)`; };
+            return (
+                <div className="relative inline-block p-6 -m-6 interactive" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} onClick={onClick}>
+                    <div ref={ref} className={`transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] will-change-transform ${className}`}>
+                        {children}
+                    </div>
+                </div>
+            );
+        };
+
+        const PageCurtain = ({ isActive, nextTitle }) => {
+            return (
+                <div className={`fixed inset-0 z-[2000] pointer-events-none transition-all duration-[1.2s] ease-[cubic-bezier(0.76,0,0.24,1)] ${isActive ? 'translate-y-0' : '-translate-y-full'}`}>
+                    <div className="absolute inset-0 bg-[#0D0D0D] flex flex-col items-center justify-center">
+                        <div className="overflow-hidden mb-8">
+                            <h2 className="font-serif text-5xl md:text-7xl tracking-[0.3em] text-[#F0EBE1] uppercase animate-pulse">TIIHA</h2>
+                        </div>
+                        <div className="h-[1px] w-40 bg-[#A6957A]/30 relative overflow-hidden">
+                            <div className="absolute inset-0 bg-[#A6957A] animate-[curtainProgress_1.5s_infinite]" />
+                        </div>
+                        <span className="text-[10px] tracking-[0.5em] uppercase text-[#A6957A] mt-12 font-bold opacity-50">Entering {nextTitle || 'Space'}</span>
+                    </div>
+                    <style>{`
+                        @keyframes curtainProgress {
+                            0% { transform: translateX(-100%); }
+                            100% { transform: translateX(100%); }
+                        }
+                    `}</style>
+                </div>
+            );
+        };
+
+        const Newsletter = () => {
+            const [email, setEmail] = useState('');
+            const [status, setStatus] = useState('idle'); // idle, sending, success
+            const { setCursor } = useStore();
+
+            const handleSubmit = (e) => {
+                e?.preventDefault();
+                if (!email || !email.includes('@')) return;
+                setStatus('sending');
+                setTimeout(() => {
+                    setStatus('success');
+                    setEmail('');
+                }, 1500);
+            };
+
+            return (
+                <section className="py-40 bg-[#0D0D0D] text-[#F0EBE1] px-8 md:px-16 border-t border-white/5 overflow-hidden">
+                    <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+                        <div>
+                            <RevealText><span className="text-[11px] tracking-[0.5em] uppercase font-bold text-[#A6957A] block mb-8">Correspondence</span></RevealText>
+                            <RevealText delay={100}><h2 className="font-serif text-4xl md:text-5xl leading-[0.95] tracking-tighter uppercase mb-8">Join the<br/><span className="italic text-[#A6957A]">Maison</span></h2></RevealText>
+                            <RevealText delay={200}><p className="text-sm tracking-[0.1em] uppercase text-white/40 max-w-sm leading-loose font-light">Subscribers receive private access to archive drops, atelier appointments, and the seasonal manifesto.</p></RevealText>
+                        </div>
+                        <div className="relative group">
+                            <Reveal delay={300}>
+                                <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+                                    <div className="relative">
+                                        <input 
+                                            type="email" 
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            disabled={status !== 'idle'}
+                                            placeholder={status === 'success' ? "TRANSMISSION COMPLETE" : "COMMUNICATION VECTOR (EMAIL)"}
+                                            className={`w-full bg-transparent border-b ${status === 'success' ? 'border-[#A6957A] text-[#A6957A]' : 'border-white/20 text-white focus:border-[#A6957A]'} py-8 text-xl font-serif focus:outline-none transition-colors placeholder:text-white/10 uppercase tracking-widest disabled:opacity-70`}
+                                            onMouseEnter={() => setCursor('text', 'TYPE')}
+                                            onMouseLeave={() => setCursor('default')}
+                                        />
+                                        <button type="submit" disabled={status !== 'idle'} className="absolute right-0 bottom-8 p-4 group-hover:translate-x-2 transition-transform duration-500 disabled:opacity-0">
+                                            {status === 'sending' ? (
+                                                <div className="w-5 h-5 border-2 border-[#A6957A] border-t-transparent rounded-full animate-spin" />
+                                            ) : (
+                                                <ArrowRight className="w-6 h-6 text-[#A6957A]" />
+                                            )}
+                                        </button>
+                                    </div>
+                                    <div className="flex items-center gap-6 opacity-30 group-focus-within:opacity-100 transition-opacity">
+                                        <div className={`w-2 h-2 rounded-full ${status === 'success' ? 'bg-green-500' : 'bg-[#A6957A] animate-pulse'}`} />
+                                        <span className={`text-[9px] tracking-[0.3em] uppercase font-bold ${status === 'success' ? 'text-green-500' : ''}`}>
+                                            {status === 'success' ? 'Vector Established Successfully' : 'Secure Transmission Protocol Active'}
+                                        </span>
+                                    </div>
+                                </form>
+                            </Reveal>
+                        </div>
+                    </div>
+                </section>
+            );
+        };
+
+        const CATEGORIES = ['ALL', 'SUMMER EDIT', 'PARTY EDIT', 'FESTIVE EDIT'];
+
+        const InteractiveArchive = ({ setProduct, activeCollection, clearCollection }) => {
+          const [activeFilter, setActiveFilter] = useState('ALL');
+          const { setCursor } = useStore();
+          const { toggleWishlist, isWishlisted } = useWishlist();
+          const [activeIndex, setActiveIndex] = useState(null);
+          const [prevIndex, setPrevIndex] = useState(null);
+          const floatRef = useSpringFollow();
+
+          useEffect(() => { window.scrollTo(0, 0); }, []);
+
+          const filteredProducts = activeCollection
+            ? ARCHIVE_PRODUCTS.filter(p => activeCollection.productIds.includes(p.id))
+            : activeFilter === 'ALL'
+              ? ARCHIVE_PRODUCTS
+              : ARCHIVE_PRODUCTS.filter(p => p.cat === activeFilter);
+
+
+          return (
+            <section className="py-32 bg-[#F0EBE1] text-[#0D0D0D] min-h-screen relative z-10">
+              <div className="max-w-[1800px] mx-auto px-8 md:px-16">
+                <div className="flex flex-col md:flex-row justify-between items-end mb-16 border-b border-black/10 pb-16 gap-12">
+                  <div>
+                    {activeCollection && <span className="text-[10px] tracking-[0.4em] uppercase text-[#A6957A] font-bold block mb-4">{activeCollection.subtitle} Collection</span>}
+                    <RevealText><h1 className="font-serif text-5xl md:text-7xl tracking-[-0.03em] mb-2 uppercase">{activeCollection ? activeCollection.name : 'Archive'}</h1></RevealText>
+                    {activeCollection && <p className="text-sm text-black/50 font-light max-w-md mt-4">{activeCollection.desc}</p>}
+                  </div>
+                  <div className="text-right text-[10px] tracking-[0.4em] uppercase text-black/40 font-bold">
+                    <p>Collection 2026</p>
+                    <p>{filteredProducts.length} Artifacts</p>
+                    {activeCollection && <button onClick={clearCollection} className="mt-4 text-[#A6957A] underline block ml-auto">View All →</button>}
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-4 mb-16">
+                  {CATEGORIES.map(cat => (
+                    <button key={cat}
+                      onClick={() => { setActiveIndex(null); setActiveFilter(cat); if(activeCollection && clearCollection) clearCollection(); }}
+                      className={`px-8 py-3 text-[10px] tracking-[0.3em] uppercase font-bold border transition-all duration-300 ${
+                        (!activeCollection && activeFilter === cat) ? 'bg-[#0D0D0D] text-[#F0EBE1] border-[#0D0D0D]' : 'border-black/20 text-black/50 hover:border-black hover:text-black'
+                      }`}>{cat}</button>
+                  ))}
+                </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8 relative z-20">
+                  {filteredProducts.map((product, i) => (
+                    <Reveal key={product.id} delay={i * 60}>
+                      <div
+                        className="group cursor-none flex flex-col"
+                        onClick={() => setProduct && setProduct(product._product)}
+                        onMouseEnter={() => { setActiveIndex(i); setCursor('text', 'VIEW'); }}
+                        onMouseLeave={() => { setActiveIndex(null); setCursor('default'); }}
+                      >
+                        {/* Image */}
+                        <div className="relative aspect-[3/4] overflow-hidden bg-neutral-200 mb-5">
+                          <img
+                            src={product.img}
+                            alt={product.name}
+                            loading="lazy"
+                            className="absolute inset-0 w-full h-full object-cover transition-all duration-700 group-hover:opacity-0 group-hover:scale-105"
+                          />
+                          <img
+                            src={product._product.hoverImage}
+                            alt={product.name}
+                            loading="lazy"
+                            className="absolute inset-0 w-full h-full object-cover opacity-0 scale-105 transition-all duration-700 group-hover:opacity-100 group-hover:scale-100"
+                          />
+                          {/* Quick view overlay */}
+                          <div className="absolute inset-0 bg-[#0D0D0D]/0 group-hover:bg-[#0D0D0D]/20 transition-all duration-500 flex items-end justify-center pb-8">
+                            <span className="text-[#F0EBE1] text-[9px] tracking-[0.4em] uppercase font-bold border border-[#F0EBE1]/60 px-6 py-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">Quick View</span>
+                          </div>
+                          {/* Wishlist heart */}
+                          <button
+                            onClick={(e) => { e.stopPropagation(); toggleWishlist(product.id); }}
+                            className="absolute top-3 right-3 z-10 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md transition-transform duration-300 hover:scale-110"
+                          >
+                            {isWishlisted(product.id) ? <HeartFilled className="w-4 h-4 text-[#A6957A]" /> : <Heart className="w-4 h-4 text-black/40" />}
+                          </button>
+                          {/* Index badge */}
+                          <span className="absolute top-4 left-4 text-[9px] font-mono text-white/60 bg-black/30 px-2 py-1 backdrop-blur-sm">
+                            {String(i + 1).padStart(2, '0')}
+                          </span>
+                        </div>
+                        {/* Info */}
+                        <div className="flex justify-between items-start px-1">
+                          <div className="flex-1 min-w-0 pr-4">
+                            <h3 className="font-serif text-base md:text-lg tracking-tight mb-1 group-hover:italic transition-all duration-500 truncate">{product._product.name}</h3>
+                            <p className="text-[9px] tracking-[0.3em] uppercase text-black/40 font-bold">{product.cat}</p>
+                          </div>
+                          <span className="font-serif text-lg italic text-[#A6957A] shrink-0">₹{product.price.toLocaleString('en-IN')}</span>
+                        </div>
+                      </div>
+                    </Reveal>
+                  ))}
+                </div>
+              </div>
+            </section>
+          );
+        };
+
+        function HomePage({ setPage, onSelect, goToCollection }) {
+            const containerRef = useRef(null);
+            const stickyRef = useRef(null);
+            const { setCursor } = useStore();
+            const { toggleWishlist, isWishlisted } = useWishlist();
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    if (!containerRef.current || !stickyRef.current) return;
+                    const { top, height } = containerRef.current.getBoundingClientRect();
+                    const stickyHeight = stickyRef.current.offsetHeight;
+                    const scrollableDistance = height - stickyHeight;
+                    let progress = -top / scrollableDistance;
+                    progress = Math.max(0, Math.min(1, progress));
+                    const horizontalContent = stickyRef.current.querySelector('.horizontal-content');
+                    if (horizontalContent) {
+                        const maxTranslate = horizontalContent.scrollWidth - window.innerWidth;
+                        horizontalContent.style.transform = `translate3d(-${progress * maxTranslate}px, 0, 0)`;
+                    }
+                };
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            return (
+                <div className="bg-[#0D0D0D] text-[#F0EBE1]">
+                    <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+                        <div className="absolute inset-0 z-0">
+                            <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2820&auto=format&fit=crop" className="w-full h-full object-cover filter brightness-[0.4] scale-110 animate-[subtleZoom_30s_ease-out_forwards]" alt="Hero" />
+                            <style>{`@keyframes subtleZoom { to { transform: scale(1); } }`}</style>
+                        </div>
+                        <div className="z-10 w-full px-8 md:px-16 flex flex-col justify-end h-full pb-16 md:pb-24">
+                            <RevealText delay={200}>
+                                <h1 className="font-serif text-[7.5vw] md:text-[5.5vw] leading-[0.9] tracking-[-0.02em] text-[#F0EBE1] mb-6 select-none uppercase">Explore<br/><span className="text-[#A6957A] italic ml-[4vw]">Our Collection</span></h1>
+                            </RevealText>
+                            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mt-10 gap-8 border-t border-white/10 pt-10">
+                                <RevealText delay={400}><p className="text-[10px] tracking-[0.3em] uppercase font-bold max-w-sm leading-[2.5]">Made with intent, for the woman who wears her confidence as naturally as she wears her clothes.</p></RevealText>
+                                <RevealText delay={600}><MagneticButton><button onClick={() => { window.scrollTo(0,0); setPage('shop'); }} className="text-[10px] tracking-[0.4em] uppercase border border-[#F0EBE1] text-[#F0EBE1] px-10 py-5 font-bold bg-white/5 backdrop-blur-md hover:bg-[#F0EBE1] hover:text-[#0D0D0D] transition-colors">Explore our Collection</button></MagneticButton></RevealText>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section className="py-10 bg-[#A6957A] text-[#0D0D0D] border-y border-white/10">
+                        <div className="flex whitespace-nowrap overflow-hidden">
+                            <div className="flex animate-[marquee_35s_linear_infinite] font-serif text-lg md:text-xl italic tracking-wide">
+                                <span>&nbsp;CRAFTED WITH INTENT · SHIPPED ACROSS INDIA · EASY RETURNS · QUALITY YOU CAN FEEL&nbsp;</span>
+                                <span>&nbsp;CRAFTED WITH INTENT · SHIPPED ACROSS INDIA · EASY RETURNS · QUALITY YOU CAN FEEL&nbsp;</span>
+                                <span>&nbsp;CRAFTED WITH INTENT · SHIPPED ACROSS INDIA · EASY RETURNS · QUALITY YOU CAN FEEL&nbsp;</span>
+                            </div>
+                        </div>
+                        <style>{`@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }`}</style>
+                    </section>
+
+                    <section className="py-32 md:py-60 bg-[#F0EBE1] text-[#0D0D0D]">
+                        <div className="max-w-[1800px] mx-auto px-8 md:px-16">
+                            <div className="mb-24 md:mb-40 flex justify-between items-end border-b border-black/10 pb-10">
+                                <RevealText><h2 className="font-serif text-4xl md:text-5xl tracking-[-0.02em]">New Arrivals</h2></RevealText>
+                                <button onClick={() => { window.scrollTo(0,0); setPage('shop'); }} className="text-[10px] tracking-[0.3em] uppercase font-bold border-b border-black pb-2 hidden md:block">View All Inventory</button>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-16 items-start">
+                                {PRODUCTS.slice(0, 3).map((prod, index) => {
+                                    let marginClass = index === 1 ? "md:mt-[30%]" : (index === 2 ? "md:mt-[10%]" : "");
+                                    let aspectClass = index === 1 ? "aspect-[4/5]" : (index === 2 ? "aspect-square md:w-11/12 ml-auto" : "aspect-[3/4]");
+                                    return (
+                                        <Reveal key={prod.id} delay={index * 200} className={marginClass}>
+                                            <div className="group cursor-none flex flex-col h-full" onClick={() => onSelect(prod)} onMouseEnter={() => setCursor('text', 'VIEW')} onMouseLeave={() => setCursor('default')}>
+                                             <div className={`${aspectClass} bg-neutral-200 w-full overflow-hidden relative mb-10 shadow-xl border border-black/5`}>
+                                                    <img src={prod.image} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-0" alt={prod.name} />
+                                                    <img src={prod.hoverImage} className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700 group-hover:opacity-100" alt={prod.name} />
+                                                    {/* Wishlist heart */}
+                                                    <button onClick={(e) => { e.stopPropagation(); toggleWishlist(prod.id); }} className="absolute top-4 right-4 z-10 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md transition-transform duration-300 hover:scale-110">
+                                                        {isWishlisted(prod.id) ? <HeartFilled className="w-4 h-4 text-[#A6957A]" /> : <Heart className="w-4 h-4 text-black/40" />}
+                                                    </button>
+                                                </div>
+                                                <div className="flex justify-between items-start px-2">
+                                                    <div><h3 className="font-serif text-2xl mb-3 group-hover:italic transition-all duration-700 tracking-tight">{prod.name}</h3><p className="text-[9px] tracking-[0.4em] uppercase text-black/40 font-bold">{prod.category}</p></div>
+                                                    <span className="font-serif text-xl italic text-[#A6957A]">₹{prod.price.toLocaleString('en-IN')}</span>
+                                                </div>
+                                            </div>
+                                        </Reveal>
+                                    );
+                                })}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="py-32 md:py-48 bg-[#0D0D0D] text-[#F0EBE1]">
+                        <div className="max-w-[1800px] mx-auto px-8 md:px-16">
+                            <div className="flex flex-col md:flex-row justify-between items-end mb-24 border-b border-white/10 pb-12">
+                                <div>
+                                    <RevealText><span className="text-[10px] tracking-[0.5em] uppercase font-bold text-[#A6957A] block mb-6">SS 2026</span></RevealText>
+                                    <RevealText delay={100}><h2 className="font-serif text-4xl md:text-5xl tracking-[-0.03em] uppercase leading-none">Featured<br/><span className="italic text-[#A6957A]">Categories</span></h2></RevealText>
+                                </div>
+                                <RevealText delay={200}><p className="text-[11px] tracking-[0.2em] uppercase text-white/40 max-w-xs leading-loose font-light border-l border-[#A6957A] pl-6 mt-8 md:mt-0">Distinct worlds. Each a different expression of style. Enter yours.</p></RevealText>
+                            </div>
+
+                            {/* Collection Cards */}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+                                {COLLECTIONS.map((col, i) => (
+                                    <Reveal key={col.id} delay={i * 100}>
+                                        <div
+                                            className="group cursor-none relative overflow-hidden"
+                                            style={{ aspectRatio: '3/4' }}
+                                            onClick={() => goToCollection(col)}
+                                            onMouseEnter={() => setCursor('text', 'ENTER')}
+                                            onMouseLeave={() => setCursor('default')}
+                                        >
+                                            {/* Background Image */}
+                                            <img src={col.image} alt={col.name} className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-[1.5s] group-hover:scale-110 scale-105" />
+                                            {/* Dark overlay */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/10 group-hover:from-black/90 transition-all duration-700" />
+                                            {/* Content */}
+                                            <div className="absolute inset-0 flex flex-col justify-end p-8">
+                                                <span className="text-[9px] tracking-[0.4em] uppercase text-[#A6957A] font-bold mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-2 group-hover:translate-y-0">{col.subtitle}</span>
+                                                <h3 className="font-serif text-3xl md:text-4xl italic text-white leading-tight mb-4">{col.name}</h3>
+                                                <p className="text-[10px] tracking-[0.2em] uppercase text-white/40 font-light leading-loose opacity-0 group-hover:opacity-100 transition-all duration-700 translate-y-4 group-hover:translate-y-0">{col.desc}</p>
+                                                <div className="mt-6 flex items-center gap-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-4 group-hover:translate-y-0">
+                                                    <span className="text-[9px] tracking-[0.4em] uppercase text-white font-bold">Explore {col.name}</span>
+                                                    <div className="flex-1 h-[1px] bg-[#A6957A]" />
+                                                    <ArrowRight className="w-4 h-4 text-[#A6957A]" />
+                                                </div>
+                                            </div>
+                                            {/* Index */}
+                                            <span className="absolute top-6 right-6 font-serif text-4xl italic text-white/10 select-none">0{i+1}</span>
+                                        </div>
+                                    </Reveal>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+
+                    {/* Trust Strip */}
+                    <section className="py-16 bg-[#0D0D0D] border-t border-white/5">
+                        <div className="max-w-[1800px] mx-auto px-8 md:px-16">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
+                                {[
+                                    { icon: <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><rect width="16" height="12" x="2" y="6" rx="2"/><circle cx="7" cy="18" r="2"/><circle cx="15" cy="18" r="2"/><path d="M13 6h3l3 3v7h-6V6Z"/></svg>, title: 'Free Delivery', sub: 'Across all of India' },
+                                    { icon: <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>, title: 'Easy Returns', sub: '7-day hassle-free returns' },
+                                    { icon: <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>, title: '100% Authentic', sub: 'Crafted with care, always' },
+                                    { icon: <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>, title: 'Secure Payments', sub: 'UPI · Cards · Net Banking' },
+                                ].map(({ icon, title, sub }) => (
+                                    <div key={title} className="flex flex-col items-center text-center gap-3 group">
+                                        <div className="text-[#A6957A] group-hover:scale-110 transition-transform duration-300">{icon}</div>
+                                        <div>
+                                            <p className="text-[11px] tracking-[0.25em] uppercase font-bold text-[#F0EBE1] mb-1">{title}</p>
+                                            <p className="text-[10px] text-white/40 tracking-[0.05em]">{sub}</p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    <section className="py-60 px-8 md:px-16 bg-[#F0EBE1] text-[#0D0D0D] flex flex-col items-center text-center border-t border-black/5">
+                        <RevealText><span className="text-[10px] tracking-[0.5em] uppercase font-bold text-[#A6957A] block mb-10">A Brand Built with Intent</span></RevealText>
+                        <RevealText delay={200}><h2 className="font-serif text-3xl md:text-4xl leading-[1.2] max-w-4xl mx-auto mb-20 tracking-tighter uppercase">"Tiiha was born from a belief that what you wear should feel like a choice that is deliberate, personal, and yours."</h2></RevealText>
+                        <RevealText delay={400}><MagneticButton><button onClick={() => { window.scrollTo(0,0); setPage('about'); }} className="text-[11px] tracking-[0.4em] uppercase font-bold border-b-2 border-[#0D0D0D] pb-3 hover:text-[#A6957A] hover:border-[#A6957A] transition-colors">Read Our Story</button></MagneticButton></RevealText>
+                    </section>
+                    <Newsletter />
+                </div>
+            );
+        }
+
+
+
+        const PincodeChecker = () => {
+            const [pin, setPin] = useState('');
+            const [result, setResult] = useState(null);
+            const [checking, setChecking] = useState(false);
+            const check = () => {
+                if (pin.length !== 6) { setResult({ ok: false, msg: 'Enter a valid 6-digit PIN code.' }); return; }
+                setChecking(true); setResult(null);
+                setTimeout(() => {
+                    const deliveryDays = parseInt(pin[0]) < 5 ? 3 : 5;
+                    const date = new Date(); date.setDate(date.getDate() + deliveryDays);
+                    const label = date.toLocaleDateString('en-IN', { weekday: 'short', day: 'numeric', month: 'short' });
+                    setResult({ ok: true, msg: `FREE delivery by ${label}` });
+                    setChecking(false);
+                }, 900);
+            };
+            return (
+                <div className="border-t border-black/8 pt-5 mb-5">
+                    <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-3">Check Delivery</p>
+                    <div className="flex gap-2">
+                        <input type="text" maxLength={6} value={pin} onChange={e => { setPin(e.target.value.replace(/\D/g,'')); setResult(null); }}
+                            placeholder="Enter PIN code" className="flex-1 border border-black/20 bg-white px-3 py-2.5 text-sm font-serif focus:outline-none focus:border-[#A6957A] transition-colors" />
+                        <button onClick={check} disabled={checking}
+                            className="px-5 bg-[#0D0D0D] text-white text-[9px] tracking-[0.2em] uppercase font-bold hover:bg-[#A6957A] transition-colors disabled:opacity-50">
+                            {checking ? '...' : 'CHECK'}
+                        </button>
+                    </div>
+                    {result && (
+                        <p className={`text-[10px] mt-2 font-bold tracking-[0.1em] ${result.ok ? 'text-green-600' : 'text-red-500'}`}>
+                            {result.ok ? '✓ ' : '✗ '}{result.msg}
+                        </p>
+                    )}
+                </div>
+            );
+        };
+
+        function ProductTakeover({ product, onClose, onAdd, onSelectRelated, onSizeGuide }) {
+            const [selectedSize, setSelectedSize] = useState(null);
+            const [activeMediaIdx, setActiveMediaIdx] = useState(0);
+            const { setCursor } = useStore();
+            const relatedItems = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
+
+            // Track recently viewed
+            useEffect(() => {
+                const key = 'tiiha_rv';
+                const prev = JSON.parse(sessionStorage.getItem(key) || '[]');
+                const updated = [product.id, ...prev.filter(id => id !== product.id)].slice(0, 6);
+                sessionStorage.setItem(key, JSON.stringify(updated));
+            }, [product.id]);
+
+            // Build media array: primary image + gallery + video
+            const gallery = (() => { try { return JSON.parse(product.gallery || '[]'); } catch(e) { return []; } })();
+            const allImages = [product.image, ...gallery.filter(g => g && g !== product.image)].filter(Boolean);
+            const hasVideo = !!product.video;
+            const mediaItems = allImages.map(url => ({ type: 'image', url }));
+            if (hasVideo) mediaItems.push({ type: 'video', url: product.video });
+
+            const activeMedia = mediaItems[activeMediaIdx] || mediaItems[0];
+
+            useEffect(() => {
+                document.body.style.overflow = 'hidden';
+                return () => { document.body.style.overflow = 'unset'; };
+            }, []);
+
+            return (
+                <div className="fixed inset-0 z-[200] bg-[#F0EBE1] text-[#0D0D0D] flex flex-col lg:flex-row animate-[pageFadeIn_0.8s_cubic-bezier(0.19,1,0.22,1)]" style={{cursor:'auto'}}>
+                    {/* LEFT: Media Viewer */}
+                    <div className="w-full lg:w-1/2 h-[55vh] lg:h-screen relative bg-[#0D0D0D] flex flex-col">
+                        {/* Main media display */}
+                        <div className="flex-1 relative overflow-hidden">
+                            {activeMedia?.type === 'video' ? (
+                                activeMedia.url.includes('youtube.com') || activeMedia.url.includes('youtu.be') ? (
+                                    <iframe
+                                        src={activeMedia.url}
+                                        className="absolute inset-0 w-full h-full"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    />
+                                ) : (
+                                    <video
+                                        src={activeMedia.url}
+                                        className="absolute inset-0 w-full h-full object-cover"
+                                        controls
+                                        autoPlay
+                                        muted
+                                        loop
+                                    />
+                                )
+                            ) : (
+                                <img
+                                    key={activeMedia?.url}
+                                    src={activeMedia?.url}
+                                    alt={product.name}
+                                    loading="lazy"
+                                    className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
+                                />
+                            )}
+                            {/* Counter badge */}
+                            <div className="absolute top-6 right-6 bg-black/50 backdrop-blur-sm text-white text-[10px] tracking-[0.2em] px-3 py-1 font-bold">
+                                {activeMediaIdx + 1} / {mediaItems.length}
+                            </div>
+                            {/* Mobile close */}
+                            <button onClick={onClose} className="absolute top-6 left-6 lg:hidden p-3 bg-black/50 backdrop-blur-sm rounded-full z-10">
+                                <X className="w-5 h-5 text-white" />
+                            </button>
+                        </div>
+                        {/* Thumbnail strip */}
+                        {mediaItems.length > 1 && (
+                            <div className="flex gap-2 p-3 bg-black overflow-x-auto">
+                                {mediaItems.map((m, i) => (
+                                    <button
+                                        key={i}
+                                        onClick={() => setActiveMediaIdx(i)}
+                                        className={`relative flex-shrink-0 w-16 h-16 overflow-hidden transition-all duration-300 ${activeMediaIdx === i ? 'ring-2 ring-[#A6957A] opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                                    >
+                                        {m.type === 'video' ? (
+                                            <div className="w-full h-full bg-[#1a1a1a] flex items-center justify-center">
+                                                <Play className="w-5 h-5 text-[#A6957A]" />
+                                            </div>
+                                        ) : (
+                                            <img src={m.url} loading="lazy" className="w-full h-full object-cover" />
+                                        )}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* RIGHT: Product Info — fixed layout: scrollable top, sticky bottom CTA */}
+                    <div className="w-full lg:w-1/2 h-[45vh] lg:h-screen flex flex-col relative" style={{cursor:'auto'}}>
+                        {/* Sticky header */}
+                        <div className="flex justify-between items-center px-8 py-5 border-b border-black/8 flex-shrink-0">
+                            <div className="flex items-center gap-3">
+                                {product.stock === 0 ? (
+                                    <span className="text-[9px] tracking-[0.15em] uppercase text-red-600 font-bold bg-red-50 border border-red-200 px-2 py-0.5">Out of Stock</span>
+                                ) : product.stock < 5 ? (
+                                    <span className="text-[9px] tracking-[0.15em] uppercase text-orange-600 font-bold bg-orange-50 border border-orange-200 px-2 py-0.5">Only {product.stock} left</span>
+                                ) : (
+                                    <span className="text-[9px] tracking-[0.15em] uppercase text-green-600 font-bold bg-green-50 border border-green-200 px-2 py-0.5">✓ In Stock</span>
+                                )}
+                                <span className="text-[9px] tracking-[0.3em] uppercase text-black/30 font-bold">{product.id}</span>
+                            </div>
+                            <button onClick={onClose} className="p-2 hover:rotate-90 transition-transform duration-500"><X className="w-6 h-6" strokeWidth={1.5} /></button>
+                        </div>
+                        {/* Scrollable content */}
+                        <div data-lenis-prevent className="flex-1 overflow-y-auto no-scrollbar">
+                        <div className="px-8 py-6 lg:px-12">
+                            <div className="mb-5">
+                                <p className="text-[10px] tracking-[0.3em] uppercase text-[#A6957A] font-bold mb-2">{product.category}</p>
+                                <h1 className="font-serif text-3xl md:text-4xl leading-tight tracking-[-0.02em] mb-4 uppercase">{product.name}</h1>
+                                <div className="flex items-baseline gap-4">
+                                    <p className="font-serif text-3xl text-[#A6957A]">₹{product.price.toLocaleString('en-IN')}</p>
+                                    <span className="text-[10px] tracking-[0.1em] text-green-600 font-bold">FREE Delivery</span>
+                                </div>
+                            </div>
+                            
+                            {/* Description */}
+                            <div className="border-t border-black/8 pt-5 mb-5">
+                                <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-3">About this Piece</p>
+                                <p className="text-base font-light leading-relaxed text-black/70">{product.desc}</p>
+                            </div>
+                            {/* Pincode checker */}
+                            <PincodeChecker />
+                            {/* Care & Trust */}
+                            <div className="border-t border-black/8 pt-5 mb-5 grid grid-cols-3 gap-3">
+                                <div className="flex flex-col items-center text-center gap-1 p-3 bg-black/3 rounded">
+                                    <svg className="w-5 h-5 text-[#A6957A]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                                    <span className="text-[8px] tracking-[0.1em] uppercase font-bold text-black/50">Easy Returns<br/>7 Days</span>
+                                </div>
+                                <div className="flex flex-col items-center text-center gap-1 p-3 bg-black/3 rounded">
+                                    <ShieldCheck className="w-5 h-5 text-[#A6957A]" strokeWidth={1.5} />
+                                    <span className="text-[8px] tracking-[0.1em] uppercase font-bold text-black/50">100%<br/>Authentic</span>
+                                </div>
+                                <div className="flex flex-col items-center text-center gap-1 p-3 bg-black/3 rounded">
+                                    <Truck className="w-5 h-5 text-[#A6957A]" strokeWidth={1.5} />
+                                    <span className="text-[8px] tracking-[0.1em] uppercase font-bold text-black/50">Free<br/>Delivery</span>
+                                </div>
+                            </div>
+                            {/* Fabric */}
+                            <div className="border-t border-black/8 pt-5 mb-5">
+                                <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-2">Fabric & Care</p>
+                                <p className="text-sm font-light text-black/60 leading-relaxed">{product.detail || 'Premium quality fabric. Handle with care. Dry clean recommended.'}</p>
+                            </div>
+                            {/* Related */}
+                            {relatedItems.length > 0 && (
+                                <div className="border-t border-black/8 pt-5 mb-8">
+                                    <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-4">You May Also Like</p>
+                                    <div className="grid grid-cols-3 gap-3">
+                                        {relatedItems.slice(0,3).map(item => (
+                                            <div key={item.id} className="cursor-pointer group" onClick={() => { onSelectRelated(item); setSelectedSize(null); setActiveMediaIdx(0); }}>
+                                                <div className="aspect-[3/4] overflow-hidden bg-black/5 mb-2">
+                                                    <img src={item.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                                </div>
+                                                <p className="font-serif text-xs leading-tight truncate">{item.name}</p>
+                                                <p className="text-[9px] text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                            {/* Recently Viewed */}
+                            {(() => {
+                                const ids = JSON.parse(sessionStorage.getItem('tiiha_rv') || '[]');
+                                const rvItems = ids.filter(id => id !== product.id).map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean).slice(0, 4);
+                                if (!rvItems.length) return null;
+                                return (
+                                    <div className="border-t border-black/8 pt-5 mb-8">
+                                        <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-4">Recently Viewed</p>
+                                        <div className="grid grid-cols-4 gap-2">
+                                            {rvItems.map(item => (
+                                                <div key={item.id} className="cursor-pointer group" onClick={() => { onSelectRelated(item); setSelectedSize(null); setActiveMediaIdx(0); }}>
+                                                    <div className="aspect-[3/4] overflow-hidden bg-black/5 mb-1.5">
+                                                        <img src={item.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                                    </div>
+                                                    <p className="font-serif text-[10px] leading-tight truncate">{item.name}</p>
+                                                    <p className="text-[9px] text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                );
+                            })()}
+                        </div>
+                        </div>
+                        {/* STICKY BOTTOM: Size + CTA */}
+                        <div className="flex-shrink-0 border-t-2 border-black/10 bg-[#F0EBE1] px-8 py-5 lg:px-12">
+                            
+                            <div className="flex justify-between items-center mb-3">
+                                <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#0D0D0D]">Select Size</span>
+                                <button onClick={() => onSizeGuide && onSizeGuide()} className="text-[9px] tracking-[0.15em] uppercase text-[#A6957A] underline hover:text-[#0D0D0D] transition-colors">Size Guide</button>
+                            </div>
+                            <div className="flex gap-2 flex-wrap mb-3">
+                                {(product.sizes ? product.sizes.split(',').map(s=>s.trim()) : ['XS','S','M','L','XL']).map(size => (
+                                    <button key={size} onClick={() => setSelectedSize(size)}
+                                        className={`min-w-[52px] py-2.5 px-3 text-[11px] tracking-[0.1em] uppercase font-bold border-2 transition-all duration-200 rounded ${
+                                            selectedSize === size
+                                                ? 'bg-[#0D0D0D] text-white border-[#0D0D0D]'
+                                                : 'border-black/20 text-black/60 hover:border-black hover:text-black'
+                                        }`}>{size}</button>
+                                ))}
+                            </div>
+                            {!selectedSize && <p className="text-[9px] text-black/35 mb-2 tracking-[0.15em] uppercase">Please select a size to continue</p>}
+                            {selectedSize && product.stock !== undefined && product.stock <= 3 && product.stock > 0 && (
+                                <p className="text-[9px] text-orange-600 font-bold mb-2 tracking-[0.15em] uppercase animate-pulse">⚡ Only {product.stock} left in stock — grab it fast!</p>
+                            )}
+                            <div className="flex gap-3 mt-2">
+                                <button onClick={() => { if(selectedSize){onAdd(product,selectedSize);setSelectedSize(null);}else{alert('Please select a size first.');} }}
+                                    className={`flex-1 py-4 text-[11px] tracking-[0.3em] uppercase font-bold border-2 flex items-center justify-center gap-3 transition-all ${
+                                        selectedSize ? 'border-[#0D0D0D] text-[#0D0D0D] hover:bg-[#0D0D0D] hover:text-white' : 'border-black/15 text-black/25 cursor-not-allowed'
+                                    }`}>
+                                    <ShoppingBag className="w-4 h-4" /> Add to Bag
+                                </button>
+                                <button onClick={() => { if(selectedSize){onAdd(product,selectedSize);}else{alert('Please select a size first.');} }}
+                                    className={`flex-1 py-4 text-[11px] tracking-[0.3em] uppercase font-bold flex items-center justify-center gap-3 transition-all ${
+                                        selectedSize ? 'bg-[#A6957A] text-white hover:bg-[#0D0D0D]' : 'bg-black/8 text-black/25 cursor-not-allowed'
+                                    }`}>
+                                    Buy Now <ArrowRight className="w-4 h-4" />
+                                </button>
+                            </div>
+                            <p className="text-center text-[9px] text-black/35 tracking-[0.1em] mt-3">✓ Free delivery &nbsp;·&nbsp; ✓ Easy 7-day returns &nbsp;·&nbsp; ✓ 100% authentic</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function CartDrawer({ cart, isOpen, onClose, onRemove, onUpdateQty }) {
+            const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
+            const { setCursor } = useStore();
+            const [checkoutStep, setCheckoutStep] = useState(0);
+            const [form, setForm] = useState({ firstName:'', lastName:'', email:'', phone:'', address:'', city:'', postal:'', card:'', expiry:'', cvv:'' });
+            const [submitting, setSubmitting] = useState(false);
+            const [couponCode, setCouponCode] = useState('');
+            const [discount, setDiscount] = useState(0);
+            const [couponMsg, setCouponMsg] = useState('');
+
+            const total = subtotal * (1 - discount);
+
+            const updateForm = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+            const supabaseClient = window.supabase.createClient(
+                'https://rswhedtgkfdbhsicllrj.supabase.co',
+                'sb_publishable_oPYNdCQ6g3PMEoGE6kGyHw_dVmKFoiF'
+            );
+
+            const validateStep1 = () => {
+                if (!form.firstName.trim()) { alert('Please enter your first name.'); return false; }
+                if (!form.lastName.trim()) { alert('Please enter your last name.'); return false; }
+                if (!form.email.trim() || !form.email.includes('@')) { alert('Please enter a valid email.'); return false; }
+                if (!form.phone.trim() || form.phone.length < 10) { alert('Please enter a valid 10-digit phone number.'); return false; }
+                return true;
+            };
+            const validateStep2 = () => {
+                if (!form.address.trim()) { alert('Please enter your address.'); return false; }
+                if (!form.city.trim()) { alert('Please enter your city.'); return false; }
+                if (!form.postal.trim() || form.postal.length < 6) { alert('Please enter a valid 6-digit PIN code.'); return false; }
+                return true;
+            };
+
+            const handleOrder = async () => {
+                setSubmitting(true);
+                try {
+                    await supabaseClient.from('ORDERS').insert([{
+                        customer_name: `${form.firstName} ${form.lastName}`,
+                        customer_email: form.email,
+                        customer_phone: form.phone,
+                        shipping_address: `${form.address}, ${form.city} ${form.postal}`,
+                        total_amount: total,
+                        items: JSON.stringify(cart.map(i=>({id:i.id,name:i.name,price:i.price,size:i.size}))),
+                        status: 'pending'
+                    }]);
+                } catch(e) { console.log('Order save error', e); }
+                setSubmitting(false);
+                setCheckoutStep(4);
+            };
+
+            const handlePayment = async () => {
+                setSubmitting(true);
+                try {
+                    // 1. Create Razorpay order server-side
+                    const orderRes = await fetch('/.netlify/functions/razorpay-order', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: 'create',
+                            amount: Math.round(total * 100), // paise
+                            currency: 'INR',
+                            receipt: `rcpt_${Date.now()}`
+                        })
+                    });
+                    const orderData = await orderRes.json();
+
+                    if (!orderData.order_id) {
+                        // Fallback for local dev without Netlify
+                        const options = {
+                            key: 'rzp_live_YOUR_KEY_HERE',
+                            amount: Math.round(total * 100),
+                            currency: 'INR',
+                            name: 'Tiiha',
+                            description: `Order — ${cart.length} item(s)`,
+                            handler: async (response) => {
+                                await handleOrder();
+                                setSubmitting(false);
+                            },
+                            prefill: { name: `${form.firstName} ${form.lastName}`, email: form.email, contact: form.phone },
+                            theme: { color: '#A6957A' },
+                            modal: { ondismiss: () => setSubmitting(false) }
+                        };
+                        const rzp = new window.Razorpay(options);
+                        rzp.open();
+                        return;
+                    }
+
+                    // 2. Open Razorpay checkout with server-generated order_id
+                    const options = {
+                        key: 'rzp_live_YOUR_KEY_HERE',
+                        amount: orderData.amount,
+                        currency: orderData.currency,
+                        order_id: orderData.order_id,
+                        name: 'Tiiha',
+                        description: `Order — ${cart.length} item(s)`,
+                        handler: async (response) => {
+                            // 3. Verify payment signature server-side
+                            try {
+                                const verifyRes = await fetch('/.netlify/functions/razorpay-order', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json' },
+                                    body: JSON.stringify({
+                                        action: 'verify',
+                                        razorpay_order_id: response.razorpay_order_id,
+                                        razorpay_payment_id: response.razorpay_payment_id,
+                                        razorpay_signature: response.razorpay_signature
+                                    })
+                                });
+                                const verifyData = await verifyRes.json();
+                                if (verifyData.verified) {
+                                    await handleOrder();
+                                } else {
+                                    alert('Payment verification failed. Please contact support.');
+                                }
+                            } catch(e) {
+                                // Fallback: save order even if verify fails (Razorpay already confirmed)
+                                await handleOrder();
+                            }
+                            setSubmitting(false);
+                        },
+                        prefill: { name: `${form.firstName} ${form.lastName}`, email: form.email, contact: form.phone },
+                        theme: { color: '#A6957A' },
+                        modal: { ondismiss: () => setSubmitting(false) }
+                    };
+                    const rzp = new window.Razorpay(options);
+                    rzp.open();
+                } catch(e) {
+                    console.error('Razorpay error', e);
+                    handleOrder();
+                    setSubmitting(false);
+                }
+            };
+
+            const stepLabel = ['My Bag', 'Contact Info', 'Delivery Address', 'Payment'];
+
+            return (
+                <div className={`fixed inset-0 z-[300] pointer-events-none transition-all duration-[1s] ease-[cubic-bezier(0.19,1,0.22,1)] ${isOpen ? 'bg-black/20 backdrop-blur-sm' : 'bg-transparent'}`}>
+                    <div className={`absolute inset-0 pointer-events-auto ${isOpen ? 'block' : 'hidden'}`} onClick={onClose} />
+                    <div className={`absolute top-0 right-0 w-full md:w-[500px] h-full bg-[#F0EBE1] text-[#0D0D0D] pointer-events-auto transform transition-transform duration-[1s] ease-[cubic-bezier(0.19,1,0.22,1)] shadow-2xl flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                        <div className="flex justify-between items-center p-8 border-b border-black/5">
+                            <div>
+                                {checkoutStep > 0 && checkoutStep < 4 && <button onClick={() => setCheckoutStep(s => s-1)} className="text-[9px] tracking-[0.3em] uppercase opacity-40 mb-1 block hover:opacity-100">← Back</button>}
+                                <h2 className="font-serif text-2xl tracking-wide">{checkoutStep === 4 ? 'Order Confirmed!' : stepLabel[checkoutStep]} {checkoutStep === 0 && <span className="text-[#A6957A] ml-2 font-sans text-lg">({cart.length})</span>}</h2>
+                            </div>
+                            <button onClick={() => { onClose(); setCheckoutStep(0); }} className="p-3 hover:rotate-90 transition-transform duration-700 -mr-2"><X className="w-6 h-6" strokeWidth={1.5} /></button>
+                        </div>
+                        <div className="px-8 py-3 bg-[#A6957A] text-[#0D0D0D] text-[9px] tracking-[0.3em] uppercase font-bold text-center">
+                            ✨ Free shipping on all orders across India
+                        </div>
+                        {checkoutStep > 0 && checkoutStep < 4 && (
+                            <div className="flex px-8 py-3 bg-black/3 border-b border-black/5 gap-2">
+                                {['Contact', 'Delivery', 'Payment'].map((s, i) => (
+                                    <div key={i} className="flex items-center gap-2 flex-1">
+                                        <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold flex-shrink-0 ${ checkoutStep > i + 1 ? 'bg-green-500 text-white' : checkoutStep === i + 1 ? 'bg-[#A6957A] text-white' : 'bg-black/10 text-black/30' }`}>
+                                            {checkoutStep > i + 1 ? '✓' : i + 1}
+                                        </div>
+                                        <span className={`text-[8px] tracking-[0.15em] uppercase font-bold ${ checkoutStep === i + 1 ? 'text-[#A6957A]' : checkoutStep > i + 1 ? 'text-green-600' : 'text-black/25' }`}>{s}</span>
+                                        {i < 2 && <div className={`flex-1 h-[1px] ${ checkoutStep > i + 1 ? 'bg-green-400' : 'bg-black/10' }`} />}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {checkoutStep === 0 && (
+                            <>
+                                <div data-lenis-prevent className="flex-1 overflow-y-auto p-10 md:p-16 space-y-12 no-scrollbar">
+                                    {cart.length === 0 ? (
+                                        <div className="h-full flex flex-col items-center justify-center text-center gap-4 py-20">
+                                            <ShoppingBag className="w-16 h-16 text-black/10" strokeWidth={1} />
+                                            <p className="font-serif text-3xl italic text-black/30">Your bag is empty</p>
+                                            <p className="text-[10px] tracking-[0.3em] uppercase text-black/30">Add items to get started</p>
+                                        </div>
+                                    ) : cart.map((item, i) => (
+                                        <div key={i} className="flex gap-5 pb-8 border-b border-black/5 last:border-0">
+                                            <div className="w-24 h-32 bg-black/5 overflow-hidden flex-shrink-0 rounded-sm">
+                                                <img src={item.image} className="w-full h-full object-cover" />
+                                            </div>
+                                            <div className="flex-1 flex flex-col justify-between min-w-0">
+                                                <div>
+                                                    <div className="flex justify-between items-start">
+                                                        <h4 className="font-serif text-lg leading-tight pr-2 truncate">{item.name}</h4>
+                                                        <button onClick={() => onRemove(i)} className="text-black/30 hover:text-black transition-colors flex-shrink-0"><X className="w-4 h-4"/></button>
+                                                    </div>
+                                                    <p className="text-[9px] text-black/40 tracking-[0.2em] uppercase mt-1 font-bold">Size: {item.size}</p>
+                                                    <span className="inline-block mt-1 text-[8px] tracking-[0.2em] uppercase font-bold text-green-600 bg-green-50 px-2 py-0.5">FREE Delivery</span>
+                                                </div>
+                                                <p className="font-serif text-xl italic text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                                {cart.length > 0 && (
+                                    <div className="p-8 border-t border-black/5 bg-white/60 backdrop-blur-md">
+                                        {!couponMsg && <p className="text-[10px] tracking-[0.1em] text-[#A6957A] font-bold mb-3">💡 New here? Try code <span className="underline cursor-pointer" onClick={() => setCouponCode('WELCOME10')}>WELCOME10</span> for 10% off</p>}
+                                        <div className="mb-5 flex gap-2">
+                                            <input type="text" value={couponCode} onChange={e=>setCouponCode(e.target.value)} placeholder="Enter coupon code" className="w-full bg-white border border-black/20 px-4 py-3 text-[10px] tracking-[0.15em] uppercase focus:outline-none focus:border-[#A6957A] placeholder-black/30" />
+                                            <button onClick={() => {
+                                                const code = couponCode.toUpperCase().trim();
+                                                if(code==='WELCOME10'){setDiscount(0.1);setCouponMsg('✓ 10% off applied!');}
+                                                else if(code==='TIIHA20'){setDiscount(0.2);setCouponMsg('✓ 20% off applied!');}
+                                                else{setDiscount(0);setCouponMsg('Invalid code.');}
+                                            }} className="px-5 bg-[#0D0D0D] text-white text-[9px] tracking-[0.2em] uppercase font-bold hover:bg-[#A6957A] transition-colors whitespace-nowrap">APPLY</button>
+                                        </div>
+                                        {couponMsg && <p className={`text-[10px] tracking-[0.1em] uppercase font-bold mb-4 ${discount>0?'text-green-600':'text-red-500'}`}>{couponMsg}</p>}
+                                        <div className="space-y-2 mb-4 text-[10px] tracking-[0.2em] uppercase">
+                                            <div className="flex justify-between text-black/50"><span>Subtotal ({cart.length} item{cart.length>1?'s':''})</span><span>₹{subtotal.toLocaleString('en-IN')}</span></div>
+                                            <div className="flex justify-between text-green-600 font-bold"><span>Delivery</span><span>FREE</span></div>
+                                            {discount>0 && <div className="flex justify-between text-green-600 font-bold"><span>Discount ({discount*100}%)</span><span>-₹{(subtotal*discount).toLocaleString('en-IN')}</span></div>}
+                                            <div className="flex justify-between text-[#0D0D0D] font-bold text-sm border-t border-black/10 pt-2 mt-2"><span>Total Amount</span><span className="font-serif text-xl">₹{total.toLocaleString('en-IN')}</span></div>
+                                        </div>
+                                        <button onClick={() => setCheckoutStep(1)} className="w-full py-4 bg-[#A6957A] text-white font-bold text-[11px] tracking-[0.4em] uppercase text-center hover:bg-[#0D0D0D] transition-colors mt-3">PLACE ORDER →</button>
+                                        <p className="text-center text-[9px] text-black/30 tracking-[0.1em] uppercase mt-3">Safe &amp; Secure Payments</p>
+                                    </div>
+                                )}
+                            </>
+                        )}
+
+                        {checkoutStep === 1 && (
+                            <div data-lenis-prevent className="flex-1 overflow-y-auto p-8 no-scrollbar">
+                                <div className="bg-[#A6957A]/10 border border-[#A6957A]/20 px-5 py-3 mb-8 flex justify-between items-center">
+                                    <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-black/50">{cart.length} item{cart.length>1?'s':''} · Total</span>
+                                    <span className="font-serif text-xl text-[#A6957A]">₹{total.toLocaleString('en-IN')}</span>
+                                </div>
+                                <p className="text-[10px] tracking-[0.3em] uppercase text-black/40 mb-8 font-bold">Contact Information</p>
+                                <div className="space-y-6">
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {[['firstName','First Name'],['lastName','Last Name']].map(([k,label]) => (
+                                            <div key={k}>
+                                                <label className="text-[9px] tracking-[0.2em] uppercase text-black/40 font-bold block mb-1">{label} *</label>
+                                                <input type="text" value={form[k]} onChange={e=>updateForm(k,e.target.value)} className="w-full bg-white border border-black/15 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#A6957A] transition-colors" placeholder={label} />
+                                            </div>
+                                        ))}
+                                    </div>
+                                    {[['email','Email Address','email'],['phone','Phone Number (10 digits)','tel']].map(([k,label,type]) => (
+                                        <div key={k}>
+                                            <label className="text-[9px] tracking-[0.2em] uppercase text-black/40 font-bold block mb-1">{label} *</label>
+                                            <input type={type} value={form[k]} onChange={e=>updateForm(k,e.target.value)} className="w-full bg-white border border-black/15 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#A6957A] transition-colors" placeholder={label} />
+                                        </div>
+                                    ))}
+                                </div>
+                                <button onClick={() => { if(validateStep1()) setCheckoutStep(2); }} className="mt-8 w-full py-4 bg-[#A6957A] text-white font-bold text-[11px] tracking-[0.4em] uppercase hover:bg-[#0D0D0D] transition-colors">CONTINUE TO DELIVERY →</button>
+                            </div>
+                        )}
+
+                        {checkoutStep === 2 && (
+                            <div data-lenis-prevent className="flex-1 overflow-y-auto p-8 no-scrollbar">
+                                <div className="bg-[#A6957A]/10 border border-[#A6957A]/20 px-5 py-3 mb-8 flex justify-between items-center">
+                                    <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-black/50">{cart.length} item{cart.length>1?'s':''} · Total</span>
+                                    <span className="font-serif text-xl text-[#A6957A]">₹{total.toLocaleString('en-IN')}</span>
+                                </div>
+                                <p className="text-[10px] tracking-[0.3em] uppercase text-black/40 mb-8 font-bold">Delivery Address</p>
+                                <div className="space-y-5">
+                                    <div>
+                                        <label className="text-[9px] tracking-[0.2em] uppercase text-black/40 font-bold block mb-1">Full Address *</label>
+                                        <textarea rows={2} value={form.address} onChange={e=>updateForm('address',e.target.value)} className="w-full bg-white border border-black/15 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#A6957A] transition-colors resize-none" placeholder="House/Flat No., Street, Area" />
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="text-[9px] tracking-[0.2em] uppercase text-black/40 font-bold block mb-1">City *</label>
+                                            <input type="text" value={form.city} onChange={e=>updateForm('city',e.target.value)} className="w-full bg-white border border-black/15 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#A6957A] transition-colors" placeholder="City" />
+                                        </div>
+                                        <div>
+                                            <label className="text-[9px] tracking-[0.2em] uppercase text-black/40 font-bold block mb-1">PIN Code *</label>
+                                            <input type="text" maxLength={6} value={form.postal} onChange={e=>updateForm('postal',e.target.value.replace(/\D/g,''))} className="w-full bg-white border border-black/15 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#A6957A] transition-colors" placeholder="6-digit PIN" />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="text-[9px] tracking-[0.2em] uppercase text-black/40 font-bold block mb-1">State</label>
+                                        <input type="text" value={form.state||''} onChange={e=>updateForm('state',e.target.value)} className="w-full bg-white border border-black/15 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#A6957A] transition-colors" placeholder="State" />
+                                    </div>
+                                    <div className="flex items-center gap-2 text-[10px] text-green-600 font-bold tracking-[0.1em] uppercase">
+                                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>
+                                        Free delivery to this address
+                                    </div>
+                                </div>
+                                <button onClick={() => { if(validateStep2()) setCheckoutStep(3); }} className="mt-6 w-full py-4 bg-[#A6957A] text-white font-bold text-[11px] tracking-[0.4em] uppercase hover:bg-[#0D0D0D] transition-colors">CONTINUE TO PAYMENT →</button>
+                            </div>
+                        )}
+
+                        {checkoutStep === 3 && (
+                            <div data-lenis-prevent className="flex-1 overflow-y-auto p-8 no-scrollbar">
+                                <p className="text-[10px] tracking-[0.3em] uppercase text-black/40 mb-6 font-bold">Order Summary</p>
+                                <div className="space-y-3 mb-6">
+                                    {cart.map((item,i) => (
+                                        <div key={i} className="flex justify-between items-center text-sm">
+                                            <div>
+                                                <p className="font-serif leading-tight">{item.name}</p>
+                                                <p className="text-[9px] text-black/40 uppercase tracking-wider">Size: {item.size}</p>
+                                            </div>
+                                            <span className="font-serif text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className="border border-black/10 p-5 bg-white/60 mb-6 space-y-2 text-[10px] tracking-[0.15em] uppercase">
+                                    <div className="flex justify-between text-black/50"><span>Subtotal</span><span>₹{subtotal.toLocaleString('en-IN')}</span></div>
+                                    <div className="flex justify-between text-green-600 font-bold"><span>Delivery</span><span>FREE</span></div>
+                                    {discount>0 && <div className="flex justify-between text-green-600 font-bold"><span>Coupon Discount</span><span>-₹{(subtotal*discount).toLocaleString('en-IN')}</span></div>}
+                                    <div className="flex justify-between font-bold text-sm border-t border-black/10 pt-3 mt-2"><span>Total Payable</span><span className="font-serif text-lg">₹{total.toLocaleString('en-IN')}</span></div>
+                                </div>
+                                <div className="p-4 border border-[#A6957A]/30 bg-[#A6957A]/5 mb-5 flex gap-3 items-center">
+                                    <svg className="w-6 h-6 text-[#A6957A] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                    <p className="text-[10px] tracking-[0.1em] text-black/60 font-bold">100% Secure Payment via Razorpay<br/><span className="text-green-600">UPI · Cards · Net Banking · Wallets</span></p>
+                                </div>
+                                <button onClick={handlePayment} disabled={submitting} className="w-full py-4 bg-[#A6957A] text-white font-bold text-[11px] tracking-[0.4em] uppercase hover:bg-[#0D0D0D] transition-colors disabled:opacity-50 flex items-center justify-center gap-3">{submitting ? <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Processing...</> : <>PAY ₹{total.toLocaleString('en-IN')} SECURELY</>}</button>
+                                <p className="text-center text-[9px] text-black/30 tracking-[0.1em] uppercase mt-3">By placing order you agree to our Terms &amp; Conditions</p>
+                            </div>
+                        )}
+
+                        {checkoutStep === 4 && (
+                            <div className="flex-1 flex flex-col items-center justify-center p-10 text-center">
+                                <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-8">
+                                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+                                </div>
+                                <h3 className="font-serif text-4xl mb-3 text-[#0D0D0D]">Order Placed!</h3>
+                                <p className="text-[10px] tracking-[0.2em] uppercase text-black/40 font-bold mb-2">Thank you for shopping with Tiiha</p>
+                                <p className="text-sm text-black/50 mb-8 leading-relaxed">A confirmation has been sent to<br/><span className="font-bold text-[#0D0D0D]">{form.email}</span></p>
+                                <div className="w-full bg-[#A6957A]/10 border border-[#A6957A]/20 p-5 mb-8 text-left space-y-2">
+                                    <p className="text-[9px] tracking-[0.3em] uppercase font-bold text-black/40 mb-3">Order Summary</p>
+                                    {cart.map((item, i) => (
+                                        <div key={i} className="flex justify-between text-sm">
+                                            <span className="font-serif">{item.name} <span className="text-black/40 text-xs">({item.size})</span></span>
+                                            <span className="text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</span>
+                                        </div>
+                                    ))}
+                                    <div className="border-t border-black/10 pt-2 mt-2 flex justify-between font-bold text-sm">
+                                        <span>Total Paid</span><span className="font-serif text-[#A6957A]">₹{total.toLocaleString('en-IN')}</span>
+                                    </div>
+                                </div>
+                                <p className="text-[9px] tracking-[0.2em] uppercase text-black/30 mb-8">Estimated delivery: 5–7 business days</p>
+                                <button onClick={() => { onClose(); setCheckoutStep(0); }} className="w-full py-4 bg-[#A6957A] text-white font-bold text-[11px] tracking-[0.4em] uppercase hover:bg-[#0D0D0D] transition-colors">CONTINUE SHOPPING</button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        function OrderTrackingPage({ setPage }) {
+            useEffect(() => window.scrollTo(0, 0), []);
+            const [query, setQuery] = useState('');
+            const [loading, setLoading] = useState(false);
+            const [order, setOrder] = useState(null);
+            const [notFound, setNotFound] = useState(false);
+
+            const supabaseClient = window.supabase.createClient(
+                'https://rswhedtgkfdbhsicllrj.supabase.co',
+                'sb_publishable_oPYNdCQ6g3PMEoGE6kGyHw_dVmKFoiF'
+            );
+
+            const track = async () => {
+                if (!query.trim()) return;
+                setLoading(true); setOrder(null); setNotFound(false);
+                try {
+                    const { data } = await supabaseClient.from('ORDERS')
+                        .select('*')
+                        .or(`customer_email.eq.${query.trim()},customer_phone.eq.${query.trim()}`)
+                        .order('created_at', { ascending: false })
+                        .limit(5);
+                    if (data && data.length > 0) { setOrder(data); }
+                    else { setNotFound(true); }
+                } catch(e) { setNotFound(true); }
+                setLoading(false);
+            };
+
+            const statusColor = (s) => ({
+                pending: 'text-orange-500', dispatched: 'text-blue-600', delivered: 'text-green-600', cancelled: 'text-red-500'
+            }[s] || 'text-black/50');
+
+            const statusLabel = (s) => ({
+                pending: '🟠 Order Received — Being Prepared',
+                dispatched: '🚚 Dispatched — On the Way',
+                delivered: '✅ Delivered',
+                cancelled: '❌ Cancelled'
+            }[s] || s);
+
+            return (
+                <div className="pt-48 pb-60 px-8 md:px-16 max-w-3xl mx-auto bg-[#F0EBE1] text-[#0D0D0D]">
+                    <RevealText><span className="text-[11px] tracking-[0.4em] uppercase font-bold text-[#A6957A] block mb-6">Track Your Order</span></RevealText>
+                    <RevealText delay={100}><h1 className="font-serif text-4xl md:text-5xl tracking-tight uppercase mb-4">Where is<br/><span className="italic text-[#A6957A]">my order?</span></h1></RevealText>
+                    <RevealText delay={200}><p className="text-sm text-black/50 font-light mb-12 leading-relaxed">Enter the email address or phone number you used at checkout to see your order status.</p></RevealText>
+                    <Reveal delay={300}>
+                        <div className="flex gap-3 mb-8">
+                            <input
+                                type="text" value={query} onChange={e => setQuery(e.target.value)}
+                                onKeyDown={e => e.key === 'Enter' && track()}
+                                placeholder="Email or phone number"
+                                className="flex-1 bg-white border-2 border-black/15 px-5 py-4 font-serif text-base focus:outline-none focus:border-[#A6957A] transition-colors placeholder:text-black/30"
+                            />
+                            <button onClick={track} disabled={loading} className="px-8 bg-[#0D0D0D] text-white text-[11px] tracking-[0.3em] uppercase font-bold hover:bg-[#A6957A] transition-colors disabled:opacity-50">
+                                {loading ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : 'Track'}
+                            </button>
+                        </div>
+                        {notFound && (
+                            <div className="border border-red-200 bg-red-50 p-5 text-center">
+                                <p className="text-sm text-red-600 font-bold mb-1">No orders found</p>
+                                <p className="text-[11px] text-red-400">Check your email/phone or <a href="https://wa.me/919213578396" className="underline">contact us on WhatsApp</a></p>
+                            </div>
+                        )}
+                        {order && (
+                            <div className="space-y-6">
+                                {order.map((o, i) => (
+                                    <div key={i} className="border border-black/10 bg-white p-6">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div>
+                                                <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-1">Order #{o.id?.slice(-8).toUpperCase()}</p>
+                                                <p className={`text-sm font-bold ${statusColor(o.status)}`}>{statusLabel(o.status)}</p>
+                                            </div>
+                                            <span className="font-serif text-xl text-[#A6957A]">₹{o.total_amount?.toLocaleString('en-IN')}</span>
+                                        </div>
+                                        {o.awb_code && (
+                                            <div className="bg-[#A6957A]/10 border border-[#A6957A]/20 p-3 mb-4">
+                                                <p className="text-[10px] tracking-[0.2em] uppercase font-bold text-black/50 mb-1">Tracking AWB</p>
+                                                <p className="font-mono text-sm font-bold">{o.awb_code}</p>
+                                                {o.courier_name && <p className="text-[10px] text-black/40 mt-1">via {o.courier_name}</p>}
+                                            </div>
+                                        )}
+                                        <p className="text-[10px] text-black/40">Shipping to: {o.shipping_address}</p>
+                                    </div>
+                                ))}
+                                <a href="https://wa.me/919213578396?text=Hi%20Tiiha%2C%20I%20need%20help%20with%20my%20order" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full py-3 border border-[#25D366] text-[#25D366] text-[10px] tracking-[0.3em] uppercase font-bold hover:bg-[#25D366] hover:text-white transition-colors">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                    Need Help? Chat on WhatsApp
+                                </a>
+                            </div>
+                        )}
+                    </Reveal>
+                </div>
+            );
+        }
+
+        function ManifestoPage() {
+            useEffect(() => window.scrollTo(0,0), []);
+            return (
+                <div className="pt-48 pb-60 px-8 md:px-16 max-w-[1800px] mx-auto bg-[#F0EBE1] text-[#0D0D0D]">
+                    <div className="mb-40"><RevealText><span className="text-[11px] tracking-[0.4em] uppercase font-bold text-[#A6957A] block mb-12">The Story of Tiiha</span></RevealText><RevealText delay={200}><h1 className="font-serif text-6xl md:text-[8vw] leading-[0.85] tracking-[-0.03em] uppercase mb-16">Made with<br/><span className="text-[#A6957A] italic md:ml-[6vw]">Intent</span></h1></RevealText></div>
+                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 lg:gap-48">
+                        <div className="lg:col-span-5 relative"><div className="sticky top-40 aspect-[3/4] overflow-hidden shadow-2xl"><img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2820&auto=format&fit=crop" className="w-full h-full object-cover grayscale scale-105 hover:scale-100 transition-transform duration-[5s]" /></div></div>
+                        <div className="lg:col-span-7 pt-12 lg:pt-48 flex flex-col gap-40">
+                            <Reveal><h2 className="font-serif text-4xl md:text-5xl leading-[1.15] tracking-tighter uppercase">Tiiha began the way most meaningful things do, with something personal.</h2></Reveal>
+                            <div className="space-y-20">
+                                <Reveal delay={200}><div className="border-t border-black/10 pt-12"><h3 className="text-[11px] tracking-[0.3em] uppercase font-bold mb-8 text-[#A6957A]">01. Intention</h3><p className="text-lg md:text-xl font-light leading-relaxed text-black/70">The name carries the initials of its founder: Ti from Tilokani, Ha from Hari. The double 'i' was added with intention, a small detail, placed deliberately, because at Tiiha, that is exactly where the difference lives. In the details. That belief runs through everything we make.</p></div></Reveal>
+                                <Reveal delay={300}><div className="border-t border-black/10 pt-12"><h3 className="text-[11px] tracking-[0.3em] uppercase font-bold mb-8 text-[#A6957A]">02. Language</h3><p className="text-lg md:text-xl font-light leading-relaxed text-black/70">We are a women's clothing brand rooted in the belief that fashion is not a trend, it is a language. The way you dress is the way you choose to be seen, and every woman deserves to be seen exactly as she intends. Our collections span the breadth of a woman's life: the evenings that call for something extraordinary, the days that ask for ease, and the nights when confidence is the only accessory you need.</p></div></Reveal>
+                                <Reveal delay={400}><div className="border-t border-black/10 pt-12"><h3 className="text-[11px] tracking-[0.3em] uppercase font-bold mb-8 text-[#A6957A]">03. Craftsmanship</h3><p className="text-lg md:text-xl font-light leading-relaxed text-black/70">At the heart of Tiiha is craftsmanship. Each piece is thoughtfully designed, carefully sourced, and made to last beyond a season. We do not believe in fast fashion. We believe in the kind of clothing that becomes part of your story. This is what Tiiha stands for: confidence, intention, and timeless style worn by real women, living real lives.</p></div></Reveal>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        function InquiryPage() {
+            useEffect(() => window.scrollTo(0,0), []);
+            return (
+                <div className="pt-48 pb-60 px-8 md:px-16 max-w-[1800px] mx-auto bg-[#F0EBE1] text-[#0D0D0D]">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-32">
+                        <div className="flex flex-col justify-between"><div><RevealText><h1 className="font-serif text-5xl md:text-[6vw] tracking-tighter uppercase mb-12 leading-none">Contact Us</h1></RevealText><RevealText delay={200}><p className="text-lg font-light text-black/50 max-w-md leading-relaxed border-l-2 border-[#A6957A] pl-6">We'd love to hear from you, whether it's a random question, an order update, or simply a hello. The Tiiha team is here.</p></RevealText></div><div className="mt-32 space-y-20"><Reveal delay={400}><div><span className="text-[11px] tracking-[0.3em] uppercase font-bold text-[#A6957A] block mb-6">Email</span><a href="mailto:hello@tiiha.in" className="font-serif text-3xl md:text-4xl italic hover:text-[#A6957A] transition-colors duration-500 border-b border-black pb-2">hello@tiiha.in</a></div></Reveal><Reveal delay={500}><div><span className="text-[11px] tracking-[0.3em] uppercase font-bold text-[#A6957A] block mb-6">Phone</span><p className="font-serif text-3xl md:text-4xl italic">+91 92135 78396</p></div></Reveal></div></div>
+                        <div className="bg-[#0D0D0D] text-[#F0EBE1] p-12 md:p-20 lg:p-32 relative overflow-hidden shadow-2xl"><div className="absolute top-16 right-16 text-[10px] tracking-[0.4em] uppercase opacity-30 font-bold">Protocol 01</div><form className="mt-16 space-y-20" onSubmit={e => e.preventDefault()}><div className="relative"><input type="text" required id="name" className="w-full bg-transparent border-b border-white/20 py-6 text-2xl font-serif focus:outline-none focus:border-[#A6957A] peer placeholder-transparent transition-colors text-white" placeholder="Name" /><label htmlFor="name" className="absolute left-0 top-6 text-[11px] tracking-[0.3em] uppercase opacity-50 transition-all peer-focus:-top-6 peer-focus:text-[10px] peer-focus:text-[#A6957A] peer-valid:-top-6 peer-valid:text-[10px]">1. Identity / Name</label></div><div className="relative"><input type="email" required id="email" className="w-full bg-transparent border-b border-white/20 py-6 text-2xl font-serif focus:outline-none focus:border-[#A6957A] peer placeholder-transparent transition-colors text-white" placeholder="Email" /><label htmlFor="email" className="absolute left-0 top-6 text-[11px] tracking-[0.3em] uppercase opacity-50 transition-all peer-focus:-top-6 peer-focus:text-[10px] peer-focus:text-[#A6957A] peer-valid:-top-6 peer-valid:text-[10px]">2. Return Vector / Email</label></div><div className="relative"><textarea required id="message" rows="3" className="w-full bg-transparent border-b border-white/20 py-6 text-2xl font-serif focus:outline-none focus:border-[#A6957A] peer placeholder-transparent transition-colors resize-none text-white" placeholder="Message"></textarea><label htmlFor="message" className="absolute left-0 top-6 text-[11px] tracking-[0.3em] uppercase opacity-50 transition-all peer-focus:-top-6 peer-focus:text-[10px] peer-focus:text-[#A6957A] peer-valid:-top-6 peer-valid:text-[10px]">3. Subject Directive</label></div><button className="w-full py-8 bg-[#F0EBE1] text-[#0D0D0D] text-[11px] tracking-[0.4em] uppercase font-bold hover:bg-[#A6957A] transition-colors flex items-center justify-center gap-6 group">Transmit <ArrowRight className="w-5 h-5 group-hover:translate-x-3 transition-transform" /></button></form></div>
+                    </div>
+                </div>
+            );
+        }
+
+        const LEGAL_CONTENT = {
+            privacy: {
+                title: "Privacy Policy",
+                sections: [
+                    { title: "Effective Date: 15.05.2026", content: "<p>This policy explains how we collect, use, and protect your personal information when you visit our website or place an order with us.</p>" },
+                    { title: "1. Information We Collect", content: "<p>When you shop with us, we may collect the following:<br>– Name, email address, and phone number<br>– Shipping and billing address<br>– Other information relevant to customer surveys and/or offers</p>" },
+                    { title: "2. How We Use Your Information", content: "<p>– To process and fulfil your orders<br>– To communicate shipping updates and order confirmations<br>– To personalise your shopping experience<br>– To send you relevant offers, new arrivals, and brand updates (only if you've opted in)<br>– To improve our website and services</p>" },
+                    { title: "3. Sharing Your Information", content: "<p>We do not sell or rent your personal data to third parties. We may share your data with trusted service providers such as payment gateways and courier partners solely to fulfil your orders. All partners are bound by confidentiality.</p>" },
+                    { title: "4. Cookies", content: "<p>Our website uses cookies to improve your browsing experience. You may disable cookies through your browser settings, though some features of the site may be affected.</p>" },
+                    { title: "5. Your Rights", content: "<p>You have the right to access, correct, or delete your personal data at any time. To make a request, please contact us at info@tiiha.in.</p>" },
+                    { title: "6. Changes to This Policy", content: "<p>We may update this policy periodically. Any changes will be posted on this page with a revised date. Continued use of the site after changes constitutes acceptance of the updated policy.</p>" },
+                    { title: "8. Contact Us", content: "<p>For privacy-related queries, write to us at info@tiiha.in or reach out to +91 92135 78396</p>" }
+                ]
+            },
+            terms: {
+                title: "Terms & Conditions",
+                sections: [
+                    { title: "Effective Date: 15.05.2026", content: "<p>By accessing or purchasing from the Tiiha website, you agree to the following terms. Please read them carefully.</p>" },
+                    { title: "1. General", content: "<p>These Terms & Conditions govern your use of the Tiiha website and all purchases made through it. Tiiha reserves the right to update these terms at any time. Continued use of the website constitutes agreement to the current terms.</p>" },
+                    { title: "2. Product Information", content: "<p>We make every effort to display our products accurately, including colours and dimensions. Slight variations may occur due to screen settings or the handcrafted nature of certain pieces. These do not constitute defects.</p>" },
+                    { title: "3. Pricing", content: "<p>All prices are listed in Indian Rupees (INR) and are inclusive of applicable taxes unless stated otherwise. Tiiha reserves the right to change prices without prior notice. Orders placed before a price change will be honoured at the original price.</p>" },
+                    { title: "4. Orders & Payments", content: "<p>An order is confirmed only upon successful payment. We accept UPI, credit/debit cards, net banking, and other available payment methods. Tiiha is not responsible for payment failures caused by your bank or payment provider.</p>" },
+                    { title: "5. Shipping", content: "<p>We ship across India. Delivery timelines are estimates and may vary due to location, courier availability, or unforeseen circumstances. Please refer to our Shipping & Delivery Information page for details.</p>" },
+                    { title: "6. Returns & Refunds", content: "<p>Please refer to our Return & Refund Policy for detailed information on eligibility, timelines, and process.</p>" },
+                    { title: "7. Intellectual Property", content: "<p>All content on the Tiiha website, including text, images, logos, and designs, is the property of Tiiha and protected by applicable intellectual property laws. No content may be reproduced or used without prior written permission.</p>" },
+                    { title: "8. Limitation of Liability", content: "<p>Tiiha shall not be held liable for any indirect, incidental, or consequential damages arising from the use of our products or website. Our liability is limited to the value of the product purchased.</p>" },
+                    { title: "9. Governing Law", content: "<p>These terms shall be governed by and construed in accordance with the laws of India. Any disputes shall be subject to the jurisdiction of the courts in Vadodara, India.</p>" },
+                    { title: "10. Contact", content: "<p>For any queries regarding these terms, please contact us at info@tiiha.in.</p>" }
+                ]
+            },
+            faqs: {
+                title: "FAQs",
+                sections: [
+                    { title: "Orders & Shopping", content: "<p><strong>How do I place an order?</strong><br>Browse our collections, select your size and preferred colour, and click 'Add to Cart'. Once you're ready, proceed to checkout, fill in your delivery details, and complete payment. You'll receive a confirmation email shortly after.</p><br><p><strong>Can I modify or cancel my order after placing it?</strong><br>We process orders quickly, so please reach out to us within 12 hours of placing your order if you need to make changes. After dispatch, modifications are not possible. Refer to our Return & Refund Policy for post-delivery options.</p><br><p><strong>Do I need an account to shop?</strong><br>No, you can check out as a guest. However, creating an account lets you track orders, view your purchase history, and enjoy a faster checkout experience.</p>" },
+                    { title: "Sizing & Fit", content: "<p><strong>How do I find the right size?</strong><br>Each product page includes a size guide with detailed measurements. If you're between sizes, we generally recommend sizing up. You're also welcome to contact us on WhatsApp or email before ordering. We're happy to help.</p><br><p><strong>Do your sizes run true to size?</strong><br>Yes, Tiiha sizes are true to standard Indian sizing. Please check the size chart on the product page as fits can vary slightly between styles.</p>" },
+                    { title: "Shipping & Delivery", content: "<p><strong>Where do you ship?</strong><br>We currently ship across India. International shipping is not available at this time.</p><br><p><strong>How long does delivery take?</strong><br>Standard delivery takes 5–7 business days. Express delivery (where available) takes 2–3 business days. Please refer to our Shipping & Delivery page for full details.</p><br><p><strong>How do I track my order?</strong><br>Once your order is dispatched, you will receive an email with your tracking number and a link to track your shipment in real time.</p>" },
+                    { title: "Returns & Refunds", content: "<p><strong>What is your return policy?</strong><br>We accept returns within 7 days of delivery, provided the item is unused, unwashed, and in its original packaging with tags intact. Please refer to our Return & Refund Policy for the full process.</p><br><p><strong>Can I exchange a product?</strong><br>Yes, exchanges are available for size or colour, subject to availability. Please initiate your exchange within 7 days of receiving your order.</p>" },
+                    { title: "Products & Care", content: "<p><strong>Are your products handcrafted?</strong><br>Several of our pieces feature hand-embroidery or artisanal details. This is mentioned on individual product pages. Minor variations in such pieces are a natural quality of handmade work.</p><br><p><strong>How should I care for my Tiiha garments?</strong><br>Care instructions are printed on the garment label and listed on each product page. Most pieces are suitable for gentle machine wash; delicate fabrics may require dry cleaning.</p>" }
+                ]
+            },
+            shipping: {
+                title: "Shipping & Delivery Information",
+                sections: [
+                    { title: "Where We Ship", content: "<p>Tiiha currently ships to all pin codes across India. We do not offer international shipping at this time.</p>" },
+                    { title: "Delivery Timelines", content: "<p>– Standard Delivery: 5–7 business days from dispatch<br>– Express Delivery: 2–3 business days (available at select pin codes)<br>– Remote or difficult-to-access areas may take up to 10-14 business days<br>Business days exclude Sundays and public holidays. Timelines are estimates and may occasionally vary due to courier delays, weather conditions, or peak sale periods.</p>" },
+                    { title: "Order Processing", content: "<p>Orders are processed within 1–2 business days of payment confirmation. You will receive a dispatch notification with your tracking details via email and/or SMS once your order is on its way.</p>" },
+                    { title: "Shipping Charges", content: "<p>We offer free standard shipping on all orders. Express delivery charges are displayed at checkout.</p>" },
+                    { title: "Tracking Your Order", content: "<p>Once dispatched, you will receive a tracking number and a direct link to monitor your shipment. You can also track your order under the 'Order Tracking' section of this website.</p>" },
+                    { title: "Delivery Attempts", content: "<p>Our courier partners will attempt delivery up to two times. If delivery is unsuccessful, the package will be returned to us. Please ensure your address and contact details are accurate when placing your order.</p>" },
+                    { title: "Damaged or Missing Orders", content: "<p>If your order arrives damaged or if any item is missing, please contact us within 24 hours of delivery with photographs of the package and product. We will resolve the matter promptly.</p>" }
+                ]
+            },
+            returns: {
+                title: "Return & Refund Policy",
+                sections: [
+                    { title: "", content: "<p>We want you to love every Tiiha piece. If something isn't right, we're here to make it right.</p>" },
+                    { title: "Return Eligibility", content: "<p>Returns are accepted within 7 days of the delivery date, provided the following conditions are met:<br>– The item is unused, unworn, and unwashed<br>– Original tags are intact and attached<br>– The item is in its original packaging<br>– A valid proof of purchase (order confirmation or invoice) is provided<br>The following items are not eligible for return: innerwear, accessories, items marked as 'Final Sale', and products that have been altered or damaged post-delivery.</p>" },
+                    { title: "How to Initiate a Return", content: "<p>– Email us at info@tiiha.in or reach us via the Contact Us page within 7 days of delivery<br>– Mention your order number and reason for return<br>– Our team will review your request and respond within 2 business days<br>– Once approved, you'll receive instructions for the return pickup or drop-off</p>" },
+                    { title: "Exchanges", content: "<p>We offer exchanges for a different size or colour, subject to availability. Exchanges follow the same eligibility criteria as returns and must be initiated within 7 days of delivery.</p>" },
+                    { title: "Refunds", content: "<p>Approved refunds will be processed within 7–10 business days after we receive and inspect the returned item. Refunds are issued to the original payment method. Shipping fees are non-refundable unless the return is due to a defective or incorrect item.</p>" },
+                    { title: "Defective or Wrong Items", content: "<p>If you receive a defective or incorrect item, please contact us within 24 hours of delivery with clear photographs. We will arrange a replacement or full refund at no additional cost to you.</p>" }
+                ]
+            }
+        };
+
+        function LegalPage({ contentKey }) {
+            const data = LEGAL_CONTENT[contentKey];
+            useEffect(() => window.scrollTo(0,0), [contentKey]);
+            if (!data) return null;
+            return (
+                <div className="pt-48 pb-60 px-8 md:px-16 max-w-4xl mx-auto bg-[#F0EBE1] text-[#0D0D0D]">
+                    <RevealText><h1 className="font-serif text-4xl md:text-5xl tracking-[-0.03em] uppercase mb-16">{data.title}</h1></RevealText>
+                    <Reveal delay={200}>
+                        <div className="space-y-12 text-black/70 font-light leading-relaxed">
+                            {data.sections.map((sec, i) => (
+                                <div key={i}>
+                                    {sec.title && <h2 className="font-serif text-3xl mb-4 text-[#0D0D0D]">{sec.title}</h2>}
+                                    <div dangerouslySetInnerHTML={{ __html: sec.content }} />
+                                </div>
+                            ))}
+                        </div>
+                    </Reveal>
+                </div>
+            );
+        }
+
+        function App() {
+            const [loading, setLoading] = useState(true);
+            const [progress, setProgress] = useState(0);
+            const [currentPage, setCurrentPage] = useState('home');
+            const [cartOpen, setCartOpen] = useState(false);
+            const [selectedProduct, setSelectedProduct] = useState(null);
+            const [activeCollection, setActiveCollection] = useState(null);
+            const [cart, setCart] = useState([]);
+            const [isScrolled, setIsScrolled] = useState(false);
+            const [isCurtainActive, setIsCurtainActive] = useState(false);
+            const [pendingPage, setPendingPage] = useState(null);
+            const [mobileNavOpen, setMobileNavOpen] = useState(false);
+            const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
+            const [bannerShown, setBannerShown] = useState(true);
+            const { setCursor } = useStore();
+
+            useEffect(() => {
+                console.log("TIIHA Application Initialized");
+                
+                // Initialize Lenis Smooth Scroll
+                const lenis = new window.Lenis({
+                    duration: 1.2,
+                    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
+                    direction: 'vertical',
+                    gestureDirection: 'vertical',
+                    smooth: true,
+                    mouseMultiplier: 1,
+                    smoothTouch: false,
+                    touchMultiplier: 2,
+                    infinite: false,
+                });
+
+                function raf(time) {
+                    lenis.raf(time);
+                    requestAnimationFrame(raf);
+                }
+                requestAnimationFrame(raf);
+
+                const handleScroll = () => { setIsScrolled(window.scrollY > 50); };
+                window.addEventListener('scroll', handleScroll, { passive: true });
+                const int = setInterval(() => {
+                    setProgress(p => {
+                        if (p >= 100) { 
+                            clearInterval(int); 
+                            setTimeout(() => setLoading(false), 800); 
+                            return 100; 
+                        }
+                        return p + Math.floor(Math.random() * 15) + 5;
+                    });
+                }, 100);
+                return () => { 
+                    window.removeEventListener('scroll', handleScroll); 
+                    clearInterval(int); 
+                    lenis.destroy();
+                };
+            }, []);
+
+            const handlePageChange = (page) => {
+                if (page === currentPage) return;
+                setPendingPage(page);
+                setIsCurtainActive(true);
+                setTimeout(() => {
+                    setCurrentPage(page);
+                    window.scrollTo(0,0);
+                    setTimeout(() => {
+                        setIsCurtainActive(false);
+                    }, 800);
+                }, 1000);
+            };
+
+            const goToCollection = (col) => { 
+                setActiveCollection(col); 
+                handlePageChange('shop');
+            };
+
+            const addToCart = (product, size) => { 
+                setCart([...cart, { ...product, size }]); 
+                setCartOpen(true); 
+                setSelectedProduct(null); 
+            };
+            const removeFromCart = (index) => { 
+                const newCart = [...cart]; 
+                newCart.splice(index, 1); 
+                setCart(newCart); 
+            };
+
+            if (loading) return (
+                <div className="fixed inset-0 bg-[#0D0D0D] flex flex-col items-center justify-center z-[1000] text-[#F0EBE1]">
+                    <div className="overflow-hidden relative mb-16">
+                        <h1 className="font-serif text-5xl md:text-6xl tracking-[0.2em] uppercase">TIIHA</h1>
+                        <div className={`absolute top-0 left-0 w-full h-full bg-[#0D0D0D] transition-transform duration-[2s] ease-[cubic-bezier(0.19,1,0.22,1)] ${progress === 100 ? 'translate-x-full' : 'translate-x-0'}`} />
+                    </div>
+                    <div className="w-64 h-[1px] bg-white/10 relative overflow-hidden">
+                        <div className="absolute top-0 left-0 h-full bg-[#A6957A] transition-all duration-300 ease-out" style={{ width: `${progress}%` }} />
+                    </div>
+                    <div className="mt-8 text-[9px] tracking-[0.5em] uppercase font-bold opacity-40">{progress}%</div>
+                </div>
+            );
+
+            const navTop = bannerShown ? 'mt-10' : '';
+            const isDarkHero = currentPage === 'home' && !isScrolled;
+            const navTextColor = isDarkHero ? 'text-[#F0EBE1]' : 'text-[#0D0D0D]';
+            const navBgColor = isScrolled ? 'py-6 bg-[#F0EBE1]/95 backdrop-blur-md border-b border-black/5' : 'py-12 bg-transparent border-b border-transparent';
+
+            return (
+                <div className={`relative min-h-screen transition-colors duration-1000 ease-in-out ${currentPage === 'home' ? 'bg-[#0D0D0D]' : 'bg-[#F0EBE1] text-[#0D0D0D]'}`}>
+                    <CustomCursor />
+                    <AnnouncementBanner onDismiss={() => setBannerShown(false)} />
+                    <PageCurtain isActive={isCurtainActive} nextTitle={pendingPage === 'shop' ? 'Collections' : pendingPage === 'about' ? 'About Us' : pendingPage === 'contact' ? 'Contact Us' : 'Home'} />
+                    <MobileNav currentPage={currentPage} handlePageChange={handlePageChange} cartLength={cart.length} isOpen={mobileNavOpen} onClose={() => setMobileNavOpen(false)} onCartOpen={() => setCartOpen(true)} />
+                    <SizeGuideModal isOpen={sizeGuideOpen} onClose={() => setSizeGuideOpen(false)} />
+                    <nav className={`fixed ${bannerShown ? 'top-10' : 'top-0'} w-full z-50 px-6 md:px-16 transition-all duration-1000 flex justify-between items-center ${navBgColor} ${navTextColor}`}>
+                        <div className="flex gap-16 items-center text-[10px] tracking-[0.4em] uppercase font-bold w-1/3">
+                            <button onClick={() => setMobileNavOpen(true)} className="md:hidden p-2 -ml-2"><Menu className="w-5 h-5" /></button>
+                            <div className="hidden md:flex gap-16 items-center">{['shop', 'about'].map(page => (<MagneticButton key={page}><button onClick={() => handlePageChange(page)} className={`relative pb-1 hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:bg-current after:transition-all after:duration-500 ${currentPage === page ? 'after:w-full' : 'after:w-0'}`}>{page === 'shop' ? 'Collections' : 'About Us'}</button></MagneticButton>))}</div>
+                        </div>
+                        <div className="w-1/3 flex justify-center"><MagneticButton><button onClick={() => handlePageChange('home')} className="font-serif text-2xl md:text-3xl tracking-[0.3em] uppercase">TIIHA</button></MagneticButton></div>
+                        <div className="flex gap-6 md:gap-16 items-center justify-end text-[10px] tracking-[0.4em] uppercase font-bold w-1/3"><MagneticButton><button onClick={() => handlePageChange('contact')} className={`hidden md:block relative pb-1 hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:bg-current after:transition-all after:duration-500 ${currentPage === 'contact' ? 'after:w-full' : 'after:w-0'}`}>Contact Us</button></MagneticButton><MagneticButton><button onClick={() => setCartOpen(true)} className="flex items-center gap-3 group"><span>Bag</span><span className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold transition-colors duration-700 ${isDarkHero ? 'bg-[#A6957A] text-[#0D0D0D]' : 'bg-[#0D0D0D] text-[#F0EBE1]'}`}>{cart.length}</span></button></MagneticButton></div>
+                    </nav>
+                    <main key={currentPage} className="animate-[pageFadeIn_1.5s_cubic-bezier(0.19,1,0.22,1)_forwards]">
+                        {currentPage === 'home' && <HomePage setPage={handlePageChange} onSelect={setSelectedProduct} goToCollection={goToCollection} />}
+                        {currentPage === 'shop' && <InteractiveArchive setProduct={setSelectedProduct} activeCollection={activeCollection} clearCollection={() => setActiveCollection(null)} />}
+                        {currentPage === 'about' && <ManifestoPage />}
+                        {currentPage === 'contact' && <InquiryPage />}
+                        {currentPage === 'track' && <OrderTrackingPage setPage={handlePageChange} />}
+                        {['privacy', 'terms', 'faqs', 'shipping', 'returns'].includes(currentPage) && <LegalPage contentKey={currentPage} />}
+                    </main>
+                    {selectedProduct && <ProductTakeover product={selectedProduct} onClose={() => setSelectedProduct(null)} onAdd={addToCart} onSelectRelated={setSelectedProduct} onSizeGuide={() => setSizeGuideOpen(true)} />}
+                    <CartDrawer cart={cart} isOpen={cartOpen} onClose={() => setCartOpen(false)} onRemove={removeFromCart} />
+                    <BackToTop />
+                    <WhatsAppButton />
+                    <footer className="bg-[#0D0D0D] text-[#F0EBE1] pt-40 pb-16 px-8 md:px-16 border-t border-white/5 relative z-10">
+                        <div className="max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-24">
+                            <div className="md:col-span-5"><h1 className="font-serif text-4xl tracking-[0.1em] mb-12 uppercase">TIIHA</h1><p className="text-[11px] tracking-[0.1em] text-white/50 leading-loose max-w-md font-light uppercase">Made with intent, for the woman who wears her confidence as naturally as she wears her clothes.</p></div>
+                            <div className="md:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-16 text-[9px] tracking-[0.3em] uppercase font-bold">
+                                <div className="space-y-10"><span className="text-[#A6957A] mb-8 block font-serif text-lg normal-case tracking-normal italic">Maison</span><ul className="space-y-6 opacity-40 font-light"><li><button onClick={() => handlePageChange('about')}>About Us</button></li><li><button onClick={() => handlePageChange('contact')}>Contact Us</button></li></ul></div>
+                                <div className="space-y-10"><span className="text-[#A6957A] mb-8 block font-serif text-lg normal-case tracking-normal italic">Client Services</span><ul className="space-y-6 opacity-40 font-light"><li><button onClick={() => handlePageChange('shipping')}>Shipping</button></li><li><button onClick={() => handlePageChange('returns')}>Returns</button></li><li><button onClick={() => handlePageChange('faqs')}>FAQs</button></li><li><button onClick={() => handlePageChange('track')}>Track Order</button></li></ul></div>
+                                <div className="space-y-10 col-span-2 md:col-span-1"><span className="text-[#A6957A] mb-8 block font-serif text-lg normal-case tracking-normal italic">Network</span><ul className="space-y-6 opacity-40 font-light"><li><button>Instagram</button></li><li><button>Newsletter</button></li></ul></div>
+                            </div>
+                        </div>
+                        <div className="max-w-[1800px] mx-auto mt-40 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[9px] tracking-[0.3em] opacity-30 uppercase font-light gap-6"><span>© 2026 TIIHA. All Rights Reserved.</span><span className="flex gap-4"><button onClick={() => handlePageChange('terms')}>Terms</button> / <button onClick={() => handlePageChange('privacy')}>Privacy</button></span></div>
+                    </footer>
+                    <style>{`@keyframes pageFadeIn { from { opacity: 0; filter: blur(10px); transform: translateY(20px); } to { opacity: 1; filter: blur(0px); transform: translateY(0); } }`}</style>
+                </div>
+            );
+        }
+
+        // Wrap App render with CursorContext + WishlistContext providers
+        function AppWithContext() {
+            const [cursorVariant, setCursorVariantState] = useState('default');
+            const [cursorText, setCursorTextState] = useState('');
+            const setCursor = (variant, text = '') => { setCursorVariantState(variant); setCursorTextState(text); };
+
+            const [wishlist, setWishlist] = useState(() => {
+                try { return JSON.parse(localStorage.getItem('tiiha_wishlist') || '[]'); } catch { return []; }
+            });
+            const toggleWishlist = (productId) => {
+                setWishlist(prev => {
+                    const next = prev.includes(productId) ? prev.filter(id => id !== productId) : [...prev, productId];
+                    localStorage.setItem('tiiha_wishlist', JSON.stringify(next));
+                    return next;
+                });
+            };
+            const isWishlisted = (productId) => wishlist.includes(productId);
+
+            return (
+                <CursorContext.Provider value={{ cursorVariant, cursorText, setCursor }}>
+                    <WishlistContext.Provider value={{ wishlist, toggleWishlist, isWishlisted }}>
+                        <App />
+                    </WishlistContext.Provider>
+                </CursorContext.Provider>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<AppWithContext />);
+    </script>
+</body>
+</html>

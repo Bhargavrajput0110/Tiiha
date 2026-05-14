@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Seeding Database...</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body style="background: black; color: white; font-family: sans-serif; text-align: center; padding-top: 50px;">
+  <h1 id="status">Connecting to Supabase and seeding database...</h1>
+  <script>
+    const supabase = window.supabase.createClient('https://rswhedtgkfdbhsicllrj.supabase.co', 'sb_publishable_oPYNdCQ6g3PMEoGE6kGyHw_dVmKFoiF');
+
+    // ============================================
+    // PRODUCTS (Existing)
+    // ============================================
+    // ============================================
+    // THE 6 OFFICIAL TIIHA PRODUCTS (from client content brief)
+    // ============================================
+    const INITIAL_PRODUCTS = [
+      {
+        id: 'TII-01',
+        name: 'The Cloudnine Dress',
+        category: 'SUMMER EDIT',
+        price: 4890,
+        stock: 20,
+        sizes: 'S,M,L',
+        image: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=2883&auto=format&fit=crop',
+        hoverImage: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2820&auto=format&fit=crop',
+        desc: 'The Pinteresty dress of your dreams, this powder blue dress with a structured corset bodice that holds you exactly where it should, softening into a flared skirt that moves with unhurried grace.',
+        detail: 'Fabric: 100% Linen. Silhouette: Corset bodice, square neck, flared midi skirt. Sleeves: Sleeveless with structured shoulder straps. Colour: Powder Blue. Care: Gentle machine wash, cold water. Do not tumble dry. Iron on low heat. SIZE & FIT: The Cloudnine Dress is structured through the bodice and fits true to size. If you prefer a looser fit through the waist, size up.'
+      },
+      {
+        id: 'TII-02',
+        name: 'A Navy Affair',
+        category: 'SUMMER EDIT',
+        price: 5450,
+        stock: 15,
+        sizes: 'S,M,L',
+        image: 'https://images.unsplash.com/photo-1520975954732-57dd22299614?q=80&w=2787&auto=format&fit=crop',
+        hoverImage: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2788&auto=format&fit=crop',
+        desc: 'A one-shoulder dress in a deep navy, features a self-tie waist that cinches without constraining and a flared skirt that follows every step you take. The single puff sleeve is the only detail this dress needs, and it is exactly enough.',
+        detail: 'Fabric: Rayon. Silhouette: One-shoulder midi dress with self-tie waist. Sleeves: Single puff sleeve. Colour: Navy Blue. Care: Gentle machine wash, cold water. Do not wring. Iron on low heat. SIZE & FIT: A Navy Affair fits true to size with a relaxed drape through the skirt. For a more fitted look, size down.'
+      },
+      {
+        id: 'TII-03',
+        name: 'The Muted Sage Co-ord Set',
+        category: 'SUMMER EDIT',
+        price: 6620,
+        stock: 12,
+        sizes: 'S,M,L',
+        image: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2788&auto=format&fit=crop',
+        hoverImage: 'https://images.unsplash.com/photo-1584273143981-41c073dfe8f8?q=80&w=2787&auto=format&fit=crop',
+        desc: 'A collared shirt and straight-leg trousers in satin silk, in a colour that sits somewhere between calm and confident. The placket and cuffs are finished with delicate champagne-toned embroidery detail that earns its place without asking for attention. Wear them together for a complete look.',
+        detail: 'Fabric: Satin Silk. Includes: Collared shirt + Straight-leg trousers (sold as a set). Embroidery: Delicate silver embroidery on placket and cuffs. Colour: Muted Sage Green. Care: Dry clean recommended. If hand washing, use cold water and mild detergent. SIZE & FIT: The Muted Sage Set is relaxed through the shirt and straight through the trousers. Fits true to size.'
+      },
+      {
+        id: 'TII-04',
+        name: 'Satin Cinema',
+        category: 'PARTY EDIT',
+        price: 7540,
+        stock: 10,
+        sizes: 'S,M,L',
+        image: 'https://images.unsplash.com/photo-1603005901058-02e1afc98528?q=80&w=2787&auto=format&fit=crop',
+        hoverImage: 'https://images.unsplash.com/photo-1551800410-f12d22b827e8?q=80&w=2800&auto=format&fit=crop',
+        desc: 'A floor-length modal silk slip dress in deep black, paired with a scarf dupatta that carries the drama of 90s cinema. The combination is minimal until the light finds it. Then it is everything. Wear it for the nights that deserve to be remembered.',
+        detail: 'Dress Fabric: Modal Silk. Silhouette: Floor-length slip dress. Colour: Deep Black. Inspiration: 90s Bollywood. Care: Dry clean recommended. SIZE & FIT: Satin Cinema is cut to drape close to the body. It fits true to size. For a more fluid, relaxed fit, size up.'
+      },
+      {
+        id: 'TII-05',
+        name: 'Noor Gharara Set',
+        category: 'FESTIVE EDIT',
+        price: 8100,
+        stock: 8,
+        sizes: 'S,M,L',
+        image: 'https://images.unsplash.com/photo-1550639524-a6f58345a278?q=80&w=2787&auto=format&fit=crop',
+        hoverImage: 'https://images.unsplash.com/photo-1534126416832-a88fdf2911c2?q=80&w=2960&auto=format&fit=crop',
+        desc: 'A deep violet bandhani peplum top paired with a matching flared gharara, finished with gold zari borders that catch the light at every turn. This is a two-piece set designed for the festive evenings that are worth dressing for.',
+        detail: 'Fabric: Modal silk. Craft: Original hand-tied bandhani. Includes: Peplum kurta + Flared gharara (2-piece set). Embellishment: Gold zari borders. Colour: Deep Violet. Care: Dry clean recommended to preserve the bandhani and zari work. SIZE & FIT: The kurta is fitted through the bodice and flares at the peplum. The gharara is relaxed and flared. Both pieces fit true to size.'
+      },
+      {
+        id: 'TII-06',
+        name: 'Chandni Suit Set',
+        category: 'FESTIVE EDIT',
+        price: 8780,
+        stock: 8,
+        sizes: 'S,M,L',
+        image: 'https://images.unsplash.com/photo-1485230405346-71acb9518d9c?q=80&w=2900&auto=format&fit=crop',
+        hoverImage: 'https://images.unsplash.com/photo-1566150905458-1bf1fc113f0d?q=80&w=2942&auto=format&fit=crop',
+        desc: 'Chandni is an ivory silk kurta set with woven gold detailing with a straight palazzo pant that carries the same quiet opulence. The rani pink bandhani dupatta adds the right amount of beauty to the set. Together, the contrast is exactly what it should be: the stillness of ivory meeting the celebration of rani pink, worn at once, worn with intention.',
+        detail: 'Kurta & Palazzo Pant Fabric: Ivory Silk with woven gold detailing. Dupatta Fabric: Rani Pink Bandhani. Includes: Kurta + Straight Palazzo Pant + Bandhani Dupatta (3-piece set). Colour: Ivory with Rani Pink. Care: Dry clean recommended to preserve the silk and bandhani dupatta. SIZE & FIT: Chandni fits true to size with a relaxed, straight silhouette. For a more oversized drape, size up.'
+      },
+    ];
+
+    const INITIAL_CATEGORIES = [
+      { name: 'SUMMER EDIT', slug: 'summer-edit' },
+      { name: 'PARTY EDIT', slug: 'party-edit' },
+      { name: 'FESTIVE EDIT', slug: 'festive-edit' },
+    ];
+
+    const INITIAL_COLLECTIONS = [
+      { name: 'The Festive Edit', slug: 'festive-edit', description: 'For the celebrations that deserve to be remembered. Rich fabrics, considered silhouettes, and a certain grace that stays with you.' },
+      { name: 'The Summer Edit', slug: 'summer-edit', description: 'Light as the season itself, breathable fabrics and effortless prints, made for sun-soaked days and every golden hour that follows.' },
+      { name: 'The Party Edit', slug: 'party-edit', description: 'The kind of dressed that needs no introduction. Bold, elegant, unapologetically you.' },
+    ];
+
+    // ============================================
+    // SITE SETTINGS
+    // ============================================
+    const INITIAL_SETTINGS = [
+      // Branding
+      { key: 'brand_name', value: 'TIIHA', value_type: 'string', group_name: 'branding', description: 'Site brand name' },
+      { key: 'brand_tagline', value: 'Architectural Fashion', value_type: 'string', group_name: 'branding', description: 'Brand tagline' },
+      { key: 'brand_logo_url', value: '', value_type: 'string', group_name: 'branding', description: 'URL to brand logo image' },
+      { key: 'brand_accent_color', value: '#A6957A', value_type: 'string', group_name: 'branding', description: 'Brand accent color (hex)' },
+      { key: 'brand_black_color', value: '#000000', value_type: 'string', group_name: 'branding', description: 'Brand primary black (hex)' },
+      { key: 'brand_cream_color', value: '#F5F1EA', value_type: 'string', group_name: 'branding', description: 'Brand cream background (hex)' },
+
+      // Contact
+      { key: 'contact_email', value: 'hello@tiiha.in', value_type: 'string', group_name: 'contact', description: 'Customer service email' },
+      { key: 'contact_phone', value: '+91 92135 78396', value_type: 'string', group_name: 'contact', description: 'Customer phone number' },
+      { key: 'contact_whatsapp', value: '+91 92135 78396', value_type: 'string', group_name: 'contact', description: 'WhatsApp business number' },
+
+      // Social Media
+      { key: 'social_instagram', value: 'https://instagram.com/tiiha', value_type: 'string', group_name: 'social', description: 'Instagram profile URL' },
+      { key: 'social_facebook', value: '', value_type: 'string', group_name: 'social', description: 'Facebook page URL' },
+      { key: 'social_pinterest', value: '', value_type: 'string', group_name: 'social', description: 'Pinterest profile URL' },
+
+      // Shipping & Returns
+      { key: 'shipping_free_threshold', value: '2000', value_type: 'number', group_name: 'shipping', description: 'Minimum order amount for free shipping (INR)' },
+      { key: 'shipping_standard_fee', value: '150', value_type: 'number', group_name: 'shipping', description: 'Standard shipping fee (INR)' },
+      { key: 'shipping_express_fee', value: '300', value_type: 'number', group_name: 'shipping', description: 'Express shipping fee (INR)' },
+      { key: 'shipping_days_standard', value: '5-7', value_type: 'string', group_name: 'shipping', description: 'Standard delivery timeline' },
+      { key: 'shipping_days_express', value: '2-3', value_type: 'string', group_name: 'shipping', description: 'Express delivery timeline' },
+      { key: 'return_policy_days', value: '7', value_type: 'number', group_name: 'shipping', description: 'Number of days for returns' },
+
+      // Homepage Sections (boolean toggles)
+      { key: 'home_show_hero', value: 'true', value_type: 'boolean', group_name: 'homepage', description: 'Show hero section' },
+      { key: 'home_show_marquee', value: 'true', value_type: 'boolean', group_name: 'homepage', description: 'Show announcement marquee' },
+      { key: 'home_show_brand_promise', value: 'true', value_type: 'boolean', group_name: 'homepage', description: 'Show brand promise icons' },
+      { key: 'home_show_new_arrivals', value: 'true', value_type: 'boolean', group_name: 'homepage', description: 'Show new arrivals section' },
+      { key: 'home_show_curated', value: 'true', value_type: 'boolean', group_name: 'homepage', description: 'Show curated picks' },
+      { key: 'home_show_categories', value: 'true', value_type: 'boolean', group_name: 'homepage', description: 'Show category grids' },
+      { key: 'home_show_testimonials', value: 'true', value_type: 'boolean', group_name: 'homepage', description: 'Show customer testimonials' },
+      { key: 'home_show_newsletter', value: 'true', value_type: 'boolean', group_name: 'homepage', description: 'Show newsletter signup' },
+
+      // SEO & Analytics
+      { key: 'seo_meta_title', value: 'Tiiha | Architectural Fashion', value_type: 'string', group_name: 'seo', description: 'Default page title' },
+      { key: 'seo_meta_description', value: 'Luxury womenswear brand focused on architectural silhouettes and intentional craft.', value_type: 'string', group_name: 'seo', description: 'Default meta description' },
+      { key: 'seo_meta_keywords', value: 'architectural fashion, luxury clothing, womenswear, designer, sustainable', value_type: 'string', group_name: 'seo', description: 'Meta keywords' },
+      { key: 'analytics_ga_id', value: '', value_type: 'string', group_name: 'seo', description: 'Google Analytics GA_ID' },
+      { key: 'analytics_google_tag', value: '', value_type: 'string', group_name: 'seo', description: 'Google Tag Manager ID' },
+
+      // Payment
+      { key: 'payment_razorpay_key', value: 'rzp_live_YOUR_KEY_HERE', value_type: 'string', group_name: 'payment', description: 'Razorpay Key ID (live)' },
+      { key: 'payment_razorpay_secret', value: '', value_type: 'string', group_name: 'payment', description: 'Razorpay Key Secret (server only)' },
+      { key: 'payment_currency', value: 'INR', value_type: 'string', group_name: 'payment', description: 'Default currency' },
+
+      // Misc
+      { key: 'site_currency_symbol', value: '₹', value_type: 'string', group_name: 'misc', description: 'Currency symbol for display' },
+      { key: 'site_timezone', value: 'Asia/Kolkata', value_type: 'string', group_name: 'misc', description: 'Site timezone' },
+      { key: 'maintenance_mode', value: 'false', value_type: 'boolean', group_name: 'misc', description: 'Enable maintenance mode' },
+      { key: 'maintenance_message', value: 'We\'ll be back soon.', value_type: 'string', group_name: 'misc', description: 'Maintenance mode message' },
+    ];
+
+    // ============================================
+    // CONTENT BLOCKS (Homepage editable sections)
+    // ============================================
+    const INITIAL_CONTENT_BLOCKS = [
+      {
+        type: 'hero',
+        title: 'The Festive Edit',
+        subtitle: 'For the celebrations that deserve to be remembered.',
+        content: {
+          image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2820&auto=format&fit=crop',
+          cta_text: 'Explore the Festive Edit',
+          cta_link: '/collection/festive-edit'
+        },
+        placement: 'homepage',
+        status: 'active',
+        sort_order: 1
+      },
+      {
+        type: 'hero',
+        title: 'The Summer Edit',
+        subtitle: 'Light as the season itself, designed for the lingering warmth.',
+        content: {
+          image: 'https://images.unsplash.com/photo-1509631179647-0c500ba14115?q=80&w=1974&auto=format&fit=crop',
+          cta_text: 'Explore the Summer Edit',
+          cta_link: '/collection/summer-edit'
+        },
+        placement: 'homepage',
+        status: 'draft',
+        sort_order: 2
+      },
+      {
+        type: 'featured_products',
+        title: 'New Arrivals',
+        subtitle: 'Freshly arrived pieces you\'ll want to wear now.',
+        content: {
+          product_ids: ['TII-01', 'TII-02', 'TII-05', 'TII-17'],
+          layout: 'grid-4'
+        },
+        placement: 'homepage',
+        status: 'active',
+        sort_order: 3
+      },
+      {
+        type: 'editorial',
+        title: 'The Art of Slow Fashion',
+        subtitle: 'Why intention matters in every stitch',
+        content: {
+          body: 'At Tiiha, we believe in the kind of clothing that becomes part of your story. Each piece is thoughtfully designed, carefully sourced, and made to last beyond a season.',
+          image: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2940&auto=format&fit=crop'
+        },
+        placement: 'homepage',
+        status: 'active',
+        sort_order: 4
+      },
+      {
+        type: 'newsletter',
+        title: 'Join the Inner Circle',
+        subtitle: 'Be the first to know about new arrivals, exclusive offers, and behind-the-scenes stories from the atelier.',
+        content: {
+          placeholder: 'Enter your email',
+          button_text: 'Subscribe',
+          background_image: 'https://images.unsplash.com/photo-1509631179647-0c500ba14115?q=80&w=1974&auto=format&fit=crop'
+        },
+        placement: 'homepage',
+        status: 'active',
+        sort_order: 5
+      },
+    ];
+
+    // ============================================
+    // NAVIGATION ITEMS
+    // ============================================
+    const INITIAL_NAVIGATION = [
+      { label: 'Shop', link: '/shop', sort_order: 1, is_external: false, is_active: true },
+      { label: 'Collections', link: '/collections', sort_order: 2, is_external: false, is_active: true },
+      { label: 'New Arrivals', link: '/?filter=new', sort_order: 3, is_external: false, is_active: true },
+      { label: 'About', link: '/manifesto', sort_order: 4, is_external: false, is_active: true },
+      { label: 'Contact', link: '/inquiry', sort_order: 5, is_external: false, is_active: true },
+      { label: 'Shipping', link: '/shipping', sort_order: 6, is_external: false, is_active: true },
+    ];
+
+    // ============================================
+    // MEDIA FILES (Seed with some sample images)
+    // ============================================
+    const INITIAL_MEDIA = [
+      {
+        name: 'hero-festive',
+        url: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2820&auto=format&fit=crop',
+        mime_type: 'image/jpeg',
+        size_bytes: 250000,
+        width: 2820,
+        height: 1880,
+        alt_text: 'Festive collection hero image',
+        caption: 'Woman in elegant dress',
+        tags: ['hero', 'festive', 'collection']
+      },
+      {
+        name: 'hero-summer',
+        url: 'https://images.unsplash.com/photo-1509631179647-0c500ba14115?q=80&w=1974&auto=format&fit=crop',
+        mime_type: 'image/jpeg',
+        size_bytes: 200000,
+        width: 1974,
+        height: 1974,
+        alt_text: 'Summer collection hero',
+        caption: 'Light summer silhouettes',
+        tags: ['hero', 'summer', 'collection']
+      },
+      {
+        name: 'product-silk-slip',
+        url: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=2883&auto=format&fit=crop',
+        mime_type: 'image/jpeg',
+        size_bytes: 300000,
+        width: 2883,
+        height: 4301,
+        alt_text: 'The Silk Slip dress product image',
+        caption: 'Fluid silk charmeuse',
+        tags: ['product', 'dress', 'silk']
+      },
+      {
+        name: 'editorial-runway',
+        url: 'https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2940&auto=format&fit=crop',
+        mime_type: 'image/jpeg',
+        size_bytes: 350000,
+        width: 2940,
+        height: 3939,
+        alt_text: 'Runway editorial',
+        caption: 'Architectural silhouettes on runway',
+        tags: ['editorial', 'runway', 'fashion']
+      },
+    ];
+
+    // ============================================
+    // PRODUCT GALLERIES (Sample galleries)
+    // ============================================
+    const INITIAL_GALLERIES = {
+      'TII-01': [
+        { image_url: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=2883&auto=format&fit=crop', alt_text: 'The Silk Slip - front view', sort_order: 0 },
+        { image_url: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=2883&auto=format&fit=crop&sat=-100', alt_text: 'The Silk Slip - alternative angle', sort_order: 1 },
+        { image_url: 'https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=2883&auto=format&fit=crop&grayscale', alt_text: 'The Silk Slip - detail view', sort_order: 2 },
+      ],
+      'TII-02': [
+        { image_url: 'https://images.unsplash.com/photo-1520975954732-57dd22299614?q=80&w=2787&auto=format&fit=crop', alt_text: 'Cashmere Trench - front', sort_order: 0 },
+        { image_url: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=2820&auto=format&fit=crop', alt_text: 'Cashmere Trench - back', sort_order: 1 },
+      ],
+    };
+
+    (async () => {
+      const startTime = Date.now();
+      let count = {
+        products: 0, categories: 0, collections: 0,
+        settings: 0, contentBlocks: 0, navigation: 0,
+        media: 0, galleries: 0
+      };
+
+      // Function to update status
+      const updateStatus = (msg) => {
+        document.getElementById('status').innerText = msg;
+      };
+
+      // ============================================
+      // 1. SEED CATEGORIES
+      // ============================================
+      for (const c of INITIAL_CATEGORIES) {
+        const { error } = await supabase.from('categories').insert([{
+          name: c.name,
+          slug: c.slug,
+          is_active: true
+        }]).single();
+        if (!error) count.categories++;
+      }
+      updateStatus(`Seeding... Categories: ${count.categories}/${INITIAL_CATEGORIES.length}`);
+
+      // ============================================
+      // 2. SEED COLLECTIONS
+      // ============================================
+      for (const c of INITIAL_COLLECTIONS) {
+        const { error } = await supabase.from('collections').insert([{
+          name: c.name,
+          slug: c.slug,
+          description: c.description || '',
+          is_active: true
+        }]).single();
+        if (!error) count.collections++;
+      }
+      updateStatus(`Seeding... Collections: ${count.collections}/${INITIAL_COLLECTIONS.length} | Categories: ${count.categories}`);
+
+      // ============================================
+      // 3. SEED PRODUCTS
+      // ============================================
+      for (const p of INITIAL_PRODUCTS) {
+        const newProduct = {
+          id: p.id,
+          name: p.name,
+          category: p.category,
+          price: p.price,
+          stock: p.stock || 10,
+          sizes: p.sizes || 'S,M,L',
+          image: p.image,
+          hoverImage: p.hoverImage,
+          desc: p.desc,
+          detail: p.detail,
+          is_active: true
+        };
+        const { error } = await supabase.from('products').insert([newProduct]);
+        if (!error) count.products++;
+      }
+      updateStatus(`Seeding... Products: ${count.products}/${INITIAL_PRODUCTS.length} | Collections: ${count.collections} | Categories: ${count.categories}`);
+
+      // ============================================
+      // 4. SEED SITE SETTINGS
+      // ============================================
+      for (const s of INITIAL_SETTINGS) {
+        const { error } = await supabase.from('site_settings').insert([s]);
+        if (!error) count.settings++;
+      }
+      updateStatus(`Seeding... Settings: ${count.settings}/${INITIAL_SETTINGS.length} | Products: ${count.products}`);
+
+      // ============================================
+      // 5. SEED CONTENT BLOCKS
+      // ============================================
+      for (const block of INITIAL_CONTENT_BLOCKS) {
+        const { error } = await supabase.from('content_blocks').insert([block]);
+        if (!error) count.contentBlocks++;
+      }
+      updateStatus(`Seeding... Content Blocks: ${count.contentBlocks}/${INITIAL_CONTENT_BLOCKS.length} | Settings: ${count.settings}`);
+
+      // ============================================
+      // 6. SEED NAVIGATION ITEMS
+      // ============================================
+      for (const nav of INITIAL_NAVIGATION) {
+        const { error } = await supabase.from('navigation_items').insert([nav]);
+        if (!error) count.navigation++;
+      }
+      updateStatus(`Seeding... Navigation: ${count.navigation}/${INITIAL_NAVIGATION.length} | Content: ${count.contentBlocks}`);
+
+      // ============================================
+      // 7. SEED MEDIA FILES
+      // ============================================
+      for (const media of INITIAL_MEDIA) {
+        const { error } = await supabase.from('media_files').insert([media]);
+        if (!error) count.media++;
+      }
+      updateStatus(`Seeding... Media: ${count.media}/${INITIAL_MEDIA.length} | Navigation: ${count.navigation}`);
+
+      // ============================================
+      // 8. SEED PRODUCT GALLERIES
+      // ============================================
+      for (const [productId, images] of Object.entries(INITIAL_GALLERIES)) {
+        for (const img of images) {
+          const { error } = await supabase.from('product_galleries').insert([{
+            product_id: productId,
+            image_url: img.image_url,
+            alt_text: img.alt_text,
+            sort_order: img.sort_order
+          }]);
+          if (!error) count.galleries++;
+        }
+      }
+      updateStatus(`Seeding... Galleries: ${count.galleries} images | Media: ${count.media}`);
+
+      // ============================================
+      // DONE
+      // ============================================
+      const totalTime = ((Date.now() - startTime) / 1000).toFixed(1);
+      updateStatus(`✅ SEEDING COMPLETE in ${totalTime}s
+Products: ${count.products} | Categories: ${count.categories} | Collections: ${count.collections}
+Settings: ${count.settings} | Content Blocks: ${count.contentBlocks} | Navigation: ${count.navigation}
+Media Files: ${count.media} | Gallery Images: ${count.galleries}
+You can close this page now.`);
+      document.getElementById('status').style.color = "lightgreen";
+    })();
+  </script>
+</body>
+</html>

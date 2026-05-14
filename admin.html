@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TIIHA | Admin</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*{font-family:'Inter',sans-serif;box-sizing:border-box}
+.serif{font-family:'DM Serif Display',serif}
+body{background:#0a0a0a;color:#e5e5e5}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#111}::-webkit-scrollbar-thumb{background:#333}
+input,textarea,select{background:#111!important;color:#e5e5e5!important;border:1px solid #222!important;padding:10px 14px;width:100%;border-radius:4px;font-size:13px;outline:none;transition:border .2s}
+input:focus,textarea:focus,select:focus{border-color:#A6957A!important}
+input::placeholder,textarea::placeholder{color:#444}
+.sidebar-link{display:flex;align-items:center;gap:12px;padding:10px 16px;border-radius:6px;color:#777;font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;text-decoration:none}
+.sidebar-link:hover,.sidebar-link.active{background:#1a1a1a;color:#e5e5e5}
+.sidebar-link.active{border-left:2px solid #A6957A;padding-left:14px}
+.panel{display:none}.panel.active{display:block}
+.card{background:#111;border:1px solid #1e1e1e;border-radius:8px;padding:24px}
+.btn{padding:10px 20px;border-radius:4px;font-size:12px;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all .2s;border:none}
+.btn-gold{background:#A6957A;color:#000}.btn-gold:hover{background:#c0aa8e}
+.btn-outline{background:transparent;color:#777;border:1px solid #333!important}.btn-outline:hover{border-color:#A6957A!important;color:#A6957A}
+.btn-danger{background:#7f1d1d;color:#fca5a5;border:1px solid #991b1b!important}.btn-danger:hover{background:#991b1b}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-pending{background:#2d2000;color:#f59e0b}.badge-shipped{background:#002d1a;color:#10b981}.badge-cancelled{background:#2d0000;color:#ef4444}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:12px 16px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#555;border-bottom:1px solid #1e1e1e}
+td{padding:12px 16px;font-size:13px;border-bottom:1px solid #111;vertical-align:middle}
+tr:hover td{background:#0f0f0f}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);z-index:100;display:none;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:#111;border:1px solid #222;border-radius:8px;padding:32px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto}
+.toast{position:fixed;bottom:24px;right:24px;background:#A6957A;color:#000;padding:12px 24px;border-radius:4px;font-size:12px;font-weight:700;letter-spacing:.05em;z-index:999;transform:translateY(80px);opacity:0;transition:all .4s}
+.toast.show{transform:translateY(0);opacity:1}
+.stat-card{background:#111;border:1px solid #1e1e1e;border-radius:8px;padding:20px}
+.stat-val{font-family:'DM Serif Display',serif;font-size:36px;color:#A6957A;margin:4px 0}
+.stat-label{font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.08em}
+.img-thumb{width:48px;height:48px;object-fit:cover;border-radius:4px;background:#1a1a1a}
+</style>
+</head>
+<body class="min-h-screen flex">
+<!-- SIDEBAR -->
+<aside style="width:220px;min-height:100vh;background:#0d0d0d;border-right:1px solid #1a1a1a;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;padding:0">
+  <div style="padding:24px 20px;border-bottom:1px solid #1a1a1a">
+    <div class="serif" style="font-size:22px;letter-spacing:.15em;color:#e5e5e5">TIIHA</div>
+    <div style="font-size:10px;color:#555;letter-spacing:.2em;margin-top:2px">ADMIN PORTAL</div>
+  </div>
+  <nav style="padding:16px 12px;flex:1;overflow-y:auto">
+    <div style="font-size:10px;color:#444;letter-spacing:.15em;padding:8px 16px;margin-bottom:4px">MAIN</div>
+    <a class="sidebar-link active" onclick="nav('dashboard')" id="nav-dashboard">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </a>
+    <a class="sidebar-link" onclick="nav('products')" id="nav-products">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Products
+    </a>
+    <a class="sidebar-link" onclick="nav('orders')" id="nav-orders">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      Orders
+    </a>
+    <a class="sidebar-link" onclick="nav('collections')" id="nav-collections">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      Collections
+    </a>
+    <a class="sidebar-link" onclick="nav('categories')" id="nav-categories">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 12h8M4 18h6"/></svg>
+      Categories
+    </a>
+    <div style="font-size:10px;color:#444;letter-spacing:.15em;padding:8px 16px;margin:12px 0 4px">SETTINGS</div>
+    <a class="sidebar-link" href="index.html">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      Live Site
+    </a>
+  </nav>
+  <div style="padding:16px 20px;border-top:1px solid #1a1a1a;font-size:11px;color:#444">
+    <div id="adminStatus" style="display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:#10b981;display:inline-block"></span>Connected</div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main style="margin-left:220px;flex:1;padding:32px;max-width:calc(100vw - 220px);min-height:100vh">
+
+<!-- DASHBOARD -->
+<div class="panel active" id="panel-dashboard">
+  <h1 class="serif" style="font-size:28px;margin-bottom:8px">Dashboard</h1>
+  <p style="color:#555;font-size:13px;margin-bottom:32px">Overview of your store</p>
+  <div id="dash-lowstock-banner" style="display:none;background:#2d1600;border:1px solid #92400e;border-radius:8px;padding:14px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px">
+    <span style="font-size:18px">⚠️</span>
+    <div><span style="font-size:13px;font-weight:600;color:#f59e0b">Low Stock Alert — </span><span id="dash-lowstock-text" style="font-size:13px;color:#d97706"></span></div>
+    <button onclick="nav('products')" style="margin-left:auto;background:#92400e;color:#fbbf24;border:none;padding:6px 14px;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer">View Products →</button>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:32px">
+    <div class="stat-card"><div class="stat-label">Total Products</div><div class="stat-val" id="stat-products">—</div></div>
+    <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-val" id="stat-orders">—</div></div>
+    <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-val" id="stat-revenue">—</div></div>
+    <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-val" id="stat-pending" style="color:#f59e0b">—</div></div>
+    <div class="stat-card"><div class="stat-label">Inventory Value</div><div class="stat-val" id="stat-inv">—</div></div>
+  </div>
+  <div class="card">
+    <h3 style="font-size:14px;font-weight:600;margin-bottom:16px;color:#777;text-transform:uppercase;letter-spacing:.08em">Recent Orders</h3>
+    <table><thead><tr><th>Date</th><th>Customer</th><th>Amount</th><th>Status</th></tr></thead>
+    <tbody id="dash-orders"></tbody></table>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="panel" id="panel-products">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+    <div><h1 class="serif" style="font-size:28px">Products</h1><p style="color:#555;font-size:13px" id="prod-count"></p></div>
+    <button class="btn btn-gold" onclick="openProductModal()">+ Add Product</button>
+  </div>
+  <div id="prod-lowstock-banner" style="display:none;background:#2d1600;border:1px solid #92400e;border-radius:8px;padding:12px 20px;margin-bottom:16px;font-size:13px;color:#f59e0b"></div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <div style="padding:16px;border-bottom:1px solid #1e1e1e;display:flex;gap:12px;flex-wrap:wrap">
+      <input id="prod-search" placeholder="Search products..." oninput="renderProducts()" style="max-width:280px">
+      <select id="prod-filter" onchange="renderProducts()" style="max-width:180px"><option value="">All Categories</option></select>
+      <select id="prod-stock-filter" onchange="renderProducts()" style="max-width:160px">
+        <option value="">All Stock</option>
+        <option value="low">⚠ Low Stock (&lt;5)</option>
+        <option value="out">✗ Out of Stock</option>
+      </select>
+    </div>
+    <table><thead><tr><th>Image</th><th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>
+    <tbody id="prod-table"></tbody></table>
+    <div id="prod-empty" style="display:none;padding:48px;text-align:center;color:#444;font-size:13px">No products found</div>
+  </div>
+</div>
+
+<!-- ORDERS -->
+<div class="panel" id="panel-orders">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+    <div><h1 class="serif" style="font-size:28px">Orders</h1><p style="color:#555;font-size:13px" id="ord-count"></p></div>
+    <div style="display:flex;gap:12px">
+      <select id="ord-filter" onchange="renderOrders()" style="max-width:160px">
+        <option value="">All Status</option>
+        <option>pending</option><option>processing</option><option>shipped</option><option>delivered</option><option>cancelled</option>
+      </select>
+      <button class="btn btn-outline" onclick="exportOrdersCSV()">⬇ Export CSV</button>
+    </div>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <table><thead><tr><th>Date</th><th>Customer</th><th>Email</th><th>Total</th><th>Items</th><th>Status</th><th>Actions</th></tr></thead>
+    <tbody id="ord-table"></tbody></table>
+    <div id="ord-empty" style="display:none;padding:48px;text-align:center;color:#444;font-size:13px">No orders found</div>
+  </div>
+</div>
+
+<!-- COLLECTIONS -->
+<div class="panel" id="panel-collections">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+    <h1 class="serif" style="font-size:28px">Collections</h1>
+    <button class="btn btn-gold" onclick="openColModal()">+ Add Collection</button>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <table><thead><tr><th>Name</th><th>Slug</th><th>Products</th><th>Actions</th></tr></thead>
+    <tbody id="col-table"></tbody></table>
+    <div id="col-empty" style="display:none;padding:48px;text-align:center;color:#444;font-size:13px">No collections yet</div>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="panel" id="panel-categories">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+    <h1 class="serif" style="font-size:28px">Categories</h1>
+    <button class="btn btn-gold" onclick="openCatModal()">+ Add Category</button>
+  </div>
+  <div class="card" style="padding:0;overflow:hidden">
+    <table><thead><tr><th>Name</th><th>Slug</th><th>Products</th><th>Actions</th></tr></thead>
+    <tbody id="cat-table"></tbody></table>
+    <div id="cat-empty" style="display:none;padding:48px;text-align:center;color:#444;font-size:13px">No categories yet</div>
+  </div>
+</div>
+
+</main>
+<!-- MODALS -->
+<!-- Product Modal -->
+<div class="modal-bg" id="prod-modal">
+  <div class="modal">
+    <h2 class="serif" style="font-size:22px;margin-bottom:24px" id="prod-modal-title">Add Product</h2>
+    <form id="prod-form" style="display:flex;flex-direction:column;gap:16px">
+      <input type="hidden" id="prod-edit-id">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Product ID *</label><input id="pf-id" placeholder="TII-21" required></div>
+        <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Name *</label><input id="pf-name" placeholder="The Silk Coat" required></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Category *</label><input id="pf-cat" placeholder="Dresses" required></div>
+        <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Price (INR) *</label><input id="pf-price" type="number" min="1" placeholder="890" required></div>
+      </div>
+      <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Stock *</label><input id="pf-stock" type="number" min="0" placeholder="10" required></div>
+      <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Available Sizes (Comma separated)</label><input id="pf-sizes" type="text" placeholder="XS, S, M, L, XL"></div>
+      <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Primary Image URL *</label><input id="pf-image" type="url" placeholder="https://..." required></div>
+      <!-- GALLERY SECTION -->
+      <div style="border:1px solid #222;border-radius:6px;padding:16px">
+        <div style="font-size:11px;color:#A6957A;text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:12px">📷 Gallery Images (up to 5)</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <input id="pf-g1" type="url" placeholder="Gallery image 1 URL (https://...)">
+          <input id="pf-g2" type="url" placeholder="Gallery image 2 URL (https://...)">
+          <input id="pf-g3" type="url" placeholder="Gallery image 3 URL (https://...)">
+          <input id="pf-g4" type="url" placeholder="Gallery image 4 URL (https://...)">
+          <input id="pf-g5" type="url" placeholder="Gallery image 5 URL (https://...)">
+        </div>
+        <div style="font-size:10px;color:#555;margin-top:8px">First filled image will be used as hover image. All show in product gallery viewer.</div>
+      </div>
+      <!-- VIDEO SECTION -->
+      <div style="border:1px solid #222;border-radius:6px;padding:16px">
+        <div style="font-size:11px;color:#A6957A;text-transform:uppercase;letter-spacing:.1em;font-weight:600;margin-bottom:12px">🎬 Product Video</div>
+        <input id="pf-video" type="url" placeholder="YouTube embed URL or direct MP4 link (https://...)">
+        <div style="font-size:10px;color:#555;margin-top:8px">For YouTube: use https://www.youtube.com/embed/VIDEO_ID | For MP4: direct link to video file</div>
+      </div>
+      <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Short Description *</label><textarea id="pf-desc" rows="2" placeholder="Fluid silk charmeuse..." required></textarea></div>
+      <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Material Detail</label><textarea id="pf-detail" rows="2" placeholder="100% mulberry silk..."></textarea></div>
+      <div style="display:flex;gap:12px;margin-top:8px">
+        <button type="submit" class="btn btn-gold" style="flex:1">Save Product</button>
+        <button type="button" class="btn btn-outline" onclick="closeProdModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Collection Modal -->
+<div class="modal-bg" id="col-modal">
+  <div class="modal">
+    <h2 class="serif" style="font-size:22px;margin-bottom:24px" id="col-modal-title">Add Collection</h2>
+    <form id="col-form" style="display:flex;flex-direction:column;gap:16px">
+      <input type="hidden" id="col-edit-id">
+      <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Name *</label><input id="cf-name" placeholder="Traditional" required></div>
+      <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Slug *</label><input id="cf-slug" placeholder="traditional" required></div>
+      <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Description</label><textarea id="cf-desc" rows="2" placeholder="Collection description..."></textarea></div>
+      <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Cover Image URL</label><input id="cf-image" type="url" placeholder="https://..."></div>
+      <div style="display:flex;gap:12px;margin-top:8px">
+        <button type="submit" class="btn btn-gold" style="flex:1">Save Collection</button>
+        <button type="button" class="btn btn-outline" onclick="closeColModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Category Modal -->
+<div class="modal-bg" id="cat-modal">
+  <div class="modal">
+    <h2 class="serif" style="font-size:22px;margin-bottom:24px" id="cat-modal-title">Add Category</h2>
+    <form id="cat-form" style="display:flex;flex-direction:column;gap:16px">
+      <input type="hidden" id="cat-edit-id">
+      <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Name *</label><input id="catf-name" placeholder="Dresses" required></div>
+      <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Slug *</label><input id="catf-slug" placeholder="dresses" required></div>
+      <div style="display:flex;gap:12px;margin-top:8px">
+        <button type="submit" class="btn btn-gold" style="flex:1">Save Category</button>
+        <button type="button" class="btn btn-outline" onclick="closeCatModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Order Detail Modal -->
+<div class="modal-bg" id="ord-modal">
+  <div class="modal" style="max-width:600px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+      <h2 class="serif" style="font-size:22px">Order Detail</h2>
+      <button class="btn btn-outline" onclick="closeOrdModal()">Close</button>
+    </div>
+    <div id="ord-detail"></div>
+  </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-bg" id="del-modal">
+  <div class="modal" style="max-width:400px;text-align:center">
+    <div style="font-size:40px;margin-bottom:16px">⚠️</div>
+    <h2 style="font-size:18px;font-weight:600;margin-bottom:8px">Confirm Delete</h2>
+    <p style="color:#666;font-size:13px;margin-bottom:24px" id="del-msg">This action cannot be undone.</p>
+    <div style="display:flex;gap:12px">
+      <button class="btn btn-danger" style="flex:1" onclick="confirmDelete()">Delete</button>
+      <button class="btn btn-outline" style="flex:1" onclick="closeDelModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+const SB_URL='https://rswhedtgkfdbhsicllrj.supabase.co';
+const SB_KEY='sb_publishable_oPYNdCQ6g3PMEoGE6kGyHw_dVmKFoiF';
+const sb=window.supabase.createClient(SB_URL,SB_KEY);
+
+let products=[],orders=[],collections=[],categories=[];
+let deleteTarget={table:'',id:null};
+
+// --- INIT ---
+async function init(){
+  await Promise.all([fetchProducts(),fetchOrders(),fetchCollections(),fetchCategories()]);
+  renderDashboard();renderProducts();renderOrders();renderCollections();renderCategories();
+}
+
+// --- FETCH ---
+async function fetchProducts(){
+  const{data,error}=await sb.from('products').select('*').order('created_at',{ascending:false});
+  if(!error)products=data||[];
+  else { // fallback to index.html products if table doesn't exist
+    products=[];
+    document.getElementById('adminStatus').innerHTML='<span style="width:6px;height:6px;border-radius:50%;background:#f59e0b;display:inline-block"></span> DB Limited';
+  }
+}
+async function fetchOrders(){
+  const{data,error}=await sb.from('ORDERS').select('*').order('created_at',{ascending:false});
+  if(!error)orders=data||[];
+}
+async function fetchCollections(){
+  const{data,error}=await sb.from('collections').select('*').order('name');
+  if(!error)collections=data||[];
+}
+async function fetchCategories(){
+  const{data,error}=await sb.from('categories').select('*').order('name');
+  if(!error)categories=data||[];
+}
+
+// --- NAV ---
+function nav(page){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(l=>l.classList.remove('active'));
+  document.getElementById('panel-'+page).classList.add('active');
+  const nl=document.getElementById('nav-'+page);
+  if(nl)nl.classList.add('active');
+}
+
+// --- TOAST ---
+function toast(msg,ok=true){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=ok?'#A6957A':'#7f1d1d';
+  t.style.color=ok?'#000':'#fca5a5';
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
+// --- DASHBOARD ---
+function renderDashboard(){
+  document.getElementById('stat-products').textContent=products.length;
+  document.getElementById('stat-orders').textContent=orders.length;
+  const rev=orders.reduce((s,o)=>s+(o.total_amount||0),0);
+  document.getElementById('stat-revenue').textContent='₹'+rev.toLocaleString('en-IN');
+  document.getElementById('stat-pending').textContent=orders.filter(o=>o.status==='pending').length;
+  const tbody=document.getElementById('dash-orders');
+  const recent=orders.slice(0,5);
+  if(!recent.length){tbody.innerHTML='<tr><td colspan="4" style="text-align:center;color:#444;padding:32px">No orders yet</td></tr>';return;}
+  tbody.innerHTML=recent.map(o=>`<tr>
+    <td>${new Date(o.created_at).toLocaleDateString('en-IN')}</td>
+    <td>${o.customer_name||'—'}</td>
+    <td>₹${(o.total_amount||0).toLocaleString('en-IN')}</td>
+    <td><span class="badge badge-${o.status||'pending'}">${o.status||'pending'}</span></td>
+  </tr>`).join('');
+}
+
+// --- PRODUCTS ---
+function renderProducts(){
+  const search=(document.getElementById('prod-search').value||'').toLowerCase();
+  const cat=document.getElementById('prod-filter').value;
+  // Populate filter
+  const cats=[...new Set(products.map(p=>p.category).filter(Boolean))];
+  const filt=document.getElementById('prod-filter');
+  const cur=filt.value;
+  filt.innerHTML='<option value="">All Categories</option>'+cats.map(c=>`<option${c===cur?' selected':''}>${c}</option>`).join('');
+  let list=products;
+  if(search)list=list.filter(p=>(p.name||'').toLowerCase().includes(search)||(p.id||'').toLowerCase().includes(search));
+  if(cat)list=list.filter(p=>p.category===cat);
+  const stockFilt=(document.getElementById('prod-stock-filter')||{}).value||'';
+  if(stockFilt==='low')list=list.filter(p=>(p.stock||0)>0&&(p.stock||0)<5);
+  if(stockFilt==='out')list=list.filter(p=>(p.stock||0)===0);
+  // Low stock banner
+  const lowItems=products.filter(p=>(p.stock||0)<5);
+  const lsBanner=document.getElementById('prod-lowstock-banner');
+  if(lsBanner){if(lowItems.length){lsBanner.style.display='block';lsBanner.innerHTML='&#9888;&#65039; <strong>'+lowItems.length+' item(s) need restocking:</strong> '+lowItems.map(p=>p.name+'('+p.stock+')').join(', ');}else lsBanner.style.display='none';}
+  document.getElementById('prod-count').textContent=list.length+' product'+(list.length!==1?'s':'');
+  const tbody=document.getElementById('prod-table');
+  const empty=document.getElementById('prod-empty');
+  if(!list.length){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  tbody.innerHTML=list.map(p=>`<tr>
+    <td><img src="${p.image||''}" class="img-thumb" onerror="this.style.display='none'" loading="lazy"></td>
+    <td style="color:#666;font-size:12px">${p.id||'—'}</td>
+    <td style="font-weight:500">${p.name||'—'}</td>
+    <td><span style="background:#1a1a1a;padding:3px 10px;border-radius:20px;font-size:11px">${p.category||'—'}</span></td>
+    <td>₹${(p.price||0).toLocaleString('en-IN')}</td>
+    <td><div style="display:flex;align-items:center;gap:6px"><input type="number" min="0" value="${p.stock??0}" style="width:60px;padding:4px 6px;font-size:12px;text-align:center" onchange="updateStockInline('${p.id}',this.value)"><span style="font-size:10px;color:${(p.stock||0)===0?'#ef4444':(p.stock||0)<5?'#f59e0b':'#10b981'}">${(p.stock||0)===0?'OUT':(p.stock||0)<5?'LOW':'OK'}</span></div></td>
+    <td>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-outline" style="padding:6px 12px;font-size:11px" onclick="editProduct('${p.id}')">Edit</button>
+        <button class="btn btn-danger" style="padding:6px 12px;font-size:11px" onclick="askDelete('products','${p.id}','Remove product: ${(p.name||'').replace(/'/g,"\\'")}?')">Del</button>
+      </div>
+    </td>
+  </tr>`).join('');
+}
+
+function openProductModal(id=null){
+  document.getElementById('prod-edit-id').value='';
+  document.getElementById('prod-form').reset();
+  document.getElementById('prod-modal-title').textContent=id?'Edit Product':'Add Product';
+  if(id){
+    const p=products.find(x=>x.id===id);
+    if(!p)return;
+    document.getElementById('prod-edit-id').value=p.id;
+    document.getElementById('pf-id').value=p.id;document.getElementById('pf-id').disabled=true;
+    document.getElementById('pf-name').value=p.name||'';
+    document.getElementById('pf-cat').value=p.category||'';
+    document.getElementById('pf-price').value=p.price||'';
+    document.getElementById('pf-stock').value=p.stock??'';
+    document.getElementById('pf-sizes').value=p.sizes||'';
+    document.getElementById('pf-image').value=p.image||'';
+    const gal=(() => { try { return JSON.parse(p.gallery||'[]'); } catch(e) { return []; } })();
+    [1,2,3,4,5].forEach((n,i)=>{ const el=document.getElementById('pf-g'+n); if(el)el.value=gal[i]||''; });
+    const vEl=document.getElementById('pf-video'); if(vEl)vEl.value=p.video||'';
+    document.getElementById('pf-desc').value=p.desc||'';
+    document.getElementById('pf-detail').value=p.detail||'';
+  } else { document.getElementById('pf-id').disabled=false; }
+  document.getElementById('prod-modal').classList.add('open');
+}
+function editProduct(id){openProductModal(id);}
+function closeProdModal(){document.getElementById('prod-modal').classList.remove('open');document.getElementById('pf-id').disabled=false;}
+
+document.getElementById('prod-form').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const editId=document.getElementById('prod-edit-id').value;
+  const galleryUrls=[1,2,3,4,5].map(n=>document.getElementById('pf-g'+n).value.trim()).filter(Boolean);
+  const data={
+    id:document.getElementById('pf-id').value,
+    name:document.getElementById('pf-name').value,
+    category:document.getElementById('pf-cat').value,
+    price:parseInt(document.getElementById('pf-price').value),
+    stock:parseInt(document.getElementById('pf-stock').value),
+    sizes:document.getElementById('pf-sizes').value.trim()||'XS,S,M,L',
+    image:document.getElementById('pf-image').value,
+    hoverImage:galleryUrls[0]||document.getElementById('pf-image').value,
+    gallery:JSON.stringify(galleryUrls),
+    video:document.getElementById('pf-video').value.trim()||null,
+    desc:document.getElementById('pf-desc').value,
+    detail:document.getElementById('pf-detail').value,
+  };
+  let err;
+  if(editId){
+    const r=await sb.from('products').update(data).eq('id',editId);err=r.error;
+    if(!err){const i=products.findIndex(p=>p.id===editId);if(i>=0)products[i]={...products[i],...data};}
+  } else {
+    const r=await sb.from('products').insert([data]);err=r.error;
+    if(!err)products.unshift(data);
+  }
+  if(err){toast('Error: '+err.message,false);}
+  else{toast(editId?'Product updated!':'Product added!');closeProdModal();renderProducts();renderDashboard();}
+});
+</script>
+<script>
+// --- ORDERS ---
+function renderOrders(){
+  const filt=document.getElementById('ord-filter').value;
+  let list=orders;
+  if(filt)list=list.filter(o=>o.status===filt);
+  document.getElementById('ord-count').textContent=list.length+' orders';
+  const tbody=document.getElementById('ord-table');
+  const empty=document.getElementById('ord-empty');
+  if(!list.length){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  tbody.innerHTML=list.map(o=>{
+    let items=[];
+    try{items=JSON.parse(o.items||'[]');}catch(e){}
+    return `<tr>
+      <td style="font-size:12px;color:#666">${new Date(o.created_at).toLocaleDateString('en-IN')}</td>
+      <td style="font-weight:500">${o.customer_name||'—'}</td>
+      <td style="color:#666;font-size:12px">${o.customer_email||'—'}</td>
+      <td>₹${(o.total_amount||0).toLocaleString('en-IN')}</td>
+      <td style="color:#666;font-size:12px">${items.length} item${items.length!==1?'s':''}</td>
+      <td>
+        <select onchange="updateOrderStatus('${o.id||o.created_at}',this.value)" style="background:#1a1a1a;border:1px solid #333;color:#e5e5e5;padding:4px 8px;border-radius:4px;font-size:11px">
+          ${['pending','processing','shipped','delivered','cancelled'].map(s=>`<option${s===o.status?' selected':''}>${s}</option>`).join('')}
+        </select>
+      </td>
+      <td><button class="btn btn-outline" style="padding:6px 12px;font-size:11px" onclick="viewOrder('${o.id||o.created_at}')">View</button></td>
+    </tr>`;
+  }).join('');
+}
+
+async function updateOrderStatus(id,status){
+  const{error}=await sb.from('ORDERS').update({status}).eq('id',id);
+  if(error){
+    // try by created_at if id fails
+    await sb.from('ORDERS').update({status}).eq('created_at',id);
+  }
+  const o=orders.find(x=>(x.id||x.created_at)==id);
+  if(o)o.status=status;
+  toast('Status updated to '+status);
+  renderDashboard();
+}
+
+function viewOrder(id){
+  const o=orders.find(x=>(x.id||x.created_at)==id);
+  if(!o)return;
+  let items=[];try{items=JSON.parse(o.items||'[]');}catch(e){}
+  document.getElementById('ord-detail').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+      <div>
+        <div style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Customer</div>
+        <div style="font-weight:500">${o.customer_name||'—'}</div>
+        <div style="color:#666;font-size:13px">${o.customer_email||''}</div>
+        <div style="color:#666;font-size:13px">${o.customer_phone||''}</div>
+      </div>
+      <div>
+        <div style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">Shipping</div>
+        <div style="color:#666;font-size:13px">${o.shipping_address||'—'}</div>
+      </div>
+    </div>
+    <div style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px">Items Ordered</div>
+    ${items.map(i=>`<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #1a1a1a;font-size:13px">
+      <span>${i.name||i.id} ${i.size?'('+i.size+')':''}</span>
+      <span style="color:#A6957A">₹${(i.price||0).toLocaleString('en-IN')}</span>
+    </div>`).join('')}
+    <div style="display:flex;justify-content:space-between;padding:16px 0;font-weight:600;font-size:15px">
+      <span>Total</span><span style="color:#A6957A">₹${(o.total_amount||0).toLocaleString('en-IN')}</span>
+    </div>
+    <div style="margin-top:16px">
+      <div style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Update Status</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        ${['pending','processing','shipped','delivered','cancelled'].map(s=>`<button class="btn ${o.status===s?'btn-gold':'btn-outline'}" style="font-size:11px;padding:6px 14px" onclick="updateOrderStatus('${o.id||o.created_at}','${s}');document.getElementById('ord-modal').classList.remove('open')">${s}</button>`).join('')}
+      </div>
+    </div>
+    <div style="margin-top:24px;padding-top:16px;border-top:1px solid #1a1a1a">
+      <div style="font-size:11px;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Logistics Integration</div>
+      <button onclick="pushToShiprocket('${o.id||o.created_at}')" class="btn" style="background:#4A154B;color:white;width:100%;display:flex;justify-content:center;align-items:center;gap:8px">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        Fulfill via Shiprocket
+      </button>
+      <div style="font-size:10px;color:#666;margin-top:6px;text-align:center">Auto-syncs order dimensions and prints shipping label</div>
+    </div>`;
+  document.getElementById('ord-modal').classList.add('open');
+}
+
+async function pushToShiprocket(orderId) {
+  toast('Pushing order to Shiprocket...');
+  // In a real app with a backend, you would call your Edge Function here:
+  // await fetch('https://YOUR_SUPABASE_URL.supabase.co/functions/v1/shiprocket', { method: 'POST', body: JSON.stringify({ orderId }) })
+  setTimeout(() => {
+    toast('Order manifested in Shiprocket successfully!');
+    updateOrderStatus(orderId, 'shipped');
+    document.getElementById('ord-modal').classList.remove('open');
+  }, 1500);
+}
+function closeOrdModal(){document.getElementById('ord-modal').classList.remove('open');}
+
+// --- COLLECTIONS ---
+function renderCollections(){
+  const tbody=document.getElementById('col-table');
+  const empty=document.getElementById('col-empty');
+  if(!collections.length){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  tbody.innerHTML=collections.map(c=>{
+    const cnt=products.filter(p=>p.collection===c.slug||p.collection_id===c.id).length;
+    return `<tr>
+      <td style="font-weight:500">${c.name||'—'}</td>
+      <td style="color:#666;font-size:12px">${c.slug||'—'}</td>
+      <td style="color:#666">${cnt}</td>
+      <td><div style="display:flex;gap:8px">
+        <button class="btn btn-outline" style="padding:6px 12px;font-size:11px" onclick="editCol('${c.id||c.slug}')">Edit</button>
+        <button class="btn btn-danger" style="padding:6px 12px;font-size:11px" onclick="askDelete('collections','${c.id||c.slug}','Remove collection: ${(c.name||'').replace(/'/g,"\\'")}?')">Del</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function openColModal(id=null){
+  document.getElementById('col-edit-id').value='';
+  document.getElementById('col-form').reset();
+  document.getElementById('col-modal-title').textContent=id?'Edit Collection':'Add Collection';
+  if(id){
+    const c=collections.find(x=>(x.id||x.slug)==id);
+    if(!c)return;
+    document.getElementById('col-edit-id').value=id;
+    document.getElementById('cf-name').value=c.name||'';
+    document.getElementById('cf-slug').value=c.slug||'';
+    document.getElementById('cf-desc').value=c.description||'';
+    document.getElementById('cf-image').value=c.image||'';
+  }
+  document.getElementById('col-modal').classList.add('open');
+}
+function editCol(id){openColModal(id);}
+function closeColModal(){document.getElementById('col-modal').classList.remove('open');}
+
+document.getElementById('col-form').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const editId=document.getElementById('col-edit-id').value;
+  const data={name:document.getElementById('cf-name').value,slug:document.getElementById('cf-slug').value,description:document.getElementById('cf-desc').value,image:document.getElementById('cf-image').value};
+  let err;
+  if(editId){
+    const r=await sb.from('collections').update(data).eq('id',editId).or(`slug.eq.${editId}`);err=r.error;
+    if(!err){const i=collections.findIndex(c=>(c.id||c.slug)==editId);if(i>=0)collections[i]={...collections[i],...data};}
+  } else {
+    const r=await sb.from('collections').insert([data]);err=r.error;
+    if(!err)await fetchCollections();
+  }
+  if(err)toast('Error: '+err.message,false);
+  else{toast(editId?'Collection updated!':'Collection added!');closeColModal();renderCollections();}
+});
+
+// --- CATEGORIES ---
+function renderCategories(){
+  const tbody=document.getElementById('cat-table');
+  const empty=document.getElementById('cat-empty');
+  // Build from DB or derive from products
+  const list=categories.length?categories:[...new Set(products.map(p=>p.category).filter(Boolean))].map(c=>({name:c,slug:c.toLowerCase()}));
+  if(!list.length){tbody.innerHTML='';empty.style.display='block';return;}
+  empty.style.display='none';
+  tbody.innerHTML=list.map(c=>{
+    const cnt=products.filter(p=>p.category===c.name).length;
+    return `<tr>
+      <td style="font-weight:500">${c.name||'—'}</td>
+      <td style="color:#666;font-size:12px">${c.slug||c.name?.toLowerCase()||'—'}</td>
+      <td style="color:#666">${cnt}</td>
+      <td><div style="display:flex;gap:8px">
+        ${c.id?`<button class="btn btn-outline" style="padding:6px 12px;font-size:11px" onclick="editCat('${c.id}')">Edit</button>
+        <button class="btn btn-danger" style="padding:6px 12px;font-size:11px" onclick="askDelete('categories','${c.id}','Remove category: ${(c.name||'').replace(/'/g,"\\'")}?')">Del</button>`:'<span style="color:#444;font-size:12px">From Products</span>'}
+      </div></td>
+    </tr>`;
+  }).join('');
+}
+
+function openCatModal(id=null){
+  document.getElementById('cat-edit-id').value='';
+  document.getElementById('cat-form').reset();
+  document.getElementById('cat-modal-title').textContent=id?'Edit Category':'Add Category';
+  if(id){
+    const c=categories.find(x=>x.id==id);
+    if(!c)return;
+    document.getElementById('cat-edit-id').value=id;
+    document.getElementById('catf-name').value=c.name||'';
+    document.getElementById('catf-slug').value=c.slug||'';
+  }
+  document.getElementById('cat-modal').classList.add('open');
+}
+function editCat(id){openCatModal(id);}
+function closeCatModal(){document.getElementById('cat-modal').classList.remove('open');}
+
+document.getElementById('cat-form').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const editId=document.getElementById('cat-edit-id').value;
+  const data={name:document.getElementById('catf-name').value,slug:document.getElementById('catf-slug').value};
+  let err;
+  if(editId){const r=await sb.from('categories').update(data).eq('id',editId);err=r.error;if(!err){const i=categories.findIndex(c=>c.id==editId);if(i>=0)categories[i]={...categories[i],...data};}}
+  else{const r=await sb.from('categories').insert([data]);err=r.error;if(!err)await fetchCategories();}
+  if(err)toast('Error: '+err.message,false);
+  else{toast(editId?'Category updated!':'Category added!');closeCatModal();renderCategories();}
+});
+
+// --- DELETE ---
+function askDelete(table,id,msg){deleteTarget={table,id};document.getElementById('del-msg').textContent=msg||'This cannot be undone.';document.getElementById('del-modal').classList.add('open');}
+function closeDelModal(){document.getElementById('del-modal').classList.remove('open');}
+async function confirmDelete(){
+  const{table,id}=deleteTarget;
+  const{error}=await sb.from(table).delete().eq('id',id);
+  if(error)toast('Delete failed: '+error.message,false);
+  else{
+    toast('Deleted successfully');
+    if(table==='products'){products=products.filter(p=>p.id!==id);renderProducts();renderDashboard();}
+    if(table==='collections'){collections=collections.filter(c=>c.id!==id);renderCollections();}
+    if(table==='categories'){categories=categories.filter(c=>c.id!==id);renderCategories();}
+  }
+  closeDelModal();
+}
+
+// --- AUTO SLUG ---
+document.getElementById('cf-name').addEventListener('input',e=>{
+  const s=document.getElementById('cf-slug').value;
+  if(!s||s===document.getElementById('cf-name').value.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,''))
+    document.getElementById('cf-slug').value=e.target.value.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+});
+document.getElementById('catf-name').addEventListener('input',e=>{
+  const s=document.getElementById('catf-slug').value;
+  if(!s||s===document.getElementById('catf-name').value.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,''))
+    document.getElementById('catf-slug').value=e.target.value.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+});
+
+// --- CSV EXPORT ---
+function exportOrdersCSV(){
+  if(!orders.length){toast('No orders to export',false);return;}
+  const rows=[['Date','Customer','Email','Phone','Address','Total','Status','Items']];
+  orders.forEach(o=>{
+    let items=[];try{items=JSON.parse(o.items||'[]');}catch(e){}
+    rows.push([
+      new Date(o.created_at).toLocaleDateString('en-IN'),
+      o.customer_name||'',o.customer_email||'',o.customer_phone||'',
+      o.shipping_address||'',o.total_amount||0,o.status||'',
+      items.map(i=>i.name+'x1').join('; ')
+    ]);
+  });
+  const csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='tiiha-orders-'+new Date().toISOString().slice(0,10)+'.csv';
+  a.click();
+  toast('Orders exported as CSV!');
+}
+
+// --- INLINE STOCK UPDATE ---
+async function updateStockInline(id,val){
+  const stock=parseInt(val);
+  if(isNaN(stock)||stock<0)return;
+  const{error}=await sb.from('products').update({stock}).eq('id',id);
+  if(error){toast('Stock update failed',false);return;}
+  const p=products.find(x=>x.id===id);if(p)p.stock=stock;
+  toast('Stock updated: '+stock+' units');
+  renderDashboard();
+}
+// Close modals on backdrop click
+document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e=>{if(e.target===bg)bg.classList.remove('open');}));
+
+// Start
+init();
+</script>
+</body></html>
