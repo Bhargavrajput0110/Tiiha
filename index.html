@@ -1101,7 +1101,7 @@
                 setSubmitting(true);
                 try {
                     // 1. Create Razorpay order server-side
-                    const orderRes = await fetch('/.netlify/functions/razorpay-order', {
+                    const orderRes = await fetch('/api/razorpay-order', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -1145,7 +1145,7 @@
                         handler: async (response) => {
                             // 3. Verify payment signature server-side
                             try {
-                                const verifyRes = await fetch('/.netlify/functions/razorpay-order', {
+                                const verifyRes = await fetch('/api/razorpay-order', {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({
