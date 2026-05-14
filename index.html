@@ -517,7 +517,7 @@
 
         const CATEGORIES = ['ALL', 'SUMMER EDIT', 'PARTY EDIT', 'FESTIVE EDIT'];
 
-        const InteractiveArchive = ({ setProduct, activeCollection, clearCollection }) => {
+        const InteractiveArchive = ({ products: propProducts, setProduct, activeCollection, clearCollection }) => {
           const [activeFilter, setActiveFilter] = useState('ALL');
           const { setCursor } = useStore();
           const { toggleWishlist, isWishlisted } = useWishlist();
@@ -527,11 +527,21 @@
 
           useEffect(() => { window.scrollTo(0, 0); }, []);
 
+          const archiveProducts = (propProducts || PRODUCTS).map(p => ({
+            id: p.id,
+            name: p.name.toUpperCase(),
+            price: p.price,
+            img: p.image,
+            cat: p.category.toUpperCase(),
+            material: (p.detail || '').split('.')[0].toUpperCase(),
+            _product: p,
+          }));
+
           const filteredProducts = activeCollection
-            ? ARCHIVE_PRODUCTS.filter(p => activeCollection.productIds.includes(p.id))
+            ? archiveProducts.filter(p => activeCollection.productIds.includes(p.id))
             : activeFilter === 'ALL'
-              ? ARCHIVE_PRODUCTS
-              : ARCHIVE_PRODUCTS.filter(p => p.cat === activeFilter);
+              ? archiveProducts
+              : archiveProducts.filter(p => p.cat === activeFilter);
 
 
           return (
@@ -615,7 +625,7 @@
           );
         };
 
-        function HomePage({ setPage, onSelect, goToCollection }) {
+        function HomePage({ products: propProducts, setPage, onSelect, goToCollection }) {
             const containerRef = useRef(null);
             const stickyRef = useRef(null);
             const { setCursor } = useStore();
@@ -675,7 +685,7 @@
                                 <button onClick={() => { window.scrollTo(0,0); setPage('shop'); }} className="text-[10px] tracking-[0.3em] uppercase font-bold border-b border-black pb-2 hidden md:block">View All Inventory</button>
                             </div>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-16 items-start">
-                                {PRODUCTS.slice(0, 3).map((prod, index) => {
+                                {(propProducts || PRODUCTS).slice(0, 3).map((prod, index) => {
                                     let marginClass = index === 1 ? "md:mt-[30%]" : (index === 2 ? "md:mt-[10%]" : "");
                                     let aspectClass = index === 1 ? "aspect-[4/5]" : (index === 2 ? "aspect-square md:w-11/12 ml-auto" : "aspect-[3/4]");
                                     return (
@@ -816,11 +826,11 @@
             );
         };
 
-        function ProductTakeover({ product, onClose, onAdd, onSelectRelated, onSizeGuide }) {
+        function ProductTakeover({ products: propProducts, product, onClose, onAdd, onSelectRelated, onSizeGuide }) {
             const [selectedSize, setSelectedSize] = useState(null);
             const [activeMediaIdx, setActiveMediaIdx] = useState(0);
             const { setCursor } = useStore();
-            const relatedItems = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
+            const relatedItems = (propProducts || PRODUCTS).filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
 
             // Track recently viewed
             useEffect(() => {
@@ -1621,7 +1631,27 @@
             const [mobileNavOpen, setMobileNavOpen] = useState(false);
             const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
             const [bannerShown, setBannerShown] = useState(true);
+            const [liveProducts, setLiveProducts] = useState(PRODUCTS);
             const { setCursor } = useStore();
+
+            // Fetch live products from Supabase via Express API — replaces static fallback
+            useEffect(() => {
+                fetch('/api/products')
+                    .then(r => r.ok ? r.json() : null)
+                    .then(data => {
+                        if (data && Array.isArray(data) && data.length > 0) {
+                            setLiveProducts(data.map(p => ({
+                                ...p,
+                                hoverImage: (() => {
+                                    try { const g = JSON.parse(p.gallery || '[]'); return g[0] || p.image; }
+                                    catch { return p.image; }
+                                })()
+                            })));
+                        }
+                    })
+                    .catch(() => { /* silently fall back to static PRODUCTS */ });
+            }, []);
+
 
             useEffect(() => {
                 console.log("TIIHA Application Initialized");
@@ -1727,14 +1757,14 @@
                         <div className="flex gap-6 md:gap-16 items-center justify-end text-[10px] tracking-[0.4em] uppercase font-bold w-1/3"><MagneticButton><button onClick={() => handlePageChange('contact')} className={`hidden md:block relative pb-1 hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:bg-current after:transition-all after:duration-500 ${currentPage === 'contact' ? 'after:w-full' : 'after:w-0'}`}>Contact Us</button></MagneticButton><MagneticButton><button onClick={() => setCartOpen(true)} className="flex items-center gap-3 group"><span>Bag</span><span className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold transition-colors duration-700 ${isDarkHero ? 'bg-[#A6957A] text-[#0D0D0D]' : 'bg-[#0D0D0D] text-[#F0EBE1]'}`}>{cart.length}</span></button></MagneticButton></div>
                     </nav>
                     <main key={currentPage} className="animate-[pageFadeIn_1.5s_cubic-bezier(0.19,1,0.22,1)_forwards]">
-                        {currentPage === 'home' && <HomePage setPage={handlePageChange} onSelect={setSelectedProduct} goToCollection={goToCollection} />}
-                        {currentPage === 'shop' && <InteractiveArchive setProduct={setSelectedProduct} activeCollection={activeCollection} clearCollection={() => setActiveCollection(null)} />}
+                        {currentPage === 'home' && <HomePage products={liveProducts} setPage={handlePageChange} onSelect={setSelectedProduct} goToCollection={goToCollection} />}
+                        {currentPage === 'shop' && <InteractiveArchive products={liveProducts} setProduct={setSelectedProduct} activeCollection={activeCollection} clearCollection={() => setActiveCollection(null)} />}
                         {currentPage === 'about' && <ManifestoPage />}
                         {currentPage === 'contact' && <InquiryPage />}
                         {currentPage === 'track' && <OrderTrackingPage setPage={handlePageChange} />}
                         {['privacy', 'terms', 'faqs', 'shipping', 'returns'].includes(currentPage) && <LegalPage contentKey={currentPage} />}
                     </main>
-                    {selectedProduct && <ProductTakeover product={selectedProduct} onClose={() => setSelectedProduct(null)} onAdd={addToCart} onSelectRelated={setSelectedProduct} onSizeGuide={() => setSizeGuideOpen(true)} />}
+                    {selectedProduct && <ProductTakeover products={liveProducts} product={selectedProduct} onClose={() => setSelectedProduct(null)} onAdd={addToCart} onSelectRelated={setSelectedProduct} onSizeGuide={() => setSizeGuideOpen(true)} />}
                     <CartDrawer cart={cart} isOpen={cartOpen} onClose={() => setCartOpen(false)} onRemove={removeFromCart} />
                     <BackToTop />
                     <WhatsAppButton />

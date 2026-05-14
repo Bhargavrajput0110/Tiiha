@@ -237,6 +237,37 @@ app.post('/api/razorpay-order', async (req, res) => {
   }
 });
 
+// ─── Products API (read-only, used by the storefront) ────────────────────────
+app.get('/api/products', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .order('id');
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    console.error('Products fetch error:', err);
+    res.status(500).json({ error: 'Failed to fetch products' });
+  }
+});
+
+app.get('/api/products/:id', async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('products')
+      .select('*')
+      .eq('id', req.params.id)
+      .single();
+    if (error) throw error;
+    res.json(data);
+  } catch (err) {
+    console.error('Product fetch error:', err);
+    res.status(404).json({ error: 'Product not found' });
+  }
+});
+
+// ─── Email Confirmation Endpoint ─────────────────────────────────────────────
 // Email Confirmation Endpoint
 const nodemailer = require('nodemailer');
 
