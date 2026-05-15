@@ -1131,53 +1131,45 @@
                 {/* FULLSCREEN ZOOM LIGHTBOX */}
                 {zoomOpen && activeMedia?.type !== 'video' && ReactDOM.createPortal((
                     <div
-                        style={{
-                            position: 'fixed', inset: 0, zIndex: 999999,
-                            background: 'rgba(0,0,0,0.97)',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            flexDirection: 'column'
-                        }}
+                        className="fixed inset-0 z-[999999] bg-black/95 flex items-center justify-center"
                         onClick={() => setZoomOpen(false)}
                     >
                         {/* Close */}
                         <button
-                            style={{ position: 'absolute', top: 16, right: 16, background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 10 }}
+                            className="absolute top-4 right-4 md:top-8 md:right-8 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center z-50 transition-colors"
                             onClick={() => setZoomOpen(false)}
                         >
-                            <X style={{ width: 20, height: 20, color: 'white' }} />
+                            <X className="w-6 h-6 text-white" />
                         </button>
-                        {/* Image — simplest possible */}
-                        <img
-                            src={activeMedia?.url}
-                            alt={product.name}
-                            onClick={e => e.stopPropagation()}
-                            style={{
-                                display: 'block',
-                                maxWidth: '95vw',
-                                maxHeight: '85vh',
-                                width: 'auto',
-                                height: 'auto',
-                                objectFit: 'contain',
-                                borderRadius: 4
-                            }}
-                        />
+                        
+                        {/* Image */}
+                        <div className="w-full h-[85vh] px-4 md:px-12 flex items-center justify-center">
+                            <img
+                                src={activeMedia?.url}
+                                alt={product.name}
+                                onClick={e => e.stopPropagation()}
+                                className="w-full h-full object-contain drop-shadow-2xl"
+                            />
+                        </div>
+
                         {/* Hint */}
-                        <p style={{ position: 'absolute', bottom: 20, left: 0, right: 0, textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700 }}>
+                        <p className="absolute bottom-6 left-0 right-0 text-center text-white/40 text-[10px] tracking-[0.2em] uppercase font-bold pointer-events-none">
                             Pinch to zoom · Tap outside to close
                         </p>
+                        
                         {/* Arrows */}
                         {mediaItems.length > 1 && (<>
                             <button
-                                style={{ position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center z-50 transition-colors"
                                 onClick={e => { e.stopPropagation(); setActiveMediaIdx(i => Math.max(0, i - 1)); }}
                             >
-                                <ChevronLeft style={{ width: 20, height: 20, color: 'white' }} />
+                                <ChevronLeft className="w-6 h-6 text-white" />
                             </button>
                             <button
-                                style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center z-50 transition-colors"
                                 onClick={e => { e.stopPropagation(); setActiveMediaIdx(i => Math.min(mediaItems.length - 1, i + 1)); }}
                             >
-                                <ChevronRight style={{ width: 20, height: 20, color: 'white' }} />
+                                <ChevronRight className="w-6 h-6 text-white" />
                             </button>
                         </>)}
                     </div>
