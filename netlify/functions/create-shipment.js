@@ -50,7 +50,7 @@ exports.handler = async (event, context) => {
     const payload = {
       order_id: `TIIHA-${Date.now()}`,
       order_date: orderDateStr,
-      pickup_location: "Primary",
+      pickup_location: "warehouse",
       billing_customer_name: orderData.customer_name,
       billing_address: orderData.address,
       billing_city: orderData.city,
