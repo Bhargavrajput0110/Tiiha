@@ -901,7 +901,7 @@
             }, []);
 
             return (
-                <div className="fixed inset-0 z-[200] bg-[#F0EBE1] text-[#0D0D0D] flex flex-col lg:flex-row animate-[pageFadeIn_0.8s_cubic-bezier(0.19,1,0.22,1)]" style={{cursor:'auto'}}>
+                <div className="fixed inset-0 z-[200] bg-[#F0EBE1] text-[#0D0D0D] flex flex-col lg:flex-row animate-[pageFadeIn_0.8s_cubic-bezier(0.19,1,0.22,1)] overflow-y-auto lg:overflow-hidden no-scrollbar" style={{cursor:'auto'}}>
 
                     {/* FULLSCREEN ZOOM LIGHTBOX */}
                     {zoomOpen && activeMedia?.type !== 'video' && (
@@ -958,7 +958,7 @@
                         </div>
                     )}
                     {/* LEFT: Media Viewer */}
-                    <div className="w-full lg:w-1/2 h-[65vh] lg:h-screen relative bg-[#0D0D0D] flex flex-col">
+                    <div className="w-full lg:w-1/2 h-[75vh] lg:h-screen relative bg-[#0D0D0D] flex flex-col flex-shrink-0">
                         {/* Main media display — swipeable on mobile */}
                         <div
                             className="flex-1 relative overflow-hidden"
@@ -1053,106 +1053,20 @@
                             </div>
                         )}
                     </div>
+                    {/* RIGHT: Product Info */}
+                    <div className="w-full lg:w-1/2 h-auto lg:h-screen lg:overflow-y-auto flex flex-col relative no-scrollbar" style={{cursor:'auto'}}>
+                        <div className="px-8 py-8 lg:px-12 flex-shrink-0">
+                            {/* Close Button on Desktop */}
+                            <button onClick={onClose} className="hidden lg:block absolute right-8 top-8 p-2 hover:rotate-90 transition-transform duration-500 z-10 bg-[#F0EBE1]"><X className="w-6 h-6" strokeWidth={1.5} /></button>
+                            
+                            <p className="text-[10px] tracking-[0.3em] uppercase text-[#A6957A] font-bold mb-2">{product.category}</p>
+                            <h1 className="font-serif text-3xl md:text-4xl leading-tight tracking-[-0.02em] mb-4 uppercase pr-8">{product.name}</h1>
+                            <div className="flex items-baseline gap-4 mb-6">
+                                <p className="font-serif text-3xl text-[#A6957A]">₹{product.price.toLocaleString('en-IN')}</p>
+                                <span className="text-[10px] tracking-[0.1em] text-green-600 font-bold">FREE Delivery</span>
+                            </div>
 
-                    {/* RIGHT: Product Info — fixed layout: scrollable top, sticky bottom CTA */}
-                    <div className="w-full lg:w-1/2 h-[45vh] lg:h-screen flex flex-col relative" style={{cursor:'auto'}}>
-                        {/* Sticky header */}
-                        <div className="flex justify-between items-center px-8 py-5 border-b border-black/8 flex-shrink-0">
-                            <div className="flex items-center gap-3">
-                                {product.stock === 0 ? (
-                                    <span className="text-[9px] tracking-[0.15em] uppercase text-red-600 font-bold bg-red-50 border border-red-200 px-2 py-0.5">Out of Stock</span>
-                                ) : product.stock < 5 ? (
-                                    <span className="text-[9px] tracking-[0.15em] uppercase text-orange-600 font-bold bg-orange-50 border border-orange-200 px-2 py-0.5">Only {product.stock} left</span>
-                                ) : (
-                                    <span className="text-[9px] tracking-[0.15em] uppercase text-green-600 font-bold bg-green-50 border border-green-200 px-2 py-0.5">✓ In Stock</span>
-                                )}
-                                <span className="text-[9px] tracking-[0.3em] uppercase text-black/30 font-bold">{product.id}</span>
-                            </div>
-                            <button onClick={onClose} className="p-2 hover:rotate-90 transition-transform duration-500"><X className="w-6 h-6" strokeWidth={1.5} /></button>
-                        </div>
-                        {/* Scrollable content */}
-                        <div data-lenis-prevent className="flex-1 overflow-y-auto no-scrollbar">
-                        <div className="px-8 py-6 lg:px-12">
-                            <div className="mb-5">
-                                <p className="text-[10px] tracking-[0.3em] uppercase text-[#A6957A] font-bold mb-2">{product.category}</p>
-                                <h1 className="font-serif text-3xl md:text-4xl leading-tight tracking-[-0.02em] mb-4 uppercase">{product.name}</h1>
-                                <div className="flex items-baseline gap-4">
-                                    <p className="font-serif text-3xl text-[#A6957A]">₹{product.price.toLocaleString('en-IN')}</p>
-                                    <span className="text-[10px] tracking-[0.1em] text-green-600 font-bold">FREE Delivery</span>
-                                </div>
-                            </div>
-                            
-                            {/* Description */}
-                            <div className="border-t border-black/8 pt-5 mb-5">
-                                <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-3">About this Piece</p>
-                                <p className="text-base font-light leading-relaxed text-black/70">{product.desc}</p>
-                            </div>
-                            {/* Pincode checker */}
-                            <PincodeChecker />
-                            {/* Care & Trust */}
-                            <div className="border-t border-black/8 pt-5 mb-5 grid grid-cols-3 gap-3">
-                                <div className="flex flex-col items-center text-center gap-1 p-3 bg-black/3 rounded">
-                                    <svg className="w-5 h-5 text-[#A6957A]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-                                    <span className="text-[8px] tracking-[0.1em] uppercase font-bold text-black/50">Easy Returns<br/>7 Days</span>
-                                </div>
-                                <div className="flex flex-col items-center text-center gap-1 p-3 bg-black/3 rounded">
-                                    <ShieldCheck className="w-5 h-5 text-[#A6957A]" strokeWidth={1.5} />
-                                    <span className="text-[8px] tracking-[0.1em] uppercase font-bold text-black/50">100%<br/>Authentic</span>
-                                </div>
-                                <div className="flex flex-col items-center text-center gap-1 p-3 bg-black/3 rounded">
-                                    <Truck className="w-5 h-5 text-[#A6957A]" strokeWidth={1.5} />
-                                    <span className="text-[8px] tracking-[0.1em] uppercase font-bold text-black/50">Free<br/>Delivery</span>
-                                </div>
-                            </div>
-                            {/* Fabric */}
-                            <div className="border-t border-black/8 pt-5 mb-5">
-                                <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-2">Fabric & Care</p>
-                                <p className="text-sm font-light text-black/60 leading-relaxed">{product.detail || 'Premium quality fabric. Handle with care. Dry clean recommended.'}</p>
-                            </div>
-                            {/* Related */}
-                            {relatedItems.length > 0 && (
-                                <div className="border-t border-black/8 pt-5 mb-8">
-                                    <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-4">You May Also Like</p>
-                                    <div className="grid grid-cols-3 gap-3">
-                                        {relatedItems.slice(0,3).map(item => (
-                                            <div key={item.id} className="cursor-pointer group" onClick={() => { onSelectRelated(item); setSelectedSize(null); setActiveMediaIdx(0); }}>
-                                                <div className="aspect-[3/4] overflow-hidden bg-black/5 mb-2">
-                                                    <img src={item.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                                </div>
-                                                <p className="font-serif text-xs leading-tight truncate">{item.name}</p>
-                                                <p className="text-[9px] text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                            {/* Recently Viewed */}
-                            {(() => {
-                                const ids = JSON.parse(sessionStorage.getItem('tiiha_rv') || '[]');
-                                const rvItems = ids.filter(id => id !== product.id).map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean).slice(0, 4);
-                                if (!rvItems.length) return null;
-                                return (
-                                    <div className="border-t border-black/8 pt-5 mb-8">
-                                        <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-4">Recently Viewed</p>
-                                        <div className="grid grid-cols-4 gap-2">
-                                            {rvItems.map(item => (
-                                                <div key={item.id} className="cursor-pointer group" onClick={() => { onSelectRelated(item); setSelectedSize(null); setActiveMediaIdx(0); }}>
-                                                    <div className="aspect-[3/4] overflow-hidden bg-black/5 mb-1.5">
-                                                        <img src={item.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                                    </div>
-                                                    <p className="font-serif text-[10px] leading-tight truncate">{item.name}</p>
-                                                    <p className="text-[9px] text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</p>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                );
-                            })()}
-                        </div>
-                        </div>
-                        {/* STICKY BOTTOM: Size + CTA */}
-                        <div className="flex-shrink-0 border-t-2 border-black/10 bg-[#F0EBE1] px-8 py-5 lg:px-12">
-                            
+                            {/* Size Selection */}
                             <div className="flex justify-between items-center mb-3">
                                 <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#0D0D0D]">Select Size</span>
                                 <button onClick={() => onSizeGuide && onSizeGuide()} className="text-[9px] tracking-[0.15em] uppercase text-[#A6957A] underline hover:text-[#0D0D0D] transition-colors">Size Guide</button>
@@ -1171,7 +1085,9 @@
                             {selectedSize && product.stock !== undefined && product.stock <= 3 && product.stock > 0 && (
                                 <p className="text-[9px] text-orange-600 font-bold mb-2 tracking-[0.15em] uppercase animate-pulse">⚡ Only {product.stock} left in stock — grab it fast!</p>
                             )}
-                            <div className="flex gap-3 mt-2">
+                            
+                            {/* CTA Buttons */}
+                            <div className="flex gap-3 mt-6 mb-4">
                                 <button onClick={() => { if(selectedSize){onAdd(product,selectedSize);setSelectedSize(null);}else{alert('Please select a size first.');} }}
                                     className={`flex-1 py-4 text-[11px] tracking-[0.3em] uppercase font-bold border-2 flex items-center justify-center gap-3 transition-all ${
                                         selectedSize ? 'border-[#0D0D0D] text-[#0D0D0D] hover:bg-[#0D0D0D] hover:text-white' : 'border-black/15 text-black/25 cursor-not-allowed'
@@ -1185,7 +1101,79 @@
                                     Buy Now <ArrowRight className="w-4 h-4" />
                                 </button>
                             </div>
-                            <p className="text-center text-[9px] text-black/35 tracking-[0.1em] mt-3">✓ Free delivery &nbsp;·&nbsp; ✓ Easy 7-day returns &nbsp;·&nbsp; ✓ 100% authentic</p>
+                            <p className="text-center text-[9px] text-black/35 tracking-[0.1em] mb-8">✓ Free delivery &nbsp;·&nbsp; ✓ Easy 7-day returns &nbsp;·&nbsp; ✓ 100% authentic</p>
+
+                            {/* Description */}
+                            <div className="border-t border-black/8 pt-6 mb-6">
+                                <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-3">About this Piece</p>
+                                <p className="text-base font-light leading-relaxed text-black/70">{product.desc}</p>
+                            </div>
+
+                            {/* Pincode checker */}
+                            <div className="mb-6"><PincodeChecker /></div>
+
+                            {/* Care & Trust */}
+                            <div className="grid grid-cols-3 gap-3 mb-6">
+                                <div className="flex flex-col items-center text-center gap-1 p-3 bg-black/3 rounded">
+                                    <svg className="w-5 h-5 text-[#A6957A]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                                    <span className="text-[8px] tracking-[0.1em] uppercase font-bold text-black/50">Easy Returns<br/>7 Days</span>
+                                </div>
+                                <div className="flex flex-col items-center text-center gap-1 p-3 bg-black/3 rounded">
+                                    <ShieldCheck className="w-5 h-5 text-[#A6957A]" strokeWidth={1.5} />
+                                    <span className="text-[8px] tracking-[0.1em] uppercase font-bold text-black/50">100%<br/>Authentic</span>
+                                </div>
+                                <div className="flex flex-col items-center text-center gap-1 p-3 bg-black/3 rounded">
+                                    <Truck className="w-5 h-5 text-[#A6957A]" strokeWidth={1.5} />
+                                    <span className="text-[8px] tracking-[0.1em] uppercase font-bold text-black/50">Free<br/>Delivery</span>
+                                </div>
+                            </div>
+
+                            {/* Fabric */}
+                            <div className="border-t border-black/8 pt-6 mb-6">
+                                <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-2">Fabric & Care</p>
+                                <p className="text-sm font-light text-black/60 leading-relaxed">{product.detail || 'Premium quality fabric. Handle with care. Dry clean recommended.'}</p>
+                            </div>
+
+                            {/* Related */}
+                            {relatedItems.length > 0 && (
+                                <div className="border-t border-black/8 pt-6 mb-8">
+                                    <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-4">You May Also Like</p>
+                                    <div className="grid grid-cols-3 gap-3">
+                                        {relatedItems.slice(0,3).map(item => (
+                                            <div key={item.id} className="cursor-pointer group" onClick={() => { onSelectRelated(item); setSelectedSize(null); setActiveMediaIdx(0); }}>
+                                                <div className="aspect-[3/4] overflow-hidden bg-black/5 mb-2">
+                                                    <img src={item.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                                </div>
+                                                <p className="font-serif text-xs leading-tight truncate">{item.name}</p>
+                                                <p className="text-[9px] text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* Recently Viewed */}
+                            {(() => {
+                                const ids = JSON.parse(sessionStorage.getItem('tiiha_rv') || '[]');
+                                const rvItems = ids.filter(id => id !== product.id).map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean).slice(0, 4);
+                                if (!rvItems.length) return null;
+                                return (
+                                    <div className="border-t border-black/8 pt-6">
+                                        <p className="text-[10px] tracking-[0.3em] uppercase font-bold text-black/40 mb-4">Recently Viewed</p>
+                                        <div className="grid grid-cols-4 gap-2">
+                                            {rvItems.map(item => (
+                                                <div key={item.id} className="cursor-pointer group" onClick={() => { onSelectRelated(item); setSelectedSize(null); setActiveMediaIdx(0); }}>
+                                                    <div className="aspect-[3/4] overflow-hidden bg-black/5 mb-1.5">
+                                                        <img src={item.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                                    </div>
+                                                    <p className="font-serif text-[10px] leading-tight truncate">{item.name}</p>
+                                                    <p className="text-[9px] text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</p>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                );
+                            })()}
                         </div>
                     </div>
                 </div>
