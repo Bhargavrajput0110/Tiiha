@@ -862,6 +862,7 @@
             const [selectedSize, setSelectedSize] = useState(null);
             const [activeMediaIdx, setActiveMediaIdx] = useState(0);
             const [zoomOpen, setZoomOpen] = useState(false);
+            const touchStartX = useRef(null);
             const { setCursor } = useStore();
             const relatedItems = (propProducts || PRODUCTS).filter(p => p.category === product.category && p.id !== product.id).slice(0, 3);
 
@@ -952,9 +953,21 @@
                         </div>
                     )}
                     {/* LEFT: Media Viewer */}
-                    <div className="w-full lg:w-1/2 h-[55vh] lg:h-screen relative bg-[#0D0D0D] flex flex-col">
-                        {/* Main media display */}
-                        <div className="flex-1 relative overflow-hidden">
+                    <div className="w-full lg:w-1/2 h-[65vh] lg:h-screen relative bg-[#0D0D0D] flex flex-col">
+                        {/* Main media display — swipeable on mobile */}
+                        <div
+                            className="flex-1 relative overflow-hidden"
+                            onTouchStart={e => { touchStartX.current = e.touches[0].clientX; }}
+                            onTouchEnd={e => {
+                                if (touchStartX.current === null) return;
+                                const diff = touchStartX.current - e.changedTouches[0].clientX;
+                                if (Math.abs(diff) > 50) {
+                                    if (diff > 0) setActiveMediaIdx(i => Math.min(mediaItems.length - 1, i + 1));
+                                    else setActiveMediaIdx(i => Math.max(0, i - 1));
+                                }
+                                touchStartX.current = null;
+                            }}
+                        >
                             {activeMedia?.type === 'video' ? (
                                 activeMedia.url.includes('youtube.com') || activeMedia.url.includes('youtu.be') ? (
                                     <iframe
@@ -998,8 +1011,15 @@
                                 </svg>
                                 Tap to zoom
                             </div>
-                            {/* Counter badge */}
-                            <div className="absolute top-6 right-6 bg-black/50 backdrop-blur-sm text-white text-[10px] tracking-[0.2em] px-3 py-1 font-bold">
+                            {/* Dot indicator — mobile only | Number counter — desktop */}
+                            <div className="absolute top-4 right-4 lg:hidden flex gap-1.5 z-20">
+                                {mediaItems.map((_, i) => (
+                                    <button key={i} onClick={() => setActiveMediaIdx(i)}
+                                        className={`rounded-full transition-all duration-300 ${activeMediaIdx === i ? 'bg-white w-5 h-1.5' : 'bg-white/40 w-1.5 h-1.5'}`}
+                                    />
+                                ))}
+                            </div>
+                            <div className="hidden lg:block absolute top-6 right-6 bg-black/50 backdrop-blur-sm text-white text-[10px] tracking-[0.2em] px-3 py-1 font-bold">
                                 {activeMediaIdx + 1} / {mediaItems.length}
                             </div>
                             {/* Mobile close */}
