@@ -1131,42 +1131,40 @@
                 {/* FULLSCREEN ZOOM LIGHTBOX */}
                 {zoomOpen && activeMedia?.type !== 'video' && ReactDOM.createPortal((
                     <div
-                        className="fixed inset-0 z-[999999] bg-black/95 flex items-center justify-center"
+                        className="fixed inset-0 z-[999999] bg-black/95"
                         onClick={() => setZoomOpen(false)}
                     >
                         {/* Close */}
                         <button
-                            className="absolute top-4 right-4 md:top-8 md:right-8 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center z-50 transition-colors"
+                            className="absolute top-4 right-4 md:top-8 md:right-8 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center z-[1000000] transition-colors"
                             onClick={() => setZoomOpen(false)}
                         >
                             <X className="w-6 h-6 text-white" />
                         </button>
                         
                         {/* Image */}
-                        <div className="absolute inset-0 p-4 md:p-16 flex items-center justify-center pointer-events-none">
-                            <img
-                                src={activeMedia?.url}
-                                alt={product.name}
-                                onClick={e => e.stopPropagation()}
-                                className="max-w-full max-h-full object-contain drop-shadow-2xl pointer-events-auto"
-                            />
-                        </div>
+                        <img
+                            src={activeMedia?.url}
+                            alt={product.name}
+                            onClick={e => e.stopPropagation()}
+                            className="absolute inset-0 w-full h-full object-contain p-4 md:p-16 z-[999999]"
+                        />
 
                         {/* Hint */}
-                        <p className="absolute bottom-6 left-0 right-0 text-center text-white/40 text-[10px] tracking-[0.2em] uppercase font-bold pointer-events-none">
+                        <p className="absolute bottom-6 left-0 right-0 text-center text-white/40 text-[10px] tracking-[0.2em] uppercase font-bold pointer-events-none z-[1000000]">
                             Pinch to zoom · Tap outside to close
                         </p>
                         
                         {/* Arrows */}
                         {mediaItems.length > 1 && (<>
                             <button
-                                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center z-50 transition-colors"
+                                className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center z-[1000000] transition-colors"
                                 onClick={e => { e.stopPropagation(); setActiveMediaIdx(i => Math.max(0, i - 1)); }}
                             >
                                 <ChevronLeft className="w-6 h-6 text-white" />
                             </button>
                             <button
-                                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center z-50 transition-colors"
+                                className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center z-[1000000] transition-colors"
                                 onClick={e => { e.stopPropagation(); setActiveMediaIdx(i => Math.min(mediaItems.length - 1, i + 1)); }}
                             >
                                 <ChevronRight className="w-6 h-6 text-white" />
