@@ -1289,7 +1289,7 @@
                     if (!orderData.order_id) {
                         // Fallback for local dev without Netlify
                         const options = {
-                            key: config.razorpay_key_id || 'rzp_live_YOUR_KEY_HERE',
+                            key: window.RAZORPAY_KEY_ID || 'rzp_live_YOUR_KEY_HERE',
                             amount: Math.round(total * 100),
                             currency: 'INR',
                             name: 'Tiiha',
@@ -1309,7 +1309,7 @@
 
                     // 2. Open Razorpay checkout with server-generated order_id
                     const options = {
-                        key: config.razorpay_key_id || 'rzp_live_YOUR_KEY_HERE',
+                        key: window.RAZORPAY_KEY_ID || 'rzp_live_YOUR_KEY_HERE',
                         amount: orderData.amount,
                         currency: orderData.currency,
                         order_id: orderData.order_id,
@@ -1348,7 +1348,7 @@
                     rzp.open();
                 } catch(e) {
                     console.error('Razorpay error', e);
-                    handleOrder();
+                    alert('Could not initialize Razorpay payment. Please check your connection or disable adblockers.');
                     setSubmitting(false);
                 }
             };
