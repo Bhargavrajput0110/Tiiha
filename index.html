@@ -1198,7 +1198,7 @@
             const subtotal = cart.reduce((sum, item) => sum + item.price, 0);
             const { setCursor } = useStore();
             const [checkoutStep, setCheckoutStep] = useState(0);
-            const [form, setForm] = useState({ firstName:'', lastName:'', email:'', phone:'', address:'', city:'', postal:'', card:'', expiry:'', cvv:'' });
+            const [form, setForm] = useState({ firstName:'', lastName:'', email:'', phone:'', address:'', city:'', state:'', postal:'', card:'', expiry:'', cvv:'' });
             const [submitting, setSubmitting] = useState(false);
             const [couponCode, setCouponCode] = useState('');
             const [discount, setDiscount] = useState(0);
