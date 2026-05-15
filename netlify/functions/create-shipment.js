@@ -7,8 +7,8 @@ exports.handler = async (event, context) => {
   }
 
   try {
-    const SHIPROCKET_EMAIL = process.env.SHIPROCKET_EMAIL;
-    const SHIPROCKET_PASSWORD = process.env.SHIPROCKET_PASSWORD;
+    const SHIPROCKET_EMAIL = process.env.SHIPROCKET_EMAIL || 'admin@tiiha.in';
+    const SHIPROCKET_PASSWORD = process.env.SHIPROCKET_PASSWORD || 'AV%lJE3251@bv5YN9Jy8pFJXPEZSGz4G';
 
     if (!SHIPROCKET_EMAIL || !SHIPROCKET_PASSWORD) {
       return {
