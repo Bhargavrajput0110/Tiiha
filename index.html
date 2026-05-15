@@ -1129,7 +1129,7 @@
                 </div>
                 
                 {/* FULLSCREEN ZOOM LIGHTBOX */}
-                {zoomOpen && activeMedia?.type !== 'video' && (
+                {zoomOpen && activeMedia?.type !== 'video' && ReactDOM.createPortal((
                     <div
                         style={{
                             position: 'fixed', inset: 0, zIndex: 999999,
@@ -1181,7 +1181,7 @@
                             </button>
                         </>)}
                     </div>
-                )}
+                ), document.body)}
                 </>
             );
         }
@@ -1773,7 +1773,7 @@
             const [progress, setProgress] = useState(0);
             const [currentPage, setCurrentPage] = useState('home');
             const [cartOpen, setCartOpen] = useState(false);
-            const [selectedProduct, setSelectedProduct] = useState(null);
+            const [selectedProduct, setSelectedProductState] = useState(null);
             const [activeCollection, setActiveCollection] = useState(null);
             const [cart, setCart] = useState([]);
             const [isScrolled, setIsScrolled] = useState(false);
@@ -1810,6 +1810,29 @@
                     })
                     .catch(() => { /* silently fall back to static PRODUCTS */ });
             }, []);
+
+            // Custom hook to handle back button via History API
+            useEffect(() => {
+                const handlePopState = (e) => {
+                    if (selectedProduct) {
+                        setSelectedProductState(null);
+                    } else if (cartOpen) {
+                        setCartOpen(false);
+                    }
+                };
+                window.addEventListener('popstate', handlePopState);
+                return () => window.removeEventListener('popstate', handlePopState);
+            }, [selectedProduct, cartOpen]);
+
+            const setSelectedProduct = (prod) => {
+                if (prod && !selectedProduct) {
+                    window.history.pushState({ product: prod.id }, '');
+                } else if (!prod && selectedProduct && window.history.state?.product) {
+                    window.history.back(); // Native back will trigger popstate and close it
+                    return;
+                }
+                setSelectedProductState(prod);
+            };
 
 
             useEffect(() => {
