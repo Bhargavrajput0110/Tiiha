@@ -46,12 +46,17 @@ exports.handler = async (event, context) => {
     const d = new Date();
     const orderDateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
 
+    const nameParts = (orderData.customer_name || '').trim().split(' ');
+    const firstName = nameParts[0] || 'Customer';
+    const lastName = nameParts.slice(1).join(' ') || 'Name';
+
     // 3. Create Payload
     const payload = {
       order_id: `TIIHA-${Date.now()}`,
       order_date: orderDateStr,
       pickup_location: "warehouse",
-      billing_customer_name: orderData.customer_name,
+      billing_customer_name: firstName,
+      billing_last_name: lastName,
       billing_address: orderData.address,
       billing_city: orderData.city,
       billing_pincode: orderData.zip,
