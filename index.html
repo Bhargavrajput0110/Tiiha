@@ -917,19 +917,26 @@
                                 <X className="w-5 h-5 text-white" />
                             </button>
                             {/* Hint */}
-                            <p className="absolute bottom-6 left-0 right-0 text-center text-[10px] tracking-[0.2em] uppercase text-white/40 font-bold">Pinch to zoom · Tap to close</p>
-                            {/* Zoomable image — browser native pinch zoom works inside overflow container */}
+                            <p className="absolute bottom-6 left-0 right-0 text-center text-[10px] tracking-[0.2em] uppercase text-white/40 font-bold z-10">Pinch to zoom · Tap outside to close</p>
+                            {/* Zoomable image */}
                             <div
-                                className="w-full h-full overflow-auto flex items-center justify-center"
+                                className="relative flex items-center justify-center w-full h-full"
                                 onClick={e => e.stopPropagation()}
                                 style={{ touchAction: 'pinch-zoom' }}
                             >
                                 <img
                                     src={activeMedia?.url}
                                     alt={product.name}
-                                    className="max-w-none w-full h-full object-contain select-none"
-                                    style={{ touchAction: 'pinch-zoom', userSelect: 'none' }}
-                                    onDoubleClick={e => e.stopPropagation()}
+                                    style={{
+                                        maxWidth: '100%',
+                                        maxHeight: '90vh',
+                                        width: 'auto',
+                                        height: 'auto',
+                                        objectFit: 'contain',
+                                        touchAction: 'pinch-zoom',
+                                        userSelect: 'none',
+                                        display: 'block'
+                                    }}
                                     draggable={false}
                                 />
                             </div>
