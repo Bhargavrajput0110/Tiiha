@@ -1245,6 +1245,8 @@
                         body: JSON.stringify({
                             customer_name: `${form.firstName} ${form.lastName}`,
                             customer_email: form.email,
+                            customer_phone: form.phone,
+                            shipping_address: `${form.address}, ${form.city}, ${form.state || ''} ${form.postal}`,
                             total_amount: total,
                             order_items: cart.map(i=>({name:i.name, price:i.price, size:i.size}))
                         })

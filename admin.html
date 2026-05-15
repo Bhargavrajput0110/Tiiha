@@ -50,9 +50,10 @@ tr:hover td{background:#0f0f0f}
       <p class="text-[10px] tracking-[0.4em] uppercase text-white/30 font-bold">Admin Secure Access</p>
     </div>
     <div class="space-y-4">
-      <input type="password" id="admin-pass" placeholder="ENTER ACCESS CODE" class="text-center !bg-transparent border-b border-white/10 !border-x-0 !border-t-0 focus:border-[#A6957A] !rounded-none py-4 text-xl tracking-widest outline-none transition-all duration-500">
-      <button onclick="checkAdminPass()" class="w-full py-4 bg-[#A6957A] text-black font-bold text-[11px] tracking-[0.4em] uppercase hover:bg-white transition-colors duration-500">Authenticate</button>
-      <p id="login-error" class="text-red-500 text-[10px] tracking-widest uppercase opacity-0 transition-opacity">Incorrect Access Code</p>
+      <input type="text" id="admin-id" placeholder="ADMIN ID" class="text-center !bg-transparent border-b border-white/10 !border-x-0 !border-t-0 focus:border-[#A6957A] !rounded-none py-4 text-sm tracking-[0.4em] uppercase outline-none transition-all duration-500">
+      <input type="password" id="admin-pass" placeholder="ACCESS CODE" class="text-center !bg-transparent border-b border-white/10 !border-x-0 !border-t-0 focus:border-[#A6957A] !rounded-none py-4 text-sm tracking-[0.4em] uppercase outline-none transition-all duration-500">
+      <button onclick="checkAdminPass()" class="w-full py-4 bg-[#A6957A] text-black font-bold text-[11px] tracking-[0.4em] uppercase hover:bg-white transition-colors duration-500 mt-4">Authenticate</button>
+      <p id="login-error" class="text-red-500 text-[10px] tracking-widest uppercase opacity-0 transition-opacity">Invalid ID or Access Code</p>
     </div>
   </div>
 </div>
@@ -730,15 +731,17 @@ document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e
 init();
 </script>
 <script>
-  // SECURITY: Admin Password
+  // SECURITY: Admin ID and Password
+  const ADMIN_ID = 'TIIHA_OWNER';
   const ADMIN_PASSWORD = 'TIIHA_ADMIN_2024'; 
 
   function checkAdminPass() {
-    const input = document.getElementById('admin-pass');
+    const idInput = document.getElementById('admin-id');
+    const passInput = document.getElementById('admin-pass');
     const error = document.getElementById('login-error');
     const overlay = document.getElementById('login-overlay');
 
-    if (input.value === ADMIN_PASSWORD) {
+    if (idInput.value === ADMIN_ID && passInput.value === ADMIN_PASSWORD) {
       overlay.style.opacity = '0';
       setTimeout(() => {
         overlay.style.display = 'none';
