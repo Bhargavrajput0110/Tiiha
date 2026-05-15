@@ -350,10 +350,14 @@
                 window.addEventListener('mousemove', moveCursor);
                 let reqId;
                 const render = () => {
-                    cursorDotPos.current.x += (mousePos.current.x - cursorDotPos.current.x) * 0.15;
-                    cursorDotPos.current.y += (mousePos.current.y - cursorDotPos.current.y) * 0.15;
-                    if (cursorRef.current) {
-                        cursorRef.current.style.transform = `translate3d(${cursorDotPos.current.x}px, ${cursorDotPos.current.y}px, 0)`;
+                    const dx = mousePos.current.x - cursorDotPos.current.x;
+                    const dy = mousePos.current.y - cursorDotPos.current.y;
+                    if (Math.abs(dx) > 0.05 || Math.abs(dy) > 0.05) {
+                        cursorDotPos.current.x += dx * 0.15;
+                        cursorDotPos.current.y += dy * 0.15;
+                        if (cursorRef.current) {
+                            cursorRef.current.style.transform = `translate3d(${cursorDotPos.current.x}px, ${cursorDotPos.current.y}px, 0)`;
+                        }
                     }
                     reqId = requestAnimationFrame(render);
                 };
@@ -401,7 +405,7 @@
                         transform: revealed ? 'translateY(0)' : 'translateY(100px)',
                         opacity: revealed ? 1 : 0,
                         transition: `transform 2s cubic-bezier(0.16,1,0.3,1) ${delay}ms, opacity 2s cubic-bezier(0.16,1,0.3,1) ${delay}ms`,
-                        willChange: 'transform'
+                        willChange: 'transform, opacity'
                     }}>
                         {children}
                     </div>
@@ -425,7 +429,7 @@
                         transform: revealed ? 'translateY(0) skewY(0deg)' : 'translateY(120%) skewY(8deg)',
                         opacity: revealed ? 1 : 0,
                         transition: `transform 2s cubic-bezier(0.19,1,0.22,1) ${delay}ms, opacity 2s cubic-bezier(0.19,1,0.22,1) ${delay}ms`,
-                        willChange: 'transform'
+                        willChange: 'transform, opacity'
                     }}>
                         {children}
                     </div>
@@ -1932,7 +1936,7 @@
                         </div>
                         <div className="max-w-[1800px] mx-auto mt-40 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[9px] tracking-[0.3em] opacity-30 uppercase font-light gap-6"><span>© 2026 TIIHA. All Rights Reserved.</span><span className="flex gap-4"><button onClick={() => handlePageChange('terms')}>Terms</button> / <button onClick={() => handlePageChange('privacy')}>Privacy</button></span></div>
                     </footer>
-                    <style>{`@keyframes pageFadeIn { from { opacity: 0; filter: blur(10px); transform: translateY(20px); } to { opacity: 1; filter: blur(0px); transform: translateY(0); } }`}</style>
+                    <style>{`@keyframes pageFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }`}</style>
                 </div>
             );
         }
