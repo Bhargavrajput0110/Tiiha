@@ -903,60 +903,58 @@
             return (
                 <div className="fixed inset-0 z-[200] bg-[#F0EBE1] text-[#0D0D0D] flex flex-col lg:flex-row animate-[pageFadeIn_0.8s_cubic-bezier(0.19,1,0.22,1)]" style={{cursor:'auto'}}>
 
-                    {/* FULLSCREEN ZOOM LIGHTBOX — mobile tap to zoom */}
+                    {/* FULLSCREEN ZOOM LIGHTBOX */}
                     {zoomOpen && activeMedia?.type !== 'video' && (
                         <div
-                            className="fixed inset-0 z-[500] bg-black flex items-center justify-center"
+                            style={{
+                                position: 'fixed', inset: 0, zIndex: 9999,
+                                background: 'rgba(0,0,0,0.97)',
+                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                flexDirection: 'column'
+                            }}
                             onClick={() => setZoomOpen(false)}
                         >
-                            {/* Close button */}
+                            {/* Close */}
                             <button
-                                className="absolute top-5 right-5 z-10 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center"
+                                style={{ position: 'absolute', top: 16, right: 16, background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 10 }}
                                 onClick={() => setZoomOpen(false)}
                             >
-                                <X className="w-5 h-5 text-white" />
+                                <X style={{ width: 20, height: 20, color: 'white' }} />
                             </button>
-                            {/* Hint */}
-                            <p className="absolute bottom-6 left-0 right-0 text-center text-[10px] tracking-[0.2em] uppercase text-white/40 font-bold z-10">Pinch to zoom · Tap outside to close</p>
-                            {/* Zoomable image */}
-                            <div
-                                className="relative flex items-center justify-center w-full h-full"
+                            {/* Image — simplest possible */}
+                            <img
+                                src={activeMedia?.url}
+                                alt={product.name}
                                 onClick={e => e.stopPropagation()}
-                                style={{ touchAction: 'pinch-zoom' }}
-                            >
-                                <img
-                                    src={activeMedia?.url}
-                                    alt={product.name}
-                                    style={{
-                                        maxWidth: '100%',
-                                        maxHeight: '90vh',
-                                        width: 'auto',
-                                        height: 'auto',
-                                        objectFit: 'contain',
-                                        touchAction: 'pinch-zoom',
-                                        userSelect: 'none',
-                                        display: 'block'
-                                    }}
-                                    draggable={false}
-                                />
-                            </div>
-                            {/* Nav arrows in lightbox */}
-                            {mediaItems.filter(m => m.type === 'image').length > 1 && (
-                                <>
-                                    <button
-                                        className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center"
-                                        onClick={e => { e.stopPropagation(); setActiveMediaIdx(i => Math.max(0, i - 1)); }}
-                                    >
-                                        <ChevronLeft className="w-5 h-5 text-white" />
-                                    </button>
-                                    <button
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center"
-                                        onClick={e => { e.stopPropagation(); setActiveMediaIdx(i => Math.min(mediaItems.length - 1, i + 1)); }}
-                                    >
-                                        <ChevronRight className="w-5 h-5 text-white" />
-                                    </button>
-                                </>
-                            )}
+                                style={{
+                                    display: 'block',
+                                    maxWidth: '95vw',
+                                    maxHeight: '85vh',
+                                    width: 'auto',
+                                    height: 'auto',
+                                    objectFit: 'contain',
+                                    borderRadius: 4
+                                }}
+                            />
+                            {/* Hint */}
+                            <p style={{ position: 'absolute', bottom: 20, left: 0, right: 0, textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: 10, letterSpacing: '0.2em', textTransform: 'uppercase', fontWeight: 700 }}>
+                                Pinch to zoom · Tap outside to close
+                            </p>
+                            {/* Arrows */}
+                            {mediaItems.length > 1 && (<>
+                                <button
+                                    style={{ position: 'absolute', left: 8, top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                                    onClick={e => { e.stopPropagation(); setActiveMediaIdx(i => Math.max(0, i - 1)); }}
+                                >
+                                    <ChevronLeft style={{ width: 20, height: 20, color: 'white' }} />
+                                </button>
+                                <button
+                                    style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: '50%', width: 40, height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}
+                                    onClick={e => { e.stopPropagation(); setActiveMediaIdx(i => Math.min(mediaItems.length - 1, i + 1)); }}
+                                >
+                                    <ChevronRight style={{ width: 20, height: 20, color: 'white' }} />
+                                </button>
+                            </>)}
                         </div>
                     )}
                     {/* LEFT: Media Viewer */}
