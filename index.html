@@ -339,7 +339,10 @@
             const mousePos = useRef({ x: window.innerWidth/2, y: window.innerHeight/2 });
             const cursorDotPos = useRef({ x: window.innerWidth/2, y: window.innerHeight/2 });
 
+            const [isTouch, setIsTouch] = useState(false);
             useEffect(() => {
+                setIsTouch('ontouchstart' in window || navigator.maxTouchPoints > 0);
+                
                 const moveCursor = (e) => {
                     mousePos.current = { x: e.clientX, y: e.clientY };
                     if (dotRef.current) dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
@@ -360,6 +363,8 @@
                     cancelAnimationFrame(reqId);
                 };
             }, []);
+
+            if (isTouch) return null;
 
             const variants = {
                 default: 'w-10 h-10 bg-transparent border border-[#A6957A]/40',
@@ -667,8 +672,18 @@
                 <div className="bg-[#0D0D0D] text-[#F0EBE1]">
                     <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden">
                         <div className="absolute inset-0 z-0">
-                            <img src="https://res.cloudinary.com/dlxiy6aiq/image/upload/IMG_4335.JPG_mfcaqp.jpg" className="w-full h-full object-cover filter brightness-[0.4] scale-110 animate-[subtleZoom_30s_ease-out_forwards]" alt="Hero" />
-                            <style>{`@keyframes subtleZoom { to { transform: scale(1); } }`}</style>
+                            <video
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                                className="w-full h-full object-cover"
+                                style={{ filter: 'brightness(0.45)' }}
+                            >
+                                <source src="https://res.cloudinary.com/dlxiy6aiq/video/upload/q_auto/f_auto/v1778839358/Tiiha_-_May_Teaser_Rani_Reel_1_ytbqow.mp4" type="video/mp4" />
+                                {/* Fallback for browsers that don't support video */}
+                                <img src="https://res.cloudinary.com/dlxiy6aiq/image/upload/IMG_4335.JPG_mfcaqp.jpg" className="w-full h-full object-cover" alt="Hero" />
+                            </video>
                         </div>
                         <div className="z-10 w-full px-8 md:px-16 flex flex-col justify-end h-full pb-16 md:pb-24">
                             <RevealText delay={200}>
