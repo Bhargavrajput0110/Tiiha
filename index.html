@@ -1140,6 +1140,8 @@
                         className="fixed inset-0 bg-black/95"
                         style={{ zIndex: 99990 }}
                         onClick={() => setZoomOpen(false)}
+                        onMouseEnter={() => setCursor('close')}
+                        onMouseLeave={() => setCursor('default')}
                     >
                         {/* Close */}
                         <button
@@ -1155,6 +1157,8 @@
                             src={activeMedia?.url}
                             alt={product.name}
                             onClick={e => e.stopPropagation()}
+                            onMouseEnter={() => setCursor('default')}
+                            onMouseLeave={() => setCursor('close')}
                             className="absolute inset-0 m-auto max-w-full max-h-full object-contain p-4 md:p-16"
                             style={{ zIndex: 99995 }}
                         />
@@ -1170,6 +1174,8 @@
                                 className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors cursor-pointer pointer-events-auto"
                                 style={{ zIndex: 99999 }}
                                 onClick={e => { e.stopPropagation(); setActiveMediaIdx(i => Math.max(0, i - 1)); }}
+                                onMouseEnter={() => setCursor('default')}
+                                onMouseLeave={() => setCursor('close')}
                             >
                                 <ChevronLeft className="w-6 h-6 text-white" />
                             </button>
@@ -1177,6 +1183,8 @@
                                 className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors cursor-pointer pointer-events-auto"
                                 style={{ zIndex: 99999 }}
                                 onClick={e => { e.stopPropagation(); setActiveMediaIdx(i => Math.min(mediaItems.length - 1, i + 1)); }}
+                                onMouseEnter={() => setCursor('default')}
+                                onMouseLeave={() => setCursor('close')}
                             >
                                 <ChevronRight className="w-6 h-6 text-white" />
                             </button>
