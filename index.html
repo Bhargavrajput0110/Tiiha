@@ -195,11 +195,9 @@
         const SizeGuideModal = ({ isOpen, onClose }) => {
             if (!isOpen) return null;
             const sizes = [
-                { size: 'XS', bust: '32"', waist: '26"', hips: '35"', bust_cm: '81', waist_cm: '66', hips_cm: '89' },
                 { size: 'S',  bust: '34"', waist: '28"', hips: '37"', bust_cm: '86', waist_cm: '71', hips_cm: '94' },
                 { size: 'M',  bust: '36"', waist: '30"', hips: '39"', bust_cm: '91', waist_cm: '76', hips_cm: '99' },
                 { size: 'L',  bust: '38"', waist: '32"', hips: '41"', bust_cm: '97', waist_cm: '81', hips_cm: '104' },
-                { size: 'XL', bust: '40"', waist: '34"', hips: '43"', bust_cm: '102', waist_cm: '86', hips_cm: '109' },
             ];
             return (
                 <div className="fixed inset-0 z-[600] flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={onClose}>
@@ -1023,7 +1021,7 @@
                                 <button onClick={() => onSizeGuide && onSizeGuide()} className="text-[9px] tracking-[0.15em] uppercase text-[#A6957A] underline hover:text-[#0D0D0D] transition-colors">Size Guide</button>
                             </div>
                             <div className="flex gap-2 flex-wrap mb-3">
-                                {(product.sizes ? product.sizes.split(',').map(s=>s.trim()) : ['XS','S','M','L','XL']).map(size => (
+                                {(product.sizes ? product.sizes.split(',').map(s=>s.trim()) : ['S','M','L']).map(size => (
                                     <button key={size} onClick={() => setSelectedSize(size)}
                                         className={`min-w-[52px] py-2.5 px-3 text-[11px] tracking-[0.1em] uppercase font-bold border-2 transition-all duration-200 rounded ${
                                             selectedSize === size
