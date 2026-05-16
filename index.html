@@ -907,8 +907,15 @@
 
             useEffect(() => {
                 document.body.style.overflow = 'hidden';
-                return () => { document.body.style.overflow = 'unset'; };
+                return () => { 
+                    document.body.style.overflow = 'unset';
+                    setCursor('default');
+                };
             }, []);
+
+            useEffect(() => {
+                if (!zoomOpen) setCursor('default');
+            }, [zoomOpen]);
 
             return (
                 <>
