@@ -333,7 +333,6 @@
 
         const CustomCursor = () => {
             const cursorRef = useRef(null);
-            const dotRef = useRef(null);
             const { cursorVariant, cursorText } = useStore();
             const mousePos = useRef({ x: window.innerWidth/2, y: window.innerHeight/2 });
             const cursorDotPos = useRef({ x: window.innerWidth/2, y: window.innerHeight/2 });
@@ -344,7 +343,6 @@
                 
                 const moveCursor = (e) => {
                     mousePos.current = { x: e.clientX, y: e.clientY };
-                    if (dotRef.current) dotRef.current.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
                 };
                 window.addEventListener('mousemove', moveCursor);
                 let reqId;
@@ -352,8 +350,8 @@
                     const dx = mousePos.current.x - cursorDotPos.current.x;
                     const dy = mousePos.current.y - cursorDotPos.current.y;
                     if (Math.abs(dx) > 0.05 || Math.abs(dy) > 0.05) {
-                        cursorDotPos.current.x += dx * 0.15;
-                        cursorDotPos.current.y += dy * 0.15;
+                        cursorDotPos.current.x += dx * 0.2;
+                        cursorDotPos.current.y += dy * 0.2;
                         if (cursorRef.current) {
                             cursorRef.current.style.transform = `translate3d(${cursorDotPos.current.x}px, ${cursorDotPos.current.y}px, 0)`;
                         }
@@ -370,21 +368,18 @@
             if (isTouch) return null;
 
             const variants = {
-                default: 'w-10 h-10 bg-transparent border border-[#A6957A]/40',
+                default: 'w-5 h-5 bg-[#F0EBE1] border-transparent',
                 text: 'w-24 h-24 bg-[#F0EBE1] text-[#0D0D0D] border-transparent scale-100 mix-blend-normal font-bold shadow-2xl',
                 dot: 'w-2 h-2 bg-[#F0EBE1] border-transparent scale-[4]',
                 close: 'w-16 h-16 bg-[#0D0D0D] border border-[#F0EBE1]/20 text-[#F0EBE1] mix-blend-normal shadow-2xl'
             };
 
             return (
-                <>
-                    <div ref={cursorRef} className={`fixed top-0 left-0 rounded-full pointer-events-none z-[9999] flex items-center justify-center -translate-x-1/2 -translate-y-1/2 transition-[width,height,background-color,border-color,mix-blend-mode] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] mix-blend-difference ${variants[cursorVariant] || variants.default}`}>
-                        <span className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] font-serif uppercase whitespace-nowrap opacity-100 transition-opacity duration-500">
-                            {cursorVariant === 'close' ? <X className="w-6 h-6" /> : cursorText}
-                        </span>
-                    </div>
-                    <div ref={dotRef} className={`fixed top-0 left-0 w-1.5 h-1.5 bg-[#A6957A] rounded-full pointer-events-none z-[9999] mix-blend-difference -translate-x-1/2 -translate-y-1/2 transition-opacity duration-300 ${cursorVariant !== 'default' ? 'opacity-0' : 'opacity-100'}`} />
-                </>
+                <div ref={cursorRef} className={`fixed top-0 left-0 rounded-full pointer-events-none z-[9999] flex items-center justify-center -translate-x-1/2 -translate-y-1/2 transition-[width,height,background-color,border-color,mix-blend-mode] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] mix-blend-difference ${variants[cursorVariant] || variants.default}`}>
+                    <span className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] font-serif uppercase whitespace-nowrap opacity-100 transition-opacity duration-500">
+                        {cursorVariant === 'close' ? <X className="w-6 h-6" /> : cursorText}
+                    </span>
+                </div>
             );
         };
 
