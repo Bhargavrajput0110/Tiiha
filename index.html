@@ -912,7 +912,7 @@
 
             return (
                 <>
-                <div className="fixed inset-0 z-[200] bg-[#F0EBE1] text-[#0D0D0D] flex flex-col lg:flex-row animate-[pageFadeIn_0.8s_cubic-bezier(0.19,1,0.22,1)] overflow-y-auto lg:overflow-hidden no-scrollbar" style={{cursor:'auto'}}>
+                <div data-lenis-prevent className="fixed inset-0 z-[200] bg-[#F0EBE1] text-[#0D0D0D] flex flex-col lg:flex-row animate-[pageFadeIn_0.8s_cubic-bezier(0.19,1,0.22,1)] overflow-y-auto lg:overflow-hidden" style={{cursor:'auto'}}>
                     {/* LEFT: Media Viewer */}
                     <div className="w-full lg:w-1/2 h-[75vh] lg:h-screen relative bg-[#0D0D0D] flex flex-col flex-shrink-0">
                         {/* Main media display — swipeable on mobile */}
@@ -1010,7 +1010,7 @@
                         )}
                     </div>
                     {/* RIGHT: Product Info */}
-                    <div className="w-full lg:w-1/2 h-auto lg:h-screen lg:overflow-y-auto flex flex-col relative no-scrollbar" style={{cursor:'auto'}}>
+                    <div data-lenis-prevent className="w-full lg:w-1/2 h-auto lg:h-screen lg:overflow-y-auto flex flex-col relative scroll-smooth" style={{cursor:'auto'}}>
                         <div className="px-8 py-8 lg:px-12 flex-shrink-0">
                             {/* Close Button on Desktop */}
                             <button onClick={onClose} className="hidden lg:block absolute right-8 top-8 p-2 hover:rotate-90 transition-transform duration-500 z-10 bg-[#F0EBE1]"><X className="w-6 h-6" strokeWidth={1.5} /></button>
