@@ -368,23 +368,17 @@
             if (isTouch) return null;
 
             const variants = {
-                default: 'w-8 h-8 bg-transparent mix-blend-difference',
-                text: 'w-auto h-auto px-6 py-2 bg-transparent text-[#F0EBE1] mix-blend-difference backdrop-blur-sm',
+                default: 'w-5 h-5 bg-[#F0EBE1] border-transparent',
+                text: 'w-24 h-24 bg-[#F0EBE1] text-[#0D0D0D] border-transparent scale-100 mix-blend-normal font-bold shadow-2xl',
                 dot: 'w-2 h-2 bg-[#F0EBE1] border-transparent scale-[4]',
                 close: 'w-16 h-16 bg-[#0D0D0D] border border-[#F0EBE1]/20 text-[#F0EBE1] mix-blend-normal shadow-2xl'
             };
 
             return (
-                <div ref={cursorRef} className={`fixed top-0 left-0 rounded-full pointer-events-none z-[9999] flex items-center justify-center -translate-x-1/2 -translate-y-1/2 transition-[width,height,background-color,border-color,mix-blend-mode,border-radius] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${variants[cursorVariant] || variants.default}`}>
-                    {cursorVariant === 'default' && <Plus className="w-full h-full text-white opacity-80" strokeWidth={1} />}
-                    {cursorVariant === 'close' && <X className="w-6 h-6" />}
-                    {cursorVariant === 'text' && (
-                        <span className="text-[10px] tracking-[0.2em] md:tracking-[0.4em] font-serif uppercase whitespace-nowrap opacity-100 transition-opacity duration-500 flex items-center gap-2">
-                            <span className="text-[#A6957A] font-sans">[</span>
-                            {cursorText}
-                            <span className="text-[#A6957A] font-sans">]</span>
-                        </span>
-                    )}
+                <div ref={cursorRef} className={`fixed top-0 left-0 rounded-full pointer-events-none z-[9999] flex items-center justify-center -translate-x-1/2 -translate-y-1/2 transition-[width,height,background-color,border-color,mix-blend-mode] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] mix-blend-difference ${variants[cursorVariant] || variants.default}`}>
+                    <span className="pointer-events-none text-[10px] tracking-[0.15em] md:tracking-[0.3em] font-serif uppercase whitespace-nowrap opacity-100 transition-opacity duration-500">
+                        {cursorVariant === 'close' ? <X className="w-6 h-6" /> : cursorText}
+                    </span>
                 </div>
             );
         };
@@ -1818,6 +1812,29 @@
                     .catch(() => { /* silently fall back to static PRODUCTS */ });
             }, []);
 
+            // Initialize history state on load
+            useEffect(() => {
+                if (!window.history.state || !window.history.state.page) {
+                    window.history.replaceState({ page: 'home' }, '');
+                }
+            }, []);
+
+            const handlePageChange = (page, skipHistory = false) => {
+                if (page === currentPage) return;
+                if (!skipHistory) {
+                    window.history.pushState({ page }, '');
+                }
+                setPendingPage(page);
+                setIsCurtainActive(true);
+                setTimeout(() => {
+                    setCurrentPage(page);
+                    window.scrollTo(0,0);
+                    setTimeout(() => {
+                        setIsCurtainActive(false);
+                    }, 800);
+                }, 1000);
+            };
+
             // Custom hook to handle back button via History API
             useEffect(() => {
                 const handlePopState = (e) => {
@@ -1825,11 +1842,13 @@
                         setSelectedProductState(null);
                     } else if (cartOpen) {
                         setCartOpen(false);
+                    } else if (e.state && e.state.page) {
+                        handlePageChange(e.state.page, true);
                     }
                 };
                 window.addEventListener('popstate', handlePopState);
                 return () => window.removeEventListener('popstate', handlePopState);
-            }, [selectedProduct, cartOpen]);
+            }, [selectedProduct, cartOpen, currentPage]);
 
             const setSelectedProduct = (prod) => {
                 if (prod && !selectedProduct) {
@@ -1883,18 +1902,6 @@
                 };
             }, []);
 
-            const handlePageChange = (page) => {
-                if (page === currentPage) return;
-                setPendingPage(page);
-                setIsCurtainActive(true);
-                setTimeout(() => {
-                    setCurrentPage(page);
-                    window.scrollTo(0,0);
-                    setTimeout(() => {
-                        setIsCurtainActive(false);
-                    }, 800);
-                }, 1000);
-            };
 
             const goToCollection = (col) => { 
                 setActiveCollection(col); 
