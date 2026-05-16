@@ -1679,7 +1679,7 @@
                             if (index !== -1) setActiveSection(index);
                         }
                     });
-                }, { threshold: 0.2, rootMargin: "-20% 0px -20% 0px" });
+                }, { threshold: 0.2, rootMargin: "-25% 0px -25% 0px" });
                 
                 sectionRefs.forEach(ref => ref.current && observer.observe(ref.current));
                 return () => observer.disconnect();
@@ -1707,10 +1707,15 @@
             ];
 
             return (
-                <div className="min-h-screen bg-[#F0EBE1] text-[#0D0D0D] pt-32 md:pt-48 pb-60 px-6 md:px-16 overflow-hidden relative">
+                <div className="bg-[#F0EBE1] text-[#0D0D0D] pt-32 md:pt-48 pb-60 px-6 md:px-16 relative">
                     {/* Floating Vertical Year */}
                     <div className="fixed left-6 top-1/2 -translate-y-1/2 -rotate-90 origin-left text-[10px] tracking-[1em] font-bold text-black/10 z-0 uppercase pointer-events-none hidden lg:block">
                         Est. Twenty Twenty Six
+                    </div>
+
+                    {/* Subtle Background Watermark */}
+                    <div className="absolute top-[15%] right-[-5%] text-[20vw] font-serif italic text-black/[0.02] select-none pointer-events-none uppercase leading-none z-0">
+                        Authentic
                     </div>
 
                     <div className="max-w-[1800px] mx-auto relative z-10">
@@ -1734,7 +1739,7 @@
                             <div className="lg:col-span-5 relative lg:border-r lg:border-black/10 lg:pr-24 lg:py-24">
                                 <div className="lg:sticky lg:top-40 space-y-12">
                                     {/* Main Image Container */}
-                                    <div className="relative aspect-[3/4] overflow-hidden shadow-2xl bg-neutral-200">
+                                    <div className="relative aspect-[3/4] overflow-hidden shadow-2xl bg-neutral-200 border border-black/5">
                                         {content.map((item, idx) => (
                                             <img 
                                                 key={idx}
@@ -1752,7 +1757,7 @@
                                         </div>
                                     </div>
 
-                                    {/* Active Quote Section - Fills vertical space */}
+                                    {/* Active Quote Section */}
                                     <div className="h-20 relative overflow-hidden hidden lg:block">
                                         {content.map((item, idx) => (
                                             <p key={idx} className={`absolute inset-0 text-xl font-serif italic text-[#A6957A] transition-all duration-700 ${activeSection === idx ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}>
@@ -1777,7 +1782,7 @@
                                     <section 
                                         key={idx}
                                         ref={sectionRefs[idx]}
-                                        className={`min-h-[60vh] lg:min-h-screen flex flex-col justify-center py-24 lg:py-48 border-b border-black/5 last:border-0 transition-opacity duration-700 ${activeSection === idx ? 'opacity-100' : 'opacity-30'}`}
+                                        className={`min-h-[70vh] lg:min-h-screen flex flex-col justify-center py-24 lg:py-48 border-b border-black/5 last:border-0 transition-opacity duration-700 ${activeSection === idx ? 'opacity-100' : 'opacity-30'}`}
                                     >
                                         <div className="max-w-xl">
                                             <span className="text-[10px] tracking-[0.5em] uppercase font-bold text-[#A6957A] block mb-12">Chapter 0{idx + 1}</span>
@@ -1788,7 +1793,7 @@
                                                 {item.text}
                                             </p>
                                             
-                                            {/* Mobile-only secondary image to ensure no space feels empty on mobile */}
+                                            {/* Mobile-only secondary image */}
                                             <div className="lg:hidden w-full aspect-[4/5] mb-12 overflow-hidden shadow-lg">
                                                 <img src={item.image} className="w-full h-full object-cover grayscale" />
                                             </div>
@@ -1804,8 +1809,8 @@
                         </div>
                     </div>
 
-                    {/* Bold Background Watermark */}
-                    <div className="absolute bottom-[-10%] left-[-5%] text-[30vw] font-serif italic text-black/[0.03] select-none pointer-events-none uppercase leading-none z-0">
+                    {/* Large Background Watermark */}
+                    <div className="absolute bottom-[5%] left-[-5%] text-[30vw] font-serif italic text-black/[0.03] select-none pointer-events-none uppercase leading-none z-0">
                         Tiiha
                     </div>
                 </div>
