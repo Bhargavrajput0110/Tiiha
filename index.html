@@ -375,7 +375,7 @@
             };
 
             return (
-                <div ref={cursorRef} className={`fixed top-0 left-0 rounded-full pointer-events-none z-[9999] flex items-center justify-center -translate-x-1/2 -translate-y-1/2 transition-[width,height,background-color,border-color,mix-blend-mode] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] mix-blend-difference ${variants[cursorVariant] || variants.default}`}>
+                <div ref={cursorRef} className={`fixed top-0 left-0 rounded-full pointer-events-none z-[1000000] flex items-center justify-center -translate-x-1/2 -translate-y-1/2 transition-[width,height,background-color,border-color,mix-blend-mode] duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] mix-blend-difference ${variants[cursorVariant] || variants.default}`}>
                     <span className="pointer-events-none text-[10px] tracking-[0.15em] md:tracking-[0.3em] font-serif uppercase whitespace-nowrap opacity-100 transition-opacity duration-500">
                         {cursorVariant === 'close' ? <X className="w-6 h-6" /> : cursorText}
                     </span>
