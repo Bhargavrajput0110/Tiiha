@@ -1667,141 +1667,71 @@
         }
 
         function ManifestoPage() {
-            const [activeSection, setActiveSection] = useState(0);
-            const sectionRefs = useRef([]);
-            
             useEffect(() => {
                 window.scrollTo(0,0);
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const index = sectionRefs.current.findIndex(el => el === entry.target);
-                            if (index !== -1) setActiveSection(index);
-                        }
-                    });
-                }, { threshold: 0.1, rootMargin: "-30% 0px -30% 0px" });
-                
-                const elements = sectionRefs.current;
-                elements.forEach(el => el && observer.observe(el));
-                return () => observer.disconnect();
             }, []);
-
-            const content = [
-                {
-                    title: "Intention",
-                    text: "The name carries the initials of its founder: Ti from Tilokani, Ha from Hari. The double 'i' was added with intention, a small detail, placed deliberately, because at Tiiha, that is exactly where the difference lives. In the details. That belief runs through everything we make.",
-                    image: "https://res.cloudinary.com/dlxiy6aiq/image/upload/IMG_4335.JPG_mfcaqp.jpg",
-                    quote: "A choice that is deliberate."
-                },
-                {
-                    title: "Language",
-                    text: "We are a women's clothing brand rooted in the belief that fashion is not a trend, it is a language. The way you dress is the way you choose to be seen, and every woman deserves to be seen exactly as she intends. Our collections span the breadth of a woman's life: the evenings that call for something extraordinary, the days that ask for ease, and the nights when confidence is the only accessory you need.",
-                    image: "https://res.cloudinary.com/dlxiy6aiq/image/upload/IMG_4301.JPG_ojvsel.jpg",
-                    quote: "Fashion is a conversation."
-                },
-                {
-                    title: "Craftsmanship",
-                    text: "At the heart of Tiiha is craftsmanship. Each piece is thoughtfully designed, carefully sourced, and made to last beyond a season. We do not believe in fast fashion. We believe in the kind of clothing that becomes part of your story. This is what Tiiha stands for: confidence, intention, and timeless style worn by real women, living real lives.",
-                    image: "https://res.cloudinary.com/dlxiy6aiq/image/upload/IMG_4340.JPG_ejofcw.jpg",
-                    quote: "Made to last beyond a season."
-                }
-            ];
 
             return (
                 <div className="bg-[#F0EBE1] text-[#0D0D0D] pt-24 md:pt-32 pb-40 px-6 md:px-12 relative">
-                    {/* Background floating text */}
-                    <div className="absolute top-[10%] right-0 text-[15vw] font-serif italic text-black/[0.02] select-none pointer-events-none uppercase leading-none z-0">
-                        Authentic
-                    </div>
-
                     <div className="max-w-[1600px] mx-auto relative z-10">
-                        {/* Header Section */}
-                        <div className="mb-20 md:mb-32">
+                        
+                        <div className="mb-12 md:mb-20">
                             <RevealText>
-                                <span className="text-[10px] tracking-[0.3em] uppercase font-bold text-[#A6957A] block mb-6">The Manifesto</span>
+                                <span className="text-[10px] tracking-[0.3em] uppercase font-bold text-[#A6957A] block mb-6">The Story of Tiiha</span>
                             </RevealText>
                             <RevealText delay={200}>
-                                <h1 className="font-serif text-5xl md:text-7xl lg:text-[7vw] leading-[0.9] tracking-[-0.03em] uppercase">
-                                    Personal<br/>
-                                    <span className="italic text-[#A6957A] md:ml-[10vw]">Intent</span>
+                                <h1 className="font-serif text-4xl md:text-5xl lg:text-[4.5vw] leading-[1.1] tracking-[-0.02em] uppercase">
+                                    Made with Intent.<br/>
+                                    <span className="italic text-[#A6957A] lg:ml-8">Worn with Confidence.</span>
                                 </h1>
                             </RevealText>
                         </div>
 
-                        {/* Main Grid - Tighter layout */}
-                        <div className="grid grid-cols-1 lg:grid-cols-10 gap-12 lg:gap-20 border-t border-black/10 pt-12 md:pt-20">
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
                             
-                            {/* LEFT: Visual Column - Shifted more to left */}
-                            <div className="hidden lg:block lg:col-span-4 relative">
-                                <div className="lg:sticky lg:top-32 space-y-8">
-                                    {/* Main Image Container */}
+                            {/* Image Column */}
+                            <div className="lg:col-span-5 relative lg:sticky lg:top-32 order-first lg:order-last">
+                                <Reveal delay={300}>
                                     <div className="relative aspect-[4/5] overflow-hidden shadow-xl bg-neutral-200 border border-black/5">
-                                        {content.map((item, idx) => (
-                                            <img 
-                                                key={idx}
-                                                src={item.image} 
-                                                className={`absolute inset-0 w-full h-full object-cover grayscale transition-all duration-1000 ${activeSection === idx ? 'opacity-100 scale-100' : 'opacity-0 scale-105'}`} 
-                                                alt={item.title} 
-                                            />
-                                        ))}
-                                        <div className="absolute inset-0 bg-black/5" />
-                                        
-                                        {/* Minimal Indicator */}
-                                        <div className="absolute top-6 left-6 flex items-baseline gap-2">
-                                            <span className="text-2xl font-serif italic text-white/90">0{activeSection + 1}</span>
-                                            <span className="text-[9px] tracking-[0.2em] font-bold text-white/40 uppercase">/ 03</span>
-                                        </div>
-                                    </div>
-
-                                    {/* Quote - Tighter spacing */}
-                                    <div className="h-12 relative overflow-hidden hidden lg:block">
-                                        {content.map((item, idx) => (
-                                            <p key={idx} className={`absolute inset-0 text-lg font-serif italic text-[#A6957A] transition-all duration-500 ${activeSection === idx ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}>
-                                                "{item.quote}"
-                                            </p>
-                                        ))}
-                                    </div>
-
-                                    {/* Progress */}
-                                    <div className="w-full h-[1px] bg-black/5 relative">
-                                        <div 
-                                            className="absolute top-0 left-0 h-full bg-[#A6957A] transition-all duration-500"
-                                            style={{ width: `${((activeSection + 1) / 3) * 100}%` }}
+                                        <img 
+                                            src="https://res.cloudinary.com/dlxiy6aiq/image/upload/IMG_4335.JPG_mfcaqp.jpg" 
+                                            className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" 
+                                            alt="The Story of Tiiha" 
                                         />
+                                        <div className="absolute inset-0 bg-black/5" />
                                     </div>
-                                </div>
+                                </Reveal>
                             </div>
 
-                            {/* RIGHT: Text Column */}
-                            <div className="lg:col-span-6 flex flex-col">
-                                {content.map((item, idx) => (
-                                    <section 
-                                        key={idx}
-                                        ref={el => sectionRefs.current[idx] = el}
-                                        className={`min-h-[50vh] lg:min-h-[80vh] flex flex-col justify-center py-16 md:py-24 border-b border-black/5 last:border-0 transition-opacity duration-500 ${activeSection === idx ? 'opacity-100' : 'opacity-20'}`}
-                                    >
-                                        <div className="max-w-xl">
-                                            <span className="text-[9px] tracking-[0.4em] uppercase font-bold text-[#A6957A] block mb-8">Chapter 0{idx + 1}</span>
-                                            <h2 className="font-serif text-3xl md:text-5xl lg:text-6xl leading-[1.1] tracking-tight uppercase mb-8">
-                                                {item.title}
-                                            </h2>
-                                            <p className="text-base md:text-xl font-light leading-relaxed text-black/70 mb-8">
-                                                {item.text}
-                                            </p>
-                                            
-                                            {/* Mobile image */}
-                                            <div className="lg:hidden w-full aspect-[4/5] mb-8 overflow-hidden">
-                                                <img src={item.image} className="w-full h-full object-cover grayscale" />
-                                            </div>
-
-                                            <div className="flex items-center gap-4">
-                                                <div className="w-8 h-[1px] bg-black/20" />
-                                                <span className="text-[9px] tracking-[0.2em] uppercase font-bold text-black/40">Keep Scrolling</span>
-                                            </div>
-                                        </div>
-                                    </section>
-                                ))}
+                            {/* Text Column */}
+                            <div className="lg:col-span-7 flex flex-col space-y-8 md:space-y-10 order-last lg:order-first border-t border-black/10 pt-8 md:pt-12">
+                                <Reveal delay={400}>
+                                    <p className="text-base md:text-xl font-light leading-relaxed text-black/80">
+                                        Tiiha began the way most meaningful things do, with something personal. The name carries the initials of its founder: Ti from Tilokani, Ha from Hari. The double 'i' was added with intention, a small detail, placed deliberately, because at Tiiha, that is exactly where the difference lives. In the details. That belief runs through everything we make.
+                                    </p>
+                                </Reveal>
+                                <Reveal delay={500}>
+                                    <p className="text-base md:text-xl font-light leading-relaxed text-black/80">
+                                        We are a women's clothing brand rooted in the belief that fashion is not a trend, it is a language. The way you dress is the way you choose to be seen, and every woman deserves to be seen exactly as she intends.
+                                    </p>
+                                </Reveal>
+                                <Reveal delay={600}>
+                                    <p className="text-base md:text-xl font-light leading-relaxed text-black/80">
+                                        Our collections span the breadth of a woman's life: the evenings that call for something extraordinary, the days that ask for ease, and the nights when confidence is the only accessory you need. We make clothes for all of these moments.
+                                    </p>
+                                </Reveal>
+                                <Reveal delay={700}>
+                                    <p className="text-base md:text-xl font-light leading-relaxed text-black/80">
+                                        At the heart of Tiiha is craftsmanship. Each piece is thoughtfully designed, carefully sourced, and made to last beyond a season. We do not believe in fast fashion. We believe in the kind of clothing that becomes part of your story.
+                                    </p>
+                                </Reveal>
+                                <Reveal delay={800}>
+                                    <p className="text-lg md:text-2xl font-serif italic text-[#A6957A] leading-relaxed pt-6 border-t border-black/10">
+                                        This is what Tiiha stands for: confidence, intention, and timeless style worn by real women, living real lives.
+                                    </p>
+                                </Reveal>
                             </div>
+                            
                         </div>
                     </div>
 
