@@ -1668,20 +1668,21 @@
 
         function ManifestoPage() {
             const [activeSection, setActiveSection] = useState(0);
-            const sectionRefs = [useRef(null), useRef(null), useRef(null)];
+            const sectionRefs = useRef([]);
             
             useEffect(() => {
                 window.scrollTo(0,0);
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach(entry => {
                         if (entry.isIntersecting) {
-                            const index = sectionRefs.findIndex(ref => ref.current === entry.target);
+                            const index = sectionRefs.current.findIndex(el => el === entry.target);
                             if (index !== -1) setActiveSection(index);
                         }
                     });
-                }, { threshold: 0.3, rootMargin: "-20% 0px -20% 0px" });
+                }, { threshold: 0.1, rootMargin: "-30% 0px -30% 0px" });
                 
-                sectionRefs.forEach(ref => ref.current && observer.observe(ref.current));
+                const elements = sectionRefs.current;
+                elements.forEach(el => el && observer.observe(el));
                 return () => observer.disconnect();
             }, []);
 
@@ -1776,7 +1777,7 @@
                                 {content.map((item, idx) => (
                                     <section 
                                         key={idx}
-                                        ref={sectionRefs[idx]}
+                                        ref={el => sectionRefs.current[idx] = el}
                                         className={`min-h-[50vh] lg:min-h-[80vh] flex flex-col justify-center py-16 md:py-24 border-b border-black/5 last:border-0 transition-opacity duration-500 ${activeSection === idx ? 'opacity-100' : 'opacity-20'}`}
                                     >
                                         <div className="max-w-xl">
