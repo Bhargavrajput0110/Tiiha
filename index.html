@@ -240,7 +240,7 @@
             );
         };
 
-        const BackToTop = () => {
+        const BackToTop = ({ hide }) => {
             const [visible, setVisible] = useState(false);
             useEffect(() => {
                 const onScroll = () => setVisible(window.scrollY > 600);
@@ -250,7 +250,7 @@
             return (
                 <button
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    className={`fixed bottom-28 right-6 z-[400] w-11 h-11 bg-[#0D0D0D] text-[#F0EBE1] rounded-full flex items-center justify-center shadow-xl hover:bg-[#A6957A] transition-all duration-500 hover:scale-110 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+                    className={`fixed bottom-28 right-6 z-[400] w-11 h-11 bg-[#0D0D0D] text-[#F0EBE1] rounded-full flex items-center justify-center shadow-xl hover:bg-[#A6957A] transition-all duration-500 hover:scale-110 ${visible && !hide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
                     title="Back to top"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
@@ -1812,9 +1812,10 @@
                     { title: "2. How We Use Your Information", content: "<p>– To process and fulfil your orders<br>– To communicate shipping updates and order confirmations<br>– To personalise your shopping experience<br>– To send you relevant offers, new arrivals, and brand updates (only if you've opted in)<br>– To improve our website and services</p>" },
                     { title: "3. Sharing Your Information", content: "<p>We do not sell or rent your personal data to third parties. We may share your data with trusted service providers such as payment gateways and courier partners solely to fulfil your orders. All partners are bound by confidentiality.</p>" },
                     { title: "4. Cookies", content: "<p>Our website uses cookies to improve your browsing experience. You may disable cookies through your browser settings, though some features of the site may be affected.</p>" },
-                    { title: "5. Your Rights", content: "<p>You have the right to access, correct, or delete your personal data at any time. To make a request, please contact us at info@tiiha.in.</p>" },
+                    { title: "5. Your Rights", content: "<p>You have the right to access, correct, or delete your personal data at any time. To make a request, please contact us at hello@tiiha.in.</p>" },
                     { title: "6. Changes to This Policy", content: "<p>We may update this policy periodically. Any changes will be posted on this page with a revised date. Continued use of the site after changes constitutes acceptance of the updated policy.</p>" },
-                    { title: "8. Contact Us", content: "<p>For privacy-related queries, write to us at info@tiiha.in or reach out to +91 92135 78396</p>" }
+                    { title: "7. Data Security", content: "<p>We implement appropriate technical and organisational measures to protect your personal data against unauthorised access, alteration, disclosure, or destruction. While we strive to use commercially acceptable means to protect your information, no method of transmission over the internet is 100% secure.</p>" },
+                    { title: "8. Contact Us", content: "<p>For privacy-related queries, write to us at hello@tiiha.in or reach out to +91 92135 78396</p>" }
                 ]
             },
             terms: {
@@ -1830,7 +1831,7 @@
                     { title: "7. Intellectual Property", content: "<p>All content on the Tiiha website, including text, images, logos, and designs, is the property of Tiiha and protected by applicable intellectual property laws. No content may be reproduced or used without prior written permission.</p>" },
                     { title: "8. Limitation of Liability", content: "<p>Tiiha shall not be held liable for any indirect, incidental, or consequential damages arising from the use of our products or website. Our liability is limited to the value of the product purchased.</p>" },
                     { title: "9. Governing Law", content: "<p>These terms shall be governed by and construed in accordance with the laws of India. Any disputes shall be subject to the jurisdiction of the courts in Vadodara, India.</p>" },
-                    { title: "10. Contact", content: "<p>For any queries regarding these terms, please contact us at info@tiiha.in.</p>" }
+                    { title: "10. Contact", content: "<p>For any queries regarding these terms, please contact us at hello@tiiha.in.</p>" }
                 ]
             },
             faqs: {
@@ -1860,7 +1861,7 @@
                 sections: [
                     { title: "", content: "<p>We want you to love every Tiiha piece. If something isn't right, we're here to make it right.</p>" },
                     { title: "Return Eligibility", content: "<p>Returns are accepted within 7 days of the delivery date, provided the following conditions are met:<br>– The item is unused, unworn, and unwashed<br>– Original tags are intact and attached<br>– The item is in its original packaging<br>– A valid proof of purchase (order confirmation or invoice) is provided<br>The following items are not eligible for return: innerwear, accessories, items marked as 'Final Sale', and products that have been altered or damaged post-delivery.</p>" },
-                    { title: "How to Initiate a Return", content: "<p>– Email us at info@tiiha.in or reach us via the Contact Us page within 7 days of delivery<br>– Mention your order number and reason for return<br>– Our team will review your request and respond within 2 business days<br>– Once approved, you'll receive instructions for the return pickup or drop-off</p>" },
+                    { title: "How to Initiate a Return", content: "<p>– Email us at hello@tiiha.in or reach us via the Contact Us page within 7 days of delivery<br>– Mention your order number and reason for return<br>– Our team will review your request and respond within 2 business days<br>– Once approved, you'll receive instructions for the return pickup or drop-off</p>" },
                     { title: "Exchanges", content: "<p>We offer exchanges for a different size or colour, subject to availability. Exchanges follow the same eligibility criteria as returns and must be initiated within 7 days of delivery.</p>" },
                     { title: "Refunds", content: "<p>Approved refunds will be processed within 7–10 business days after we receive and inspect the returned item. Refunds are issued to the original payment method. Shipping fees are non-refundable unless the return is due to a defective or incorrect item.</p>" },
                     { title: "Defective or Wrong Items", content: "<p>If you receive a defective or incorrect item, please contact us within 24 hours of delivery with clear photographs. We will arrange a replacement or full refund at no additional cost to you.</p>" }

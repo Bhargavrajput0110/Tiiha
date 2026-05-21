@@ -108,6 +108,7 @@ app.post('/api/create-shipment', async (req, res) => {
     }
 });
 
+
 const PORT = process.env.PORT || 3000;
 
 // Helper: Generate order ID
@@ -121,11 +122,6 @@ function generateOrderId() {
   const ss = String(date.getSeconds()).padStart(2, '0');
   return `ORD-${yyyy}${mm}${dd}-${hh}${min}${ss}-${Math.floor(Math.random() * 1000)}`;
 }
-
-// Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', shiprocket: SHIPROCKET_EMAIL ? 'configured' : 'missing credentials' });
-});
 
 // Create order (called after Razorpay payment success)
 app.post('/api/orders', async (req, res) => {
