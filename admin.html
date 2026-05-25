@@ -439,7 +439,8 @@ function closeProdModal(){document.getElementById('prod-modal').classList.remove
 document.getElementById('prod-form').addEventListener('submit',async e=>{
   e.preventDefault();
   const editId=document.getElementById('prod-edit-id').value;
-  const galleryUrls=[1,2,3,4,5].map(n=>document.getElementById('pf-g'+n).value.trim()).filter(Boolean);
+  const rawGallery=[1,2,3,4,5].map(n=>document.getElementById('pf-g'+n).value.trim()).filter(Boolean);
+  const galleryUrls=[...new Set(rawGallery.flatMap(url=>url.split(/[\s,]+/)).filter(Boolean))].slice(0,5);
   const data={
     id:document.getElementById('pf-id').value,
     name:document.getElementById('pf-name').value,
