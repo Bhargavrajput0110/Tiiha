@@ -33,6 +33,15 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', shiprocket: SHIPROCKET_EMAIL ? 'configured' : 'missing credentials' });
 });
 
+// Configuration endpoint
+app.get('/api/get-config', (req, res) => {
+  res.json({
+    razorpay_key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_fallback_id',
+    ga_measurement_id: process.env.GA_MEASUREMENT_ID || process.env.GOOGLE_ANALYTICS_ID || ''
+  });
+});
+
+
 app.post('/api/create-shipment', async (req, res) => {
     try {
         if (!SHIPROCKET_EMAIL || !SHIPROCKET_PASSWORD) {

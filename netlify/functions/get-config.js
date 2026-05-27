@@ -6,7 +6,9 @@ exports.handler = async (event, context) => {
       'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({
-      razorpay_key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_fallback_id'
+      razorpay_key_id: process.env.RAZORPAY_KEY_ID || 'rzp_test_fallback_id',
+      ga_measurement_id: process.env.GA_MEASUREMENT_ID || process.env.GOOGLE_ANALYTICS_ID || ''
     })
   };
 };
+

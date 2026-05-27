@@ -25,8 +25,7 @@
     <link rel="dns-prefetch" href="https://res.cloudinary.com">
     <link rel="dns-prefetch" href="https://checkout.razorpay.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Google Analytics: Add your Measurement ID below when ready -->
-    <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script> -->
+    <!-- Google Analytics (Loaded Dynamically) -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -1917,13 +1916,63 @@
             const [config, setConfig] = useState({ razorpay_key_id: '' });
             const { setCursor } = useStore();
 
+            // Dynamic Google Analytics Loader
+            const initGoogleAnalytics = (gaId) => {
+                if (!gaId) return;
+                if (window.gtag || document.querySelector(`script[src*="googletagmanager.com/gtag/js?id=${gaId}"]`)) {
+                    return;
+                }
+                const script = document.createElement('script');
+                script.async = true;
+                script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+                document.head.appendChild(script);
+
+                window.dataLayer = window.dataLayer || [];
+                window.gtag = function() { dataLayer.push(arguments); };
+                window.gtag('js', new Date());
+                window.gtag('config', gaId);
+                console.log('Google Analytics dynamically initialized with ID:', gaId);
+            };
+
             // Fetch Configuration & Live Products
             useEffect(() => {
                 // Fetch Public Config
                 fetch('/api/get-config')
                     .then(r => r.json())
-                    .then(data => setConfig(data))
-                    .catch(e => console.error('Config fetch error:', e));
+                    .then(data => {
+                        setConfig(data);
+                        if (data.ga_measurement_id) {
+                            initGoogleAnalytics(data.ga_measurement_id);
+                        } else {
+                            // Fallback to Supabase site_settings table
+                            window.__tiihaSupabase
+                                .from('site_settings')
+                                .select('value')
+                                .eq('key', 'analytics_ga_id')
+                                .single()
+                                .then(({ data: dbData, error }) => {
+                                    if (!error && dbData && dbData.value) {
+                                        initGoogleAnalytics(dbData.value);
+                                    }
+                                })
+                                .catch(() => {});
+                        }
+                    })
+                    .catch(e => {
+                        console.error('Config fetch error:', e);
+                        // Fallback to Supabase site_settings if API fails
+                        window.__tiihaSupabase
+                            .from('site_settings')
+                            .select('value')
+                            .eq('key', 'analytics_ga_id')
+                            .single()
+                            .then(({ data: dbData, error }) => {
+                                if (!error && dbData && dbData.value) {
+                                    initGoogleAnalytics(dbData.value);
+                                }
+                            })
+                            .catch(() => {});
+                    });
 
                 // Fetch Products
                 fetch('/api/products')
