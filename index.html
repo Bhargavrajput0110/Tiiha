@@ -695,7 +695,7 @@
                             >
                                 <source src="https://res.cloudinary.com/dlxiy6aiq/video/upload/q_auto/f_auto/v1778839358/Tiiha_-_May_Teaser_Rani_Reel_1_ytbqow.mp4" type="video/mp4" />
                                 {/* Fallback for browsers that don't support video */}
-                                <img src="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg" className="w-full h-full object-cover" alt="Hero" loading="lazy" />
+                                <img src="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg" className="w-full h-full object-cover" alt="Hero" fetchpriority="high" />
                             </video>
                         </div>
                         <div className="z-10 w-full px-6 md:px-16 flex flex-col justify-end h-full pb-12 md:pb-24">
@@ -734,8 +734,8 @@
                                         <Reveal delay={index * 200} className="">
                                             <div className="group cursor-pointer md:cursor-none flex flex-col h-full" onClick={() => onSelect(prod)} onMouseEnter={() => setCursor('text', 'VIEW')} onMouseLeave={() => setCursor('default')}>
                                              <div className="aspect-[3/4] bg-neutral-200 w-full overflow-hidden relative mb-4 md:mb-10 shadow-xl border border-black/5">
-                                                    <img src={prod.image} className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-0" alt={prod.name} />
-                                                    <img src={prod.hoverImage} className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700 group-hover:opacity-100" alt={prod.name} />
+                                                    <img src={prod.image} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-0" alt={prod.name} />
+                                                    <img src={prod.hoverImage} loading="lazy" className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700 group-hover:opacity-100" alt={prod.name} />
                                                     {/* Wishlist heart */}
                                                     <button onClick={(e) => { e.stopPropagation(); toggleWishlist(prod.id); }} className="absolute top-4 right-4 z-10 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md transition-transform duration-300 hover:scale-110">
                                                         {isWishlisted(prod.id) ? <HeartFilled className="w-4 h-4 text-[#A6957A]" /> : <Heart className="w-4 h-4 text-black/40" />}
@@ -777,7 +777,7 @@
                                             onMouseLeave={() => setCursor('default')}
                                         >
                                             {/* Background Image */}
-                                            <img src={col.image} alt={col.name} className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-[1.5s] group-hover:scale-110 scale-105" />
+                                            <img src={col.image} alt={col.name} loading="lazy" className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-[1.5s] group-hover:scale-110 scale-105" />
                                             {/* Dark overlay */}
                                             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/10 group-hover:from-black/90 transition-all duration-700" />
                                             {/* Content always visible on mobile */}
@@ -1112,7 +1112,7 @@
                                         {relatedItems.slice(0,3).map(item => (
                                             <div key={item.id} className="cursor-pointer group" onClick={() => { onSelectRelated(item); setSelectedSize(null); setActiveMediaIdx(0); }}>
                                                 <div className="aspect-[3/4] overflow-hidden bg-black/5 mb-2">
-                                                    <img src={item.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                                    <img src={item.image} loading="lazy" alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                                 </div>
                                                 <p className="font-serif text-xs leading-tight truncate">{item.name}</p>
                                                 <p className="text-[9px] text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</p>
@@ -1134,7 +1134,7 @@
                                             {rvItems.map(item => (
                                                 <div key={item.id} className="cursor-pointer group" onClick={() => { onSelectRelated(item); setSelectedSize(null); setActiveMediaIdx(0); }}>
                                                     <div className="aspect-[3/4] overflow-hidden bg-black/5 mb-1.5">
-                                                        <img src={item.image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                                        <img src={item.image} loading="lazy" alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                                     </div>
                                                     <p className="font-serif text-[10px] leading-tight truncate">{item.name}</p>
                                                     <p className="text-[9px] text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</p>
@@ -1415,7 +1415,7 @@
                                     ) : cart.map((item, i) => (
                                         <div key={i} className="flex gap-4 pb-6 border-b border-black/5 last:border-0">
                                             <div className="w-20 h-28 bg-black/5 overflow-hidden flex-shrink-0 rounded-sm">
-                                                <img src={item.image} className="w-full h-full object-cover" />
+                                                <img src={item.image} loading="lazy" alt={item.name} className="w-full h-full object-cover" />
                                             </div>
                                             <div className="flex-1 flex flex-col justify-between min-w-0">
                                                 <div>
@@ -2085,6 +2085,156 @@
             }, []);
 
 
+            // Dynamic Head Management (SEO Optimization)
+            useEffect(() => {
+                let title = "Tiiha | Made with Intent!";
+                let description = "Tiiha — Made with intent! Shop premium women's clothing: festive wear, summer dresses, and party outfits. Free delivery across India.";
+                let ogImage = "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778870332/Tiiha_Logo_-_Ivory_BG_Black_1_jkdbmw.png";
+
+                if (selectedProduct) {
+                    title = `${selectedProduct.name} | Tiiha`;
+                    description = selectedProduct.desc || `Shop ${selectedProduct.name} at Tiiha. ${selectedProduct.detail || ''}`;
+                    if (selectedProduct.image) {
+                        ogImage = selectedProduct.image;
+                    }
+                } else {
+                    switch (currentPage) {
+                        case 'home':
+                            title = "Tiiha | Made with Intent!";
+                            description = "Tiiha — Made with intent! Shop premium women's clothing: festive wear, summer dresses, and party outfits. Free delivery across India.";
+                            break;
+                        case 'shop':
+                            if (activeCollection) {
+                                title = `${activeCollection.name} | Tiiha`;
+                                description = activeCollection.desc || `Explore the curated ${activeCollection.name} collection at Tiiha. Free shipping across India.`;
+                            } else {
+                                title = "Collections & Shop | Tiiha";
+                                description = "Browse our full range of premium womenswear, including the Summer Edit, Party Edit, and Festive Edit. Quality you can feel.";
+                            }
+                            break;
+                        case 'about':
+                            title = "Our Manifesto & Story | Tiiha";
+                            description = "Learn about the Tiiha philosophy: architecture, intention, and slow luxury womenswear designed to last.";
+                            break;
+                        case 'contact':
+                            title = "Contact Us & Support | Tiiha";
+                            description = "Get in touch with the Tiiha support team for styling help, sizing guides, and order tracking support.";
+                            break;
+                        case 'track':
+                            title = "Track Your Order | Tiiha";
+                            description = "Enter your order ID to track the real-time shipping status of your Tiiha order.";
+                            break;
+                        case 'shipping':
+                            title = "Shipping Policy | Tiiha";
+                            description = "Learn about Tiiha's free shipping options, delivery times, and courier partners.";
+                            break;
+                        case 'returns':
+                            title = "Returns & Exchanges | Tiiha";
+                            description = "Read our hassle-free 7-day return and exchange policy for Tiiha orders.";
+                            break;
+                        case 'faqs':
+                            title = "Frequently Asked Questions | Tiiha";
+                            description = "Find answers to sizing, payment options, shipping times, and other common questions about Tiiha.";
+                            break;
+                        default:
+                            title = "Tiiha | Made with Intent!";
+                    }
+                }
+
+                // Update head tags
+                document.title = title;
+                
+                const updateMeta = (selector, attr, val) => {
+                    const el = document.querySelector(selector);
+                    if (el) el.setAttribute(attr, val);
+                };
+
+                updateMeta('meta[name="description"]', 'content', description);
+                updateMeta('meta[property="og:title"]', 'content', title);
+                updateMeta('meta[property="og:description"]', 'content', description);
+                updateMeta('meta[property="og:image"]', 'content', ogImage);
+                updateMeta('meta[name="twitter:title"]', 'content', title);
+                updateMeta('meta[name="twitter:description"]', 'content', description);
+                updateMeta('meta[name="twitter:image"]', 'content', ogImage);
+
+                // Update Canonical URL
+                let canonicalUrl = 'https://tiiha.in';
+                if (selectedProduct) {
+                    canonicalUrl = `https://tiiha.in/?product=${selectedProduct.id}`;
+                } else if (currentPage !== 'home') {
+                    canonicalUrl = `https://tiiha.in/?page=${currentPage}`;
+                }
+                const canonicalLink = document.querySelector('link[rel="canonical"]');
+                if (canonicalLink) {
+                    canonicalLink.setAttribute('href', canonicalUrl);
+                } else {
+                    const link = document.createElement('link');
+                    link.rel = 'canonical';
+                    link.href = canonicalUrl;
+                    document.head.appendChild(link);
+                }
+            }, [currentPage, selectedProduct, activeCollection]);
+
+            // Dynamic Schema.org JSON-LD Structured Data Injection
+            useEffect(() => {
+                // Remove existing structured data scripts
+                const oldScripts = document.querySelectorAll('script[type="application/ld+json"]');
+                oldScripts.forEach(s => s.remove());
+
+                // 1. Global Organization/ClothingStore Schema
+                const orgSchema = {
+                    "@context": "https://schema.org",
+                    "@type": "ClothingStore",
+                    "name": "Tiiha",
+                    "url": "https://tiiha.in",
+                    "logo": "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778870332/Tiiha_Logo_-_Ivory_BG_Black_1_jkdbmw.png",
+                    "description": "Tiiha — Made with intent! Shop premium women's clothing: festive wear, summer dresses, and party outfits.",
+                    "sameAs": [
+                        "https://www.instagram.com/tiiha.in"
+                    ],
+                    "contactPoint": {
+                        "@type": "ContactPoint",
+                        "telephone": "+91-92135-78396",
+                        "contactType": "customer service",
+                        "email": "hello@tiiha.in"
+                    }
+                };
+
+                const orgScript = document.createElement('script');
+                orgScript.type = 'application/ld+json';
+                orgScript.text = JSON.stringify(orgSchema);
+                document.head.appendChild(orgScript);
+
+                // 2. Product Schema (injected when viewing product takeover)
+                if (selectedProduct) {
+                    const productSchema = {
+                        "@context": "https://schema.org",
+                        "@type": "Product",
+                        "name": selectedProduct.name,
+                        "image": selectedProduct.image,
+                        "description": selectedProduct.desc,
+                        "sku": selectedProduct.id,
+                        "offers": {
+                            "@type": "Offer",
+                            "url": `https://tiiha.in/?product=${selectedProduct.id}`,
+                            "priceCurrency": "INR",
+                            "price": selectedProduct.price,
+                            "itemCondition": "https://schema.org/NewCondition",
+                            "availability": "https://schema.org/InStock",
+                            "seller": {
+                                "@type": "Organization",
+                                "name": "Tiiha"
+                            }
+                        }
+                    };
+                    const prodScript = document.createElement('script');
+                    prodScript.type = 'application/ld+json';
+                    prodScript.text = JSON.stringify(productSchema);
+                    document.head.appendChild(prodScript);
+                }
+            }, [selectedProduct]);
+
+
             const goToCollection = (col) => { 
                 setActiveCollection(col); 
                 handlePageChange('shop');
@@ -2148,7 +2298,7 @@
                     <WhatsAppButton hide={cartOpen} />
                     <footer className="bg-[#0D0D0D] text-[#F0EBE1] pt-40 pb-16 px-8 md:px-16 border-t border-white/5 relative z-10">
                         <div className="max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-24">
-                            <div className="md:col-span-5"><h1 className="font-serif text-4xl tracking-[0.1em] mb-12"><HoverWaveText text="Tiiha" /></h1><p className="text-[11px] tracking-[0.1em] text-white/50 leading-loose max-w-md font-light uppercase">Made with intent, for the woman who wears her confidence as naturally as she wears her clothes.</p></div>
+                            <div className="md:col-span-5"><div className="font-serif text-4xl tracking-[0.1em] mb-12"><HoverWaveText text="Tiiha" /></div><p className="text-[11px] tracking-[0.1em] text-white/50 leading-loose max-w-md font-light uppercase">Made with intent, for the woman who wears her confidence as naturally as she wears her clothes.</p></div>
                             <div className="md:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-16 text-[9px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold">
                                 <div className="space-y-10"><span className="text-[#A6957A] mb-8 block font-serif text-lg normal-case tracking-normal italic">The Brand</span><ul className="space-y-6 opacity-40 font-light"><li><button onClick={() => handlePageChange('about')}>About Us</button></li><li><button onClick={() => handlePageChange('contact')}>Contact Us</button></li></ul></div>
                                 <div className="space-y-10"><span className="text-[#A6957A] mb-8 block font-serif text-lg normal-case tracking-normal italic">Client Services</span><ul className="space-y-6 opacity-40 font-light"><li><button onClick={() => handlePageChange('shipping')}>Shipping</button></li><li><button onClick={() => handlePageChange('returns')}>Returns</button></li><li><button onClick={() => handlePageChange('faqs')}>FAQs</button></li><li><button onClick={() => handlePageChange('track')}>Track Order</button></li></ul></div>
