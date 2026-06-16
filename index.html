@@ -4,18 +4,21 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tiiha | Made with Intent!</title>
-    <meta name="description" content="Tiiha — Made with intent! Shop premium women's clothing: festive wear, summer dresses, and party outfits. Free delivery across India.">
-    <meta name="keywords" content="Tiiha, women fashion, festive wear, summer dresses, party outfits, Indian fashion brand, women clothing online India">
+    <title>Tiiha | Premium Women's Clothing, Festive Wear & Summer Dresses</title>
+    <meta name="description" content="Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, summer dresses, co-ord sets, and party outfits designed with intent. Free delivery across India.">
+    <meta name="keywords" content="Tiiha, premium women's clothing, festive wear, summer dresses, co-ord sets, party outfits, Indian fashion brand, luxury women clothing online, designer ethnic wear, women's slip dresses, bandhani suits, gharara sets, silk kurta sets, luxury co-ord sets, one-shoulder dresses">
+    <link rel="canonical" href="https://tiiha.in" />
     <meta name="theme-color" content="#0D0D0D">
-    <meta property="og:title" content="Tiiha | Made with Intent!">
-    <meta property="og:description" content="Made with intent, for the woman who wears her confidence as naturally as she wears her clothes.">
+    <meta property="og:title" content="Tiiha | Premium Women's Clothing & Festive Wear">
+    <meta property="og:description" content="Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, summer dresses, and party outfits.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://tiiha.in">
+    <meta property="og:site_name" content="Tiiha">
+    <meta property="og:locale" content="en_IN">
     <meta property="og:image" content="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778870332/Tiiha_Logo_-_Ivory_BG_Black_1_jkdbmw.png">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Tiiha | Made with Intent!">
-    <meta name="twitter:description" content="Made with intent, for the woman who wears her confidence as naturally as she wears her clothes.">
+    <meta name="twitter:title" content="Tiiha | Premium Women's Clothing & Festive Wear">
+    <meta name="twitter:description" content="Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, summer dresses, and party outfits.">
     <meta name="twitter:image" content="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778870332/Tiiha_Logo_-_Ivory_BG_Black_1_jkdbmw.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,7 +31,7 @@
     <!-- Google Analytics (Loaded Dynamically) -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
@@ -146,13 +149,14 @@
 
         // --- DATA ---
         const PRODUCTS = [
-          { id: 'TII-01', name: 'The Cloudnine Dress', category: 'SUMMER EDIT', price: 4890, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4332.JPG_ba0fau.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755490/IMG_4336.JPG_s0szc1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755486/IMG_4338.JPG_q0qxy1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755483/IMG_4337.JPG_tqgrmn.jpg"]', desc: 'The Pinteresty dress of your dreams, this powder blue dress with a structured corset bodice that holds you exactly where it should, softening into a flared skirt that moves with unhurried grace.', detail: 'Fabric: 100% Linen. Silhouette: Corset bodice, square neck, flared midi skirt. Sleeves: Sleeveless with structured shoulder straps. Colour: Powder Blue. Care: Gentle machine wash, cold water. Do not tumble dry. Iron on low heat.', sizes: 'S, M, L' },
-          { id: 'TII-02', name: 'A Navy Affair', category: 'SUMMER EDIT', price: 5450, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4299.JPG_g8dg2c.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755294/IMG_4303.JPG_p3tz3z.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4302.JPG_yvwkyw.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4300.JPG_oxjytp.jpg"]', desc: 'A one-shoulder dress in a deep navy, features a self-tie waist that cinches without constraining and a flared skirt that follows every step you take. The single puff sleeve is the only detail this dress needs, and it is exactly enough.', detail: 'Fabric: Rayon. Silhouette: One-shoulder midi dress with self-tie waist. Sleeves: Single puff sleeve. Colour: Navy Blue. Care: Gentle machine wash, cold water. Do not wring. Iron on low heat.', sizes: 'S, M, L' },
-          { id: 'TII-03', name: 'The Muted Sage Co-ord Set', category: 'SUMMER EDIT', price: 6890, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6707_f31zrz.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6711_gsjvmi.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6708_eal5kc.jpg"]', desc: 'A collared shirt and straight-leg trousers in satin silk, in a colour that sits somewhere between calm and confident. The placket and cuffs are finished with delicate champagne-toned embroidery detail that earns its place without asking for attention. Wear them together for a complete look.', detail: 'Fabric: Satin Silk. Includes: Collared shirt + Straight-leg trousers (sold as a set). Embroidery: Delicate silver embroidery on placket and cuffs. Colour: Muted Sage Green. Care: Dry clean recommended. If hand washing, use cold water and mild detergent. SIZE & FIT: The Muted Sage Set is relaxed through the shirt and straight through the trousers. Fits true to size.', sizes: 'S, M, L' },
-          { id: 'TII-04', name: 'Satin Cinema', category: 'PARTY EDIT', price: 7540, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4324.JPG_vixvg0.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754964/IMG_4327.JPG_s2s6ej.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754963/IMG_4326.JPG_vsrpw1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754960/IMG_4328.JPG_qjmnyx.jpg"]', desc: 'A floor-length modal silk slip dress in deep black, paired with a scarf dupatta that carries the drama of 90s cinema. The combination is minimal until the light finds it. Then it is everything. Wear it for the nights that deserve to be remembered.', detail: 'Dress Fabric: Modal Silk. Silhouette: Floor-length slip dress. Colour: Deep Black. Inspiration: 90s Bollywood. Care: Dry clean recommended.', sizes: 'S, M, L' },
-          { id: 'TII-05', name: 'Noor Gharara Set', category: 'FESTIVE EDIT', price: 8100, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4314.JPG_vuivoe.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4315.JPG_ljzg65.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4316.JPG_in1xjv.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754761/IMG_4318.JPG_k4cxmu.jpg"]', desc: 'A deep violet bandhani peplum top paired with a matching flared gharara, finished with gold zari borders that catch the light at every turn. This is a two-piece set designed for the festive evenings that are worth dressing for.', detail: 'Fabric: Modal silk. Craft: Original hand-tied bandhani. Includes: Peplum kurta + Flared gharara (2-piece set). Embellishment: Gold zari borders. Colour: Deep Violet. Care: Dry clean recommended to preserve the bandhani and zari work.', sizes: 'S, M, L' },
-          { id: 'TII-06', name: 'Chandni Suit Set', category: 'FESTIVE EDIT', price: 8780, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6717_frho8n.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6716_w19s0m.jpg"]', desc: 'Chandni is an ivory silk kurta set with woven gold detailing with a straight palazzo pant that carries the same quiet opulence. The rani pink bandhani dupatta adds the right amount of beauty to the set. Together, the contrast is exactly what it should be: the stillness of ivory meeting the celebration of rani pink, worn at once, worn with intention.', detail: 'Kurta & Palazzo Pant Fabric: Ivory Silk with woven gold detailing. Dupatta Fabric: Rani Pink Bandhani. Includes: Kurta + Straight Palazzo Pant + Bandhani Dupatta (3-piece set). Colour: Ivory with Rani Pink. Care: Dry clean recommended to preserve the silk and bandhani dupatta. SIZE & FIT: Chandni fits true to size with a relaxed, straight silhouette. For a more oversized drape, size up.', sizes: 'S, M, L' },
+          { id: 'TII-01', name: 'The Cloudnine Dress', category: 'SUMMER EDIT', price: 4799, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4332.JPG_ba0fau.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755490/IMG_4336.JPG_s0szc1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755486/IMG_4338.JPG_q0qxy1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755483/IMG_4337.JPG_tqgrmn.jpg"]', desc: 'The Pinteresty dress of your dreams, this powder blue dress with a structured corset bodice that holds you exactly where it should, softening into a flared skirt that moves with unhurried grace.', detail: 'Fabric: 100% Linen. Silhouette: Corset bodice, square neck, flared midi skirt. Sleeves: Sleeveless with structured shoulder straps. Colour: Powder Blue. Care: Gentle machine wash, cold water. Do not tumble dry. Iron on low heat.', sizes: 'S, M, L' },
+          { id: 'TII-02', name: 'A Navy Affair', category: 'SUMMER EDIT', price: 2499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4299.JPG_g8dg2c.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755294/IMG_4303.JPG_p3tz3z.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4302.JPG_yvwkyw.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4300.JPG_oxjytp.jpg"]', desc: 'A one-shoulder dress in a deep navy, features a self-tie waist that cinches without constraining and a flared skirt that follows every step you take. The single puff sleeve is the only detail this dress needs, and it is exactly enough.', detail: 'Fabric: Rayon. Silhouette: One-shoulder midi dress with self-tie waist. Sleeves: Single puff sleeve. Colour: Navy Blue. Care: Gentle machine wash, cold water. Do not wring. Iron on low heat.', sizes: 'S, M, L' },
+          { id: 'TII-03', name: 'The Muted Sage Co-ord Set', category: 'SUMMER EDIT', price: 2999, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6707_f31zrz.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6711_gsjvmi.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6708_eal5kc.jpg"]', desc: 'A collared shirt and straight-leg trousers in satin silk, in a colour that sits somewhere between calm and confident. The placket and cuffs are finished with delicate champagne-toned embroidery detail that earns its place without asking for attention. Wear them together for a complete look.', detail: 'Fabric: Satin Silk. Includes: Collared shirt + Straight-leg trousers (sold as a set). Embroidery: Delicate silver embroidery on placket and cuffs. Colour: Muted Sage Green. Care: Dry clean recommended. If hand washing, use cold water and mild detergent. SIZE & FIT: The Muted Sage Set is relaxed through the shirt and straight through the trousers. Fits true to size.', sizes: 'S, M, L' },
+          { id: 'TII-04', name: 'Satin Cinema', category: 'PARTY EDIT', price: 5499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4324.JPG_vixvg0.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754964/IMG_4327.JPG_s2s6ej.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754963/IMG_4326.JPG_vsrpw1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754960/IMG_4328.JPG_qjmnyx.jpg"]', desc: 'A floor-length modal silk slip dress in deep black, paired with a scarf dupatta that carries the drama of 90s cinema. The combination is minimal until the light finds it. Then it is everything. Wear it for the nights that deserve to be remembered.', detail: 'Dress Fabric: Modal Silk. Silhouette: Floor-length slip dress. Colour: Deep Black. Inspiration: 90s Bollywood. Care: Dry clean recommended.', sizes: 'S, M, L' },
+          { id: 'TII-05', name: 'Noor Gharara Set', category: 'FESTIVE EDIT', price: 5499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4314.JPG_vuivoe.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4315.JPG_ljzg65.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4316.JPG_in1xjv.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754761/IMG_4318.JPG_k4cxmu.jpg"]', desc: 'A deep violet bandhani peplum top paired with a matching flared gharara, finished with gold zari borders that catch the light at every turn. This is a two-piece set designed for the festive evenings that are worth dressing for.', detail: 'Fabric: Modal silk. Craft: Original hand-tied bandhani. Includes: Peplum kurta + Flared gharara (2-piece set). Embellishment: Gold zari borders. Colour: Deep Violet. Care: Dry clean recommended to preserve the bandhani and zari work.', sizes: 'S, M, L' },
+          { id: 'TII-06', name: 'Chandni Suit Set', category: 'FESTIVE EDIT', price: 6999, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6717_frho8n.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6716_w19s0m.jpg"]', desc: 'Chandni is an ivory silk kurta set with woven gold detailing with a straight palazzo pant that carries the same quiet opulence. The rani pink bandhani dupatta adds the right amount of beauty to the set. Together, the contrast is exactly what it should be: the stillness of ivory meeting the celebration of rani pink, worn at once, worn with intention.', detail: 'Kurta & Palazzo Pant Fabric: Ivory Silk with woven gold detailing. Dupatta Fabric: Rani Pink Bandhani. Includes: Kurta + Straight Palazzo Pant + Bandhani Dupatta (3-piece set). Colour: Ivory with Rani Pink. Care: Dry clean recommended to preserve the silk and bandhani dupatta. SIZE & FIT: Chandni fits true to size with a relaxed, straight silhouette. For a more oversized drape, size up.', sizes: 'S, M, L' },
         ];
+
 
         // ARCHIVE_PRODUCTS derived from main PRODUCTS catalog (same source of truth)
         const ARCHIVE_PRODUCTS = PRODUCTS.map(p => ({
@@ -801,7 +805,6 @@
                         </div>
                     </section>
 
-
                     {/* Trust Strip */}
                     <section className="py-16 bg-[#0D0D0D] border-t border-white/5">
                         <div className="max-w-[1800px] mx-auto px-8 md:px-16">
@@ -1241,8 +1244,10 @@
 
             const handleOrder = async () => {
                 setSubmitting(true);
+
+                // 1. Save order to Supabase (non-blocking — email always sends even if this fails)
                 try {
-                    await supabaseClient.from('ORDERS').insert([{
+                    await supabaseClient.from('orders').insert([{
                         customer_name: `${form.firstName} ${form.lastName}`,
                         customer_email: form.email,
                         customer_phone: form.phone,
@@ -1251,41 +1256,41 @@
                         items: JSON.stringify(cart.map(i=>({id:i.id,name:i.name,price:i.price,size:i.size}))),
                         status: 'pending'
                     }]);
+                } catch(e) { console.log('Order DB save error (non-critical):', e); }
 
-                    // Send email confirmation
-                    await fetch('/api/send-confirmation', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
+                // 2. Always send email confirmation regardless of DB result
+                fetch('/api/send-confirmation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        customer_name: `${form.firstName} ${form.lastName}`,
+                        customer_email: form.email,
+                        customer_phone: form.phone,
+                        shipping_address: `${form.address}, ${form.city}, ${form.state || ''} ${form.postal}`,
+                        total_amount: total,
+                        order_items: cart.map(i=>({name:i.name, price:i.price, size:i.size}))
+                    })
+                }).catch(e => console.log('Email error:', e));
+
+                // 3. Trigger Shiprocket (non-blocking)
+                fetch('/api/create-shipment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        orderData: {
                             customer_name: `${form.firstName} ${form.lastName}`,
                             customer_email: form.email,
-                            customer_phone: form.phone,
-                            shipping_address: `${form.address}, ${form.city}, ${form.state || ''} ${form.postal}`,
-                            total_amount: total,
-                            order_items: cart.map(i=>({name:i.name, price:i.price, size:i.size}))
-                        })
-                    }).catch(e => console.log('Email error:', e));
+                            phone: form.phone,
+                            address: form.address,
+                            city: form.city,
+                            zip: form.postal,
+                            state: form.state || 'Delhi'
+                        },
+                        cart: cart,
+                        total: total
+                    })
+                }).catch(e => console.log('Shiprocket trigger error:', e));
 
-                    // Trigger Shiprocket Shipment
-                    await fetch('/api/create-shipment', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            orderData: {
-                                customer_name: `${form.firstName} ${form.lastName}`,
-                                customer_email: form.email,
-                                phone: form.phone,
-                                address: form.address,
-                                city: form.city,
-                                zip: form.postal,
-                                state: form.state || 'Delhi'
-                            },
-                            cart: cart,
-                            total: total
-                        })
-                    }).catch(e => console.log('Shiprocket trigger error:', e));
-
-                } catch(e) { console.log('Order save error', e); }
                 setSubmitting(false);
                 setCheckoutStep(4);
             };
@@ -1898,6 +1903,7 @@
             );
         }
 
+
         function App() {
             const [loading, setLoading] = useState(true);
             const [progress, setProgress] = useState(0);
@@ -2103,6 +2109,7 @@
                             title = "Tiiha | Made with Intent!";
                             description = "Tiiha — Made with intent! Shop premium women's clothing: festive wear, summer dresses, and party outfits. Free delivery across India.";
                             break;
+
                         case 'shop':
                             if (activeCollection) {
                                 title = `${activeCollection.name} | Tiiha`;
@@ -2279,7 +2286,16 @@
                     <nav className={`fixed ${bannerShown ? 'top-10' : 'top-0'} w-full z-50 px-6 md:px-16 transition-all duration-1000 flex justify-between items-center ${navBgColor} ${navTextColor}`}>
                         <div className="flex gap-16 items-center text-[10px] tracking-[0.2em] md:tracking-[0.4em] uppercase font-bold w-1/3">
                             <button onClick={() => setMobileNavOpen(true)} className="md:hidden p-2 -ml-2"><Menu className="w-5 h-5" /></button>
-                            <div className="hidden md:flex gap-16 items-center">{['shop', 'about'].map(page => (<MagneticButton key={page}><button onClick={() => handlePageChange(page)} className={`relative pb-1 hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:bg-current after:transition-all after:duration-500 ${currentPage === page ? 'after:w-full' : 'after:w-0'}`}>{page === 'shop' ? 'Collections' : 'About Us'}</button></MagneticButton>))}</div>
+                            <div className="hidden md:flex gap-16 items-center">
+                                {['shop', 'about'].map(page => (
+                                    <MagneticButton key={page}>
+                                        <button onClick={() => handlePageChange(page)} className={`relative pb-1 hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:bg-current after:transition-all after:duration-500 ${currentPage === page ? 'after:w-full' : 'after:w-0'}`}>
+                                            {page === 'shop' ? 'Collections' : 'About Us'}
+                                        </button>
+                                    </MagneticButton>
+                                ))}
+
+                            </div>
                         </div>
                         <div className="w-1/3 flex justify-center"><MagneticButton><button onClick={() => handlePageChange('home')} className="font-serif text-2xl md:text-3xl tracking-[0.15em] md:tracking-[0.3em]"><HoverWaveText text="Tiiha" /></button></MagneticButton></div>
                         <div className="flex gap-6 md:gap-16 items-center justify-end text-[10px] tracking-[0.2em] md:tracking-[0.4em] uppercase font-bold w-1/3"><MagneticButton><button onClick={() => handlePageChange('contact')} className={`hidden md:block relative pb-1 hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:bg-current after:transition-all after:duration-500 ${currentPage === 'contact' ? 'after:w-full' : 'after:w-0'}`}>Contact Us</button></MagneticButton><MagneticButton><button onClick={() => setCartOpen(true)} className="flex items-center gap-3 group"><span>Bag</span><span className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold transition-colors duration-700 ${isDarkHero ? 'bg-[#A6957A] text-[#0D0D0D]' : 'bg-[#0D0D0D] text-[#F0EBE1]'}`}>{cart.length}</span></button></MagneticButton></div>
@@ -2287,6 +2303,7 @@
                     <main key={currentPage} className="animate-[pageFadeIn_1.5s_cubic-bezier(0.19,1,0.22,1)_forwards]">
                         {currentPage === 'home' && <HomePage products={liveProducts} setPage={handlePageChange} onSelect={setSelectedProduct} goToCollection={goToCollection} />}
                         {currentPage === 'shop' && <InteractiveArchive products={liveProducts} setProduct={setSelectedProduct} activeCollection={activeCollection} clearCollection={() => setActiveCollection(null)} />}
+
                         {currentPage === 'about' && <ManifestoPage />}
                         {currentPage === 'contact' && <InquiryPage />}
                         {currentPage === 'track' && <OrderTrackingPage setPage={handlePageChange} />}
