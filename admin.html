@@ -207,8 +207,16 @@ tr:hover td{background:#0f0f0f}
         <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Category *</label><input id="pf-cat" placeholder="Dresses" required></div>
         <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Price (INR) *</label><input id="pf-price" type="number" min="1" placeholder="890" required></div>
       </div>
-      <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Stock *</label><input id="pf-stock" type="number" min="0" placeholder="10" required></div>
-      <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Available Sizes (Comma separated)</label><input id="pf-sizes" type="text" placeholder="XS, S, M, L, XL"></div>
+      <div style="border:1px solid #222;border-radius:6px;padding:16px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div style="font-size:11px;color:#A6957A;text-transform:uppercase;letter-spacing:.1em;font-weight:600">📏 Sizes & Stock</div>
+          <button type="button" class="btn btn-outline" style="font-size:10px;padding:4px 8px" onclick="addSizeField()">+ Add Size</button>
+        </div>
+        <div id="pf-sizes-container" style="display:flex;flex-direction:column;gap:8px"></div>
+        <div style="font-size:10px;color:#555;margin-top:8px">Total stock will be calculated automatically based on sizes.</div>
+        <input type="hidden" id="pf-stock">
+        <input type="hidden" id="pf-sizes">
+      </div>
       <div><label style="font-size:11px;color:#666;display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.08em">Primary Image URL *</label><input id="pf-image" type="url" placeholder="https://..." required></div>
       <!-- GALLERY SECTION -->
       <div style="border:1px solid #222;border-radius:6px;padding:16px">
@@ -400,7 +408,7 @@ function renderProducts(){
     <td style="font-weight:500">${p.name||'—'}</td>
     <td><span style="background:#1a1a1a;padding:3px 10px;border-radius:20px;font-size:11px">${p.category||'—'}</span></td>
     <td>₹${(p.price||0).toLocaleString('en-IN')}</td>
-    <td><div style="display:flex;align-items:center;gap:6px"><input type="number" min="0" value="${p.stock??0}" style="width:60px;padding:4px 6px;font-size:12px;text-align:center" onchange="updateStockInline('${p.id}',this.value)"><span style="font-size:10px;color:${(p.stock||0)===0?'#ef4444':(p.stock||0)<5?'#f59e0b':'#10b981'}">${(p.stock||0)===0?'OUT':(p.stock||0)<5?'LOW':'OK'}</span></div></td>
+    <td><div style="display:flex;align-items:center;gap:6px"><input type="number" min="0" value="${p.stock??0}" style="width:60px;padding:4px 6px;font-size:12px;text-align:center;background:#1a1a1a;border:none" readonly title="Edit product to update stock"><span style="font-size:10px;color:${(p.stock||0)===0?'#ef4444':(p.stock||0)<5?'#f59e0b':'#10b981'}">${(p.stock||0)===0?'OUT':(p.stock||0)<5?'LOW':'OK'}</span></div></td>
     <td>
       <div style="display:flex;gap:8px">
         <button class="btn btn-outline" style="padding:6px 12px;font-size:11px" onclick="editProduct('${p.id}')">Edit</button>
@@ -410,10 +418,24 @@ function renderProducts(){
   </tr>`).join('');
 }
 
+function addSizeField(size = '', stock = '10') {
+  const container = document.getElementById('pf-sizes-container');
+  const row = document.createElement('div');
+  row.className = 'pf-size-row';
+  row.style.cssText = 'display:flex;gap:8px;align-items:center';
+  row.innerHTML = `
+    <input type="text" class="pf-size-name" placeholder="Size (e.g. S, M)" value="${size}" style="flex:1" required>
+    <input type="number" class="pf-size-stock" placeholder="Stock" value="${stock}" min="0" style="flex:1" required>
+    <button type="button" class="btn btn-outline" style="padding:8px;color:#ef4444;border-color:#333" onclick="this.parentElement.remove()">X</button>
+  `;
+  container.appendChild(row);
+}
+
 function openProductModal(id=null){
   document.getElementById('prod-edit-id').value='';
   document.getElementById('prod-form').reset();
   document.getElementById('prod-modal-title').textContent=id?'Edit Product':'Add Product';
+  document.getElementById('pf-sizes-container').innerHTML = '';
   if(id){
     const p=products.find(x=>x.id===id);
     if(!p)return;
@@ -422,15 +444,38 @@ function openProductModal(id=null){
     document.getElementById('pf-name').value=p.name||'';
     document.getElementById('pf-cat').value=p.category||'';
     document.getElementById('pf-price').value=p.price||'';
-    document.getElementById('pf-stock').value=p.stock??'';
-    document.getElementById('pf-sizes').value=p.sizes||'';
+    
+    // Parse sizes and stock
+    const sizesStr = p.sizes || '';
+    if (sizesStr) {
+      sizesStr.split(',').forEach(s => {
+        const parts = s.split(':');
+        const sizeName = parts[0].trim();
+        let sizeStock = '0';
+        if(parts.length > 1) {
+            sizeStock = parts[1].trim();
+        } else {
+            // legacy data without colon
+            sizeStock = p.stock !== undefined ? p.stock : '10';
+        }
+        if(sizeName) addSizeField(sizeName, sizeStock);
+      });
+    } else {
+      addSizeField();
+    }
+    
     document.getElementById('pf-image').value=p.image||'';
     const gal=(() => { try { return JSON.parse(p.gallery||'[]'); } catch(e) { return []; } })();
     [1,2,3,4,5].forEach((n,i)=>{ const el=document.getElementById('pf-g'+n); if(el)el.value=gal[i]||''; });
     const vEl=document.getElementById('pf-video'); if(vEl)vEl.value=p.video||'';
     document.getElementById('pf-desc').value=p.desc||'';
     document.getElementById('pf-detail').value=p.detail||'';
-  } else { document.getElementById('pf-id').disabled=false; }
+  } else { 
+    document.getElementById('pf-id').disabled=false;
+    addSizeField('S', '10');
+    addSizeField('M', '10');
+    addSizeField('L', '10');
+  }
   document.getElementById('prod-modal').classList.add('open');
 }
 function editProduct(id){openProductModal(id);}
@@ -441,13 +486,28 @@ document.getElementById('prod-form').addEventListener('submit',async e=>{
   const editId=document.getElementById('prod-edit-id').value;
   const rawGallery=[1,2,3,4,5].map(n=>document.getElementById('pf-g'+n).value.trim()).filter(Boolean);
   const galleryUrls=[...new Set(rawGallery.flatMap(url=>url.split(/[\s,]+/)).filter(Boolean))].slice(0,5);
+  
+  // Extract sizes and stocks
+  const sizeRows = document.querySelectorAll('.pf-size-row');
+  let sizesArr = [];
+  let totalStock = 0;
+  sizeRows.forEach(row => {
+    const sName = row.querySelector('.pf-size-name').value.trim();
+    const sStock = parseInt(row.querySelector('.pf-size-stock').value) || 0;
+    if (sName) {
+      sizesArr.push(`${sName}:${sStock}`);
+      totalStock += sStock;
+    }
+  });
+  const finalSizes = sizesArr.join(', ') || 'S:0';
+
   const data={
     id:document.getElementById('pf-id').value,
     name:document.getElementById('pf-name').value,
     category:document.getElementById('pf-cat').value,
     price:parseInt(document.getElementById('pf-price').value),
-    stock:parseInt(document.getElementById('pf-stock').value),
-    sizes:document.getElementById('pf-sizes').value.trim()||'XS,S,M,L',
+    stock:totalStock,
+    sizes:finalSizes,
     image:document.getElementById('pf-image').value,
     hoverImage:galleryUrls[0]||document.getElementById('pf-image').value,
     gallery:JSON.stringify(galleryUrls),
