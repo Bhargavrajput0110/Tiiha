@@ -44,11 +44,6 @@
                         serif: ['DM Serif Display', 'serif'],
                         sans: ['Inter', 'sans-serif'],
                     },
-                    colors: {
-                        alabaster: '#FDFBF7',
-                        espresso: '#1A1A1A',
-                        champagne: '#B89F7D',
-                    }
                 }
             }
         }
@@ -67,28 +62,11 @@
         
         body { 
             cursor: none; 
-            background-color: #FDFBF7; /* Warm Alabaster */
-            color: #1A1A1A; /* Espresso */
+            background-color: #0D0D0D; 
+            color: #F0EBE1; 
             width: 100%;
         }
-
-        /* Subtle Film Grain */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)" opacity="0.05"/%3E%3C/svg%3E');
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.8;
-        }
-        
-        ::selection { background: #B89F7D; color: #FDFBF7; }
-        
-        /* Smooth Image Parallax utilities */
-        .img-reveal-wrapper { overflow: hidden; position: relative; }
-        .img-reveal-wrapper img { transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
-        .img-reveal-wrapper:hover img { transform: scale(1.05); }
+        ::selection { background: #A6957A; color: #0D0D0D; }
     </style>
 </head>
 <body>
@@ -171,12 +149,12 @@
 
         // --- DATA ---
         const PRODUCTS = [
-          { id: 'TII-01', name: 'The Cloudnine Dress', category: 'SUMMER EDIT', price: 4799, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4332.JPG_ba0fau.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755490/IMG_4336.JPG_s0szc1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755486/IMG_4338.JPG_q0qxy1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755483/IMG_4337.JPG_tqgrmn.jpg"]', desc: 'The Pinteresty dress of your dreams, this powder blue dress with a structured corset bodice that holds you exactly where it should, softening into a flared skirt that moves with unhurried grace.', detail: 'Fabric: 100% Linen. Silhouette: Corset bodice, square neck, flared midi skirt. Sleeves: Sleeveless with structured shoulder straps. Colour: Powder Blue. Care: Gentle machine wash, cold water. Do not tumble dry. Iron on low heat.', sizes: 'S, M, L', stock: { S: 2, M: 2, L: 2 } },
-          { id: 'TII-02', name: 'A Navy Affair', category: 'SUMMER EDIT', price: 2499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4299.JPG_g8dg2c.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755294/IMG_4303.JPG_p3tz3z.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4302.JPG_yvwkyw.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4300.JPG_oxjytp.jpg"]', desc: 'A one-shoulder dress in a deep navy, features a self-tie waist that cinches without constraining and a flared skirt that follows every step you take. The single puff sleeve is the only detail this dress needs, and it is exactly enough.', detail: 'Fabric: Rayon. Silhouette: One-shoulder midi dress with self-tie waist. Sleeves: Single puff sleeve. Colour: Navy Blue. Care: Gentle machine wash, cold water. Do not wring. Iron on low heat.', sizes: 'S, M, L', stock: { S: 5, M: 4, L: 5 } },
-          { id: 'TII-03', name: 'The Muted Sage Co-ord Set', category: 'SUMMER EDIT', price: 2999, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6707_f31zrz.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6711_gsjvmi.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6708_eal5kc.jpg"]', desc: 'A collared shirt and straight-leg trousers in satin silk, in a colour that sits somewhere between calm and confident. The placket and cuffs are finished with delicate champagne-toned embroidery detail that earns its place without asking for attention. Wear them together for a complete look.', detail: 'Fabric: Satin Silk. Includes: Collared shirt + Straight-leg trousers (sold as a set). Embroidery: Delicate silver embroidery on placket and cuffs. Colour: Muted Sage Green. Care: Dry clean recommended. If hand washing, use cold water and mild detergent. SIZE & FIT: The Muted Sage Set is relaxed through the shirt and straight through the trousers. Fits true to size.', sizes: 'S, M, L', stock: { S: 3, M: 3, L: 5 } },
-          { id: 'TII-04', name: 'Satin Cinema', category: 'PARTY EDIT', price: 5499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4324.JPG_vixvg0.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754964/IMG_4327.JPG_s2s6ej.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754963/IMG_4326.JPG_vsrpw1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754960/IMG_4328.JPG_qjmnyx.jpg"]', desc: 'A floor-length modal silk slip dress in deep black, paired with a scarf dupatta that carries the drama of 90s cinema. The combination is minimal until the light finds it. Then it is everything. Wear it for the nights that deserve to be remembered.', detail: 'Dress Fabric: Modal Silk. Silhouette: Floor-length slip dress. Colour: Deep Black. Inspiration: 90s Bollywood. Care: Dry clean recommended.', sizes: 'S, M, L', stock: { S: 4, M: 4, L: 4 } },
-          { id: 'TII-05', name: 'Noor Gharara Set', category: 'FESTIVE EDIT', price: 5499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4314.JPG_vuivoe.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4315.JPG_ljzg65.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4316.JPG_in1xjv.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754761/IMG_4318.JPG_k4cxmu.jpg"]', desc: 'A deep violet bandhani peplum top paired with a matching flared gharara, finished with gold zari borders that catch the light at every turn. This is a two-piece set designed for the festive evenings that are worth dressing for.', detail: 'Fabric: Modal silk. Craft: Original hand-tied bandhani. Includes: Peplum kurta + Flared gharara (2-piece set). Embellishment: Gold zari borders. Colour: Deep Violet. Care: Dry clean recommended to preserve the bandhani and zari work.', sizes: 'S, M, L', stock: { S: 2, M: 2, L: 2 } },
-          { id: 'TII-06', name: 'Chandni Suit Set', category: 'FESTIVE EDIT', price: 6999, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6717_frho8n.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6716_w19s0m.jpg"]', desc: 'Chandni is an ivory silk kurta set with woven gold detailing with a straight palazzo pant that carries the same quiet opulence. The rani pink bandhani dupatta adds the right amount of beauty to the set. Together, the contrast is exactly what it should be: the stillness of ivory meeting the celebration of rani pink, worn at once, worn with intention.', detail: 'Kurta & Palazzo Pant Fabric: Ivory Silk with woven gold detailing. Dupatta Fabric: Rani Pink Bandhani. Includes: Kurta + Straight Palazzo Pant + Bandhani Dupatta (3-piece set). Colour: Ivory with Rani Pink. Care: Dry clean recommended to preserve the silk and bandhani dupatta. SIZE & FIT: Chandni fits true to size with a relaxed, straight silhouette. For a more oversized drape, size up.', sizes: 'S, M, L', stock: { S: 5, M: 4, L: 4 } },
+          { id: 'TII-01', name: 'The Cloudnine Dress', category: 'SUMMER EDIT', price: 4799, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4332.JPG_ba0fau.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755490/IMG_4336.JPG_s0szc1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755486/IMG_4338.JPG_q0qxy1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755483/IMG_4337.JPG_tqgrmn.jpg"]', desc: 'The Pinteresty dress of your dreams, this powder blue dress with a structured corset bodice that holds you exactly where it should, softening into a flared skirt that moves with unhurried grace.', detail: 'Fabric: 100% Linen. Silhouette: Corset bodice, square neck, flared midi skirt. Sleeves: Sleeveless with structured shoulder straps. Colour: Powder Blue. Care: Gentle machine wash, cold water. Do not tumble dry. Iron on low heat.', sizes: 'S, M, L', stock: { S: 5, M: 0, L: 2 } },
+          { id: 'TII-02', name: 'A Navy Affair', category: 'SUMMER EDIT', price: 2499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4299.JPG_g8dg2c.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755294/IMG_4303.JPG_p3tz3z.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4302.JPG_yvwkyw.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4300.JPG_oxjytp.jpg"]', desc: 'A one-shoulder dress in a deep navy, features a self-tie waist that cinches without constraining and a flared skirt that follows every step you take. The single puff sleeve is the only detail this dress needs, and it is exactly enough.', detail: 'Fabric: Rayon. Silhouette: One-shoulder midi dress with self-tie waist. Sleeves: Single puff sleeve. Colour: Navy Blue. Care: Gentle machine wash, cold water. Do not wring. Iron on low heat.', sizes: 'S, M, L', stock: { S: 0, M: 4, L: 1 } },
+          { id: 'TII-03', name: 'The Muted Sage Co-ord Set', category: 'SUMMER EDIT', price: 2999, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6707_f31zrz.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6711_gsjvmi.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6708_eal5kc.jpg"]', desc: 'A collared shirt and straight-leg trousers in satin silk, in a colour that sits somewhere between calm and confident. The placket and cuffs are finished with delicate champagne-toned embroidery detail that earns its place without asking for attention. Wear them together for a complete look.', detail: 'Fabric: Satin Silk. Includes: Collared shirt + Straight-leg trousers (sold as a set). Embroidery: Delicate silver embroidery on placket and cuffs. Colour: Muted Sage Green. Care: Dry clean recommended. If hand washing, use cold water and mild detergent. SIZE & FIT: The Muted Sage Set is relaxed through the shirt and straight through the trousers. Fits true to size.', sizes: 'S, M, L', stock: { S: 2, M: 10, L: 0 } },
+          { id: 'TII-04', name: 'Satin Cinema', category: 'PARTY EDIT', price: 5499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4324.JPG_vixvg0.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754964/IMG_4327.JPG_s2s6ej.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754963/IMG_4326.JPG_vsrpw1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754960/IMG_4328.JPG_qjmnyx.jpg"]', desc: 'A floor-length modal silk slip dress in deep black, paired with a scarf dupatta that carries the drama of 90s cinema. The combination is minimal until the light finds it. Then it is everything. Wear it for the nights that deserve to be remembered.', detail: 'Dress Fabric: Modal Silk. Silhouette: Floor-length slip dress. Colour: Deep Black. Inspiration: 90s Bollywood. Care: Dry clean recommended.', sizes: 'S, M, L', stock: { S: 1, M: 2, L: 3 } },
+          { id: 'TII-05', name: 'Noor Gharara Set', category: 'FESTIVE EDIT', price: 5499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4314.JPG_vuivoe.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4315.JPG_ljzg65.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4316.JPG_in1xjv.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754761/IMG_4318.JPG_k4cxmu.jpg"]', desc: 'A deep violet bandhani peplum top paired with a matching flared gharara, finished with gold zari borders that catch the light at every turn. This is a two-piece set designed for the festive evenings that are worth dressing for.', detail: 'Fabric: Modal silk. Craft: Original hand-tied bandhani. Includes: Peplum kurta + Flared gharara (2-piece set). Embellishment: Gold zari borders. Colour: Deep Violet. Care: Dry clean recommended to preserve the bandhani and zari work.', sizes: 'S, M, L', stock: { S: 0, M: 0, L: 0 } },
+          { id: 'TII-06', name: 'Chandni Suit Set', category: 'FESTIVE EDIT', price: 6999, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6717_frho8n.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6716_w19s0m.jpg"]', desc: 'Chandni is an ivory silk kurta set with woven gold detailing with a straight palazzo pant that carries the same quiet opulence. The rani pink bandhani dupatta adds the right amount of beauty to the set. Together, the contrast is exactly what it should be: the stillness of ivory meeting the celebration of rani pink, worn at once, worn with intention.', detail: 'Kurta & Palazzo Pant Fabric: Ivory Silk with woven gold detailing. Dupatta Fabric: Rani Pink Bandhani. Includes: Kurta + Straight Palazzo Pant + Bandhani Dupatta (3-piece set). Colour: Ivory with Rani Pink. Care: Dry clean recommended to preserve the silk and bandhani dupatta. SIZE & FIT: Chandni fits true to size with a relaxed, straight silhouette. For a more oversized drape, size up.', sizes: 'S, M, L', stock: { S: 8, M: 6, L: 5 } },
         ];
 
 
@@ -231,14 +209,14 @@
             ];
             return (
                 <div className="fixed inset-0 z-[600] flex items-center justify-center bg-black/70 backdrop-blur-sm" onClick={onClose}>
-                    <div className="bg-alabaster text-espresso max-w-md w-full mx-4 p-8 relative shadow-2xl animate-[pageFadeIn_0.4s_ease]" onClick={e => e.stopPropagation()}>
+                    <div className="bg-[#F0EBE1] text-[#0D0D0D] max-w-md w-full mx-4 p-8 relative shadow-2xl animate-[pageFadeIn_0.4s_ease]" onClick={e => e.stopPropagation()}>
                         <button onClick={onClose} className="absolute top-5 right-5 p-2 hover:rotate-90 transition-transform duration-500"><X className="w-5 h-5" /></button>
                         <h3 className="font-serif text-2xl uppercase tracking-tight mb-1">Size Guide</h3>
                         <p className="text-[10px] tracking-[0.2em] uppercase text-black/40 font-bold mb-6">All measurements are body measurements</p>
                         <div className="overflow-x-auto">
                             <table className="w-full text-[11px] tracking-[0.08em] uppercase border-collapse">
                                 <thead>
-                                    <tr className="border-b-2 border-espresso/10">
+                                    <tr className="border-b-2 border-black/10">
                                         <th className="text-left py-3 pr-4 font-bold text-black/40">Size</th>
                                         <th className="text-center py-3 px-2 font-bold text-black/40">Bust</th>
                                         <th className="text-center py-3 px-2 font-bold text-black/40">Waist</th>
@@ -247,8 +225,8 @@
                                 </thead>
                                 <tbody>
                                     {sizes.map(row => (
-                                        <tr key={row.size} className="border-b border-espresso/10 hover:bg-[#B89F7D]/5 transition-colors">
-                                            <td className="py-4 pr-4 font-bold text-[#B89F7D] text-base font-serif">{row.size}</td>
+                                        <tr key={row.size} className="border-b border-black/5 hover:bg-[#A6957A]/5 transition-colors">
+                                            <td className="py-4 pr-4 font-bold text-[#A6957A] text-base font-serif">{row.size}</td>
                                             <td className="py-4 px-2 text-center">{row.bust} <span className="text-black/30 text-[9px]">/ {row.bust_cm}cm</span></td>
                                             <td className="py-4 px-2 text-center">{row.waist} <span className="text-black/30 text-[9px]">/ {row.waist_cm}cm</span></td>
                                             <td className="py-4 px-2 text-center">{row.hips} <span className="text-black/30 text-[9px]">/ {row.hips_cm}cm</span></td>
@@ -257,10 +235,10 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div className="mt-5 p-4 bg-[#B89F7D]/10 border border-[#B89F7D]/20">
+                        <div className="mt-5 p-4 bg-[#A6957A]/10 border border-[#A6957A]/20">
                             <p className="text-[10px] tracking-[0.05em] text-black/60 leading-relaxed">💡 <strong>Tip:</strong> If you're between sizes, size up for a relaxed fit or size down for a more fitted silhouette. Still unsure? Chat with us.</p>
                         </div>
-                        <a href="https://wa.me/919213578396?text=Hi%20Tiiha!%20I%20need%20help%20with%20sizing." target="_blank" rel="noopener noreferrer" className="mt-4 w-full py-3 border-2 border-[#0D0D0D] text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-center flex items-center justify-center gap-2 hover:bg-alabaster hover:text-espresso transition-colors duration-300">
+                        <a href="https://wa.me/919213578396?text=Hi%20Tiiha!%20I%20need%20help%20with%20sizing." target="_blank" rel="noopener noreferrer" className="mt-4 w-full py-3 border-2 border-[#0D0D0D] text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-center flex items-center justify-center gap-2 hover:bg-[#0D0D0D] hover:text-white transition-colors duration-300">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                             Chat with us on WhatsApp
                         </a>
@@ -279,7 +257,7 @@
             return (
                 <button
                     onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                    className={`fixed bottom-28 right-6 z-[400] w-11 h-11 bg-alabaster text-espresso rounded-full flex items-center justify-center shadow-xl hover:bg-[#B89F7D] transition-all duration-500 hover:scale-110 ${visible && !hide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
+                    className={`fixed bottom-28 right-6 z-[400] w-11 h-11 bg-[#0D0D0D] text-[#F0EBE1] rounded-full flex items-center justify-center shadow-xl hover:bg-[#A6957A] transition-all duration-500 hover:scale-110 ${visible && !hide ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}
                     title="Back to top"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
@@ -292,7 +270,7 @@
                 href="https://wa.me/919213578396?text=Hi%20Tiiha!%20I%20need%20help%20with%20my%20order."
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`fixed bottom-6 right-6 z-[400] flex items-center justify-center bg-[#25D366] text-espresso rounded-full w-14 h-14 shadow-xl hover:scale-110 transition-all duration-300 ${hide ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+                className={`fixed bottom-6 right-6 z-[400] flex items-center justify-center bg-[#25D366] text-white rounded-full w-14 h-14 shadow-xl hover:scale-110 transition-all duration-300 ${hide ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
                 title="Chat with us on WhatsApp"
             >
                 <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
@@ -302,29 +280,29 @@
         const MobileNav = ({ currentPage, handlePageChange, cartLength, wishlistLength, isOpen, onClose, onCartOpen }) => (
             <>
                 <div className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-[60] transition-opacity duration-500 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`} onClick={onClose} />
-                <div className={`fixed top-0 left-0 h-full w-4/5 max-w-xs bg-alabaster text-espresso z-[70] flex flex-col transform transition-transform duration-[0.8s] ease-[cubic-bezier(0.19,1,0.22,1)] ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-                    <div className="flex justify-between items-center px-8 py-7 border-b border-espresso/10">
+                <div className={`fixed top-0 left-0 h-full w-4/5 max-w-xs bg-[#0D0D0D] text-[#F0EBE1] z-[70] flex flex-col transform transition-transform duration-[0.8s] ease-[cubic-bezier(0.19,1,0.22,1)] ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+                    <div className="flex justify-between items-center px-8 py-7 border-b border-white/10">
                         <span className="font-serif text-xl tracking-[0.15em] md:tracking-[0.3em]"><HoverWaveText text="Tiiha" /></span>
                         <button onClick={onClose} className="p-2 hover:rotate-90 transition-transform duration-500"><X className="w-5 h-5" /></button>
                     </div>
                     <nav className="px-8 py-6 flex flex-col flex-1">
                         {[['home','Home'],['shop','Collections'],['about','About Us'],['contact','Contact Us']].map(([page, label], i) => (
                             <button key={page} onClick={() => { handlePageChange(page); onClose(); }}
-                                className={`text-left py-5 border-b border-espresso/10 font-serif text-2xl italic transition-colors duration-300 ${currentPage === page ? 'text-[#B89F7D]' : 'text-espresso/80 hover:text-[#B89F7D]'}`}
+                                className={`text-left py-5 border-b border-white/5 font-serif text-2xl italic transition-colors duration-300 ${currentPage === page ? 'text-[#A6957A]' : 'text-white/80 hover:text-[#A6957A]'}`}
                                 style={{ transitionDelay: isOpen ? `${i * 60}ms` : '0ms' }}>
                                 {label}
                             </button>
                         ))}
-                        <button onClick={() => { onCartOpen(); onClose(); }} className="text-left py-5 border-b border-espresso/10 font-serif text-2xl italic text-espresso/80 hover:text-[#B89F7D] transition-colors flex items-center gap-3">
-                            My Bag {cartLength > 0 && <span className="text-sm bg-[#B89F7D] text-black rounded-full w-5 h-5 flex items-center justify-center font-sans font-bold not-italic">{cartLength}</span>}
+                        <button onClick={() => { onCartOpen(); onClose(); }} className="text-left py-5 border-b border-white/5 font-serif text-2xl italic text-white/80 hover:text-[#A6957A] transition-colors flex items-center gap-3">
+                            My Bag {cartLength > 0 && <span className="text-sm bg-[#A6957A] text-black rounded-full w-5 h-5 flex items-center justify-center font-sans font-bold not-italic">{cartLength}</span>}
                         </button>
                     </nav>
                     <div className="px-8 pb-10">
-                        <a href="https://wa.me/919213578396" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-espresso/40 hover:text-[#25D366] transition-colors mb-6">
+                        <a href="https://wa.me/919213578396" target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-white/40 hover:text-[#25D366] transition-colors mb-6">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                             WhatsApp Support
                         </a>
-                        <p className="text-[9px] tracking-[0.2em] uppercase text-espresso/20">Made with intent © 2026 Tiiha</p>
+                        <p className="text-[9px] tracking-[0.2em] uppercase text-white/20">Made with intent © 2026 Tiiha</p>
                     </div>
                 </div>
             </>
@@ -350,7 +328,7 @@
             }, []);
             if (dismissed) return null;
             return (
-                <div className="fixed top-0 left-0 w-full z-[55] bg-[#B89F7D] text-espresso py-2.5 px-6 flex items-center justify-between">
+                <div className="fixed top-0 left-0 w-full z-[55] bg-[#A6957A] text-[#0D0D0D] py-2.5 px-6 flex items-center justify-between">
                     <div className="flex-1 text-center">
                         <span className={`text-[10px] tracking-[0.25em] uppercase font-bold transition-opacity duration-300 ${fade ? 'opacity-100' : 'opacity-0'}`}>{msgs[idx]}</span>
                     </div>
@@ -398,10 +376,10 @@
             if (isTouch) return null;
 
             const variants = {
-                default: 'w-4 h-4 bg-alabaster border border-espresso/10 mix-blend-difference shadow-sm',
-                text: 'w-24 h-24 bg-alabaster text-espresso border-transparent scale-100 mix-blend-normal font-bold shadow-2xl',
-                dot: 'w-2 h-2 bg-alabaster border-transparent scale-[4] mix-blend-difference',
-                close: 'w-16 h-16 bg-white/10 border border-espresso/10 text-espresso mix-blend-normal shadow-2xl backdrop-blur-sm'
+                default: 'w-4 h-4 bg-[#F0EBE1] border border-white/20 mix-blend-difference shadow-sm',
+                text: 'w-24 h-24 bg-[#F0EBE1] text-[#0D0D0D] border-transparent scale-100 mix-blend-normal font-bold shadow-2xl',
+                dot: 'w-2 h-2 bg-[#F0EBE1] border-transparent scale-[4] mix-blend-difference',
+                close: 'w-16 h-16 bg-white/10 border border-white/30 text-white mix-blend-normal shadow-2xl backdrop-blur-sm'
             };
 
             return (
@@ -484,7 +462,7 @@
             return (
                 <span className={`inline-block ${className}`}>
                     {text.split('').map((char, i) => (
-                        <span key={i} className="inline-block transition-transform duration-300 hover:-translate-y-1 hover:text-[#B89F7D]">
+                        <span key={i} className="inline-block transition-transform duration-300 hover:-translate-y-1 hover:text-[#A6957A]">
                             {char === ' ' ? '\u00A0' : char}
                         </span>
                     ))}
@@ -495,14 +473,14 @@
         const PageCurtain = ({ isActive, nextTitle }) => {
             return (
                 <div className={`fixed inset-0 z-[2000] pointer-events-none transition-all duration-[1.2s] ease-[cubic-bezier(0.76,0,0.24,1)] ${isActive ? 'translate-y-0' : '-translate-y-full'}`}>
-                    <div className="absolute inset-0 bg-alabaster flex flex-col items-center justify-center">
+                    <div className="absolute inset-0 bg-[#0D0D0D] flex flex-col items-center justify-center">
                         <div className="overflow-hidden mb-8">
-                            <h2 className="font-serif text-5xl md:text-7xl tracking-[0.15em] md:tracking-[0.3em] text-espresso animate-pulse">Tiiha</h2>
+                            <h2 className="font-serif text-5xl md:text-7xl tracking-[0.15em] md:tracking-[0.3em] text-[#F0EBE1] animate-pulse">Tiiha</h2>
                         </div>
-                        <div className="h-[1px] w-40 bg-[#B89F7D]/30 relative overflow-hidden">
-                            <div className="absolute inset-0 bg-[#B89F7D] animate-[curtainProgress_1.5s_infinite]" />
+                        <div className="h-[1px] w-40 bg-[#A6957A]/30 relative overflow-hidden">
+                            <div className="absolute inset-0 bg-[#A6957A] animate-[curtainProgress_1.5s_infinite]" />
                         </div>
-                        <span className="text-[10px] tracking-[0.2em] md:tracking-[0.5em] uppercase text-[#B89F7D] mt-12 font-bold opacity-50">Entering {nextTitle || 'Space'}</span>
+                        <span className="text-[10px] tracking-[0.2em] md:tracking-[0.5em] uppercase text-[#A6957A] mt-12 font-bold opacity-50">Entering {nextTitle || 'Space'}</span>
                     </div>
                     <style>{`
                         @keyframes curtainProgress {
@@ -530,12 +508,12 @@
             };
 
             return (
-                <section className="py-24 md:py-40 bg-alabaster text-espresso px-6 md:px-16 border-t border-espresso/10 overflow-hidden">
+                <section className="py-24 md:py-40 bg-[#0D0D0D] text-[#F0EBE1] px-6 md:px-16 border-t border-white/5 overflow-hidden">
                     <div className="max-w-[1800px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
                         <div>
-                            <RevealText><span className="text-[11px] tracking-[0.2em] md:tracking-[0.5em] uppercase font-bold text-[#B89F7D] block mb-6 md:mb-8">Newsletter</span></RevealText>
-                            <RevealText delay={100}><h2 className="font-serif text-3xl md:text-5xl leading-[1.1] md:leading-[0.95] tracking-tighter uppercase mb-6 md:mb-8">Join the<br/><span className="italic text-[#B89F7D]">List</span></h2></RevealText>
-                            <RevealText delay={200}><p className="text-[11px] md:text-sm tracking-[0.1em] uppercase text-espresso/40 max-w-sm leading-loose font-light">Subscribe to receive early access to new collections, exclusive offers, and the latest from Tiiha.</p></RevealText>
+                            <RevealText><span className="text-[11px] tracking-[0.2em] md:tracking-[0.5em] uppercase font-bold text-[#A6957A] block mb-6 md:mb-8">Newsletter</span></RevealText>
+                            <RevealText delay={100}><h2 className="font-serif text-3xl md:text-5xl leading-[1.1] md:leading-[0.95] tracking-tighter uppercase mb-6 md:mb-8">Join the<br/><span className="italic text-[#A6957A]">List</span></h2></RevealText>
+                            <RevealText delay={200}><p className="text-[11px] md:text-sm tracking-[0.1em] uppercase text-white/40 max-w-sm leading-loose font-light">Subscribe to receive early access to new collections, exclusive offers, and the latest from Tiiha.</p></RevealText>
                         </div>
                         <div className="relative group">
                             <Reveal delay={300}>
@@ -547,13 +525,13 @@
                                             onChange={(e) => setEmail(e.target.value)}
                                             disabled={status !== 'idle'}
                                             placeholder={status === 'success' ? "THANK YOU FOR SUBSCRIBING" : "ENTER YOUR EMAIL"}
-                                            className={`w-full bg-transparent border-b ${status === 'success' ? 'border-[#B89F7D] text-[#B89F7D]' : 'border-espresso/10 text-espresso focus:border-[#B89F7D]'} py-6 md:py-8 text-lg md:text-xl font-serif focus:outline-none transition-colors placeholder:text-espresso/10 uppercase tracking-widest disabled:opacity-70`}
+                                            className={`w-full bg-transparent border-b ${status === 'success' ? 'border-[#A6957A] text-[#A6957A]' : 'border-white/20 text-white focus:border-[#A6957A]'} py-6 md:py-8 text-lg md:text-xl font-serif focus:outline-none transition-colors placeholder:text-white/10 uppercase tracking-widest disabled:opacity-70`}
                                             required
                                         />
                                         <button 
                                             type="submit"
                                             disabled={status !== 'idle'}
-                                            className="absolute right-0 top-1/2 -translate-y-1/2 text-[#B89F7D] hover:text-espresso transition-colors"
+                                            className="absolute right-0 top-1/2 -translate-y-1/2 text-[#A6957A] hover:text-white transition-colors"
                                         >
                                             {status === 'sending' ? (
                                                 <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
@@ -602,18 +580,18 @@
 
 
           return (
-            <section className="py-32 bg-alabaster text-espresso min-h-screen relative z-10">
+            <section className="py-32 bg-[#F0EBE1] text-[#0D0D0D] min-h-screen relative z-10">
               <div className="max-w-[1800px] mx-auto px-8 md:px-16">
-                <div className="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-16 border-b border-espresso/10 pb-8 md:pb-16 gap-8 md:gap-12">
+                <div className="flex flex-col md:flex-row justify-between items-end mb-12 md:mb-16 border-b border-black/10 pb-8 md:pb-16 gap-8 md:gap-12">
                   <div className="w-full md:w-auto">
-                    {activeCollection && <span className="text-[10px] tracking-[0.2em] md:tracking-[0.4em] uppercase text-[#B89F7D] font-bold block mb-4">{activeCollection.subtitle} Collection</span>}
+                    {activeCollection && <span className="text-[10px] tracking-[0.2em] md:tracking-[0.4em] uppercase text-[#A6957A] font-bold block mb-4">{activeCollection.subtitle} Collection</span>}
                     <RevealText><h1 className="font-serif text-4xl md:text-5xl lg:text-7xl tracking-[-0.03em] leading-[1.1] md:leading-none mb-2 uppercase">{activeCollection ? activeCollection.name : 'Collections'}</h1></RevealText>
                     {activeCollection && <p className="text-sm text-black/50 font-light max-w-md mt-4 leading-relaxed">{activeCollection.desc}</p>}
                   </div>
                   <div className="text-left md:text-right text-[10px] tracking-[0.2em] md:tracking-[0.4em] uppercase text-black/40 font-bold w-full md:w-auto">
                     <p>Collection 2026</p>
                     <p>{filteredProducts.length} Artifacts</p>
-                    {activeCollection && <button onClick={clearCollection} className="mt-4 text-[#B89F7D] underline block md:ml-auto">View All →</button>}
+                    {activeCollection && <button onClick={clearCollection} className="mt-4 text-[#A6957A] underline block md:ml-auto">View All →</button>}
                   </div>
                 </div>
                 <div className="flex flex-wrap gap-3 md:gap-4 mb-12 md:mb-16">
@@ -621,7 +599,7 @@
                     <button key={cat}
                       onClick={() => { setActiveIndex(null); setActiveFilter(cat); if(activeCollection && clearCollection) clearCollection(); }}
                       className={`px-6 md:px-8 py-2.5 md:py-3 text-[9px] md:text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold border transition-all duration-300 ${
-                        (!activeCollection && activeFilter === cat) ? 'bg-alabaster text-espresso border-[#0D0D0D]' : 'border-espresso/10 text-black/50 hover:border-black hover:text-black'
+                        (!activeCollection && activeFilter === cat) ? 'bg-[#0D0D0D] text-[#F0EBE1] border-[#0D0D0D]' : 'border-black/20 text-black/50 hover:border-black hover:text-black'
                       }`}>{cat}</button>
                   ))}
                 </div>
@@ -651,18 +629,18 @@
                             className="absolute inset-0 w-full h-full object-cover opacity-0 scale-105 transition-all duration-700 group-hover:opacity-100 group-hover:scale-100"
                           />
                           {/* Quick view overlay */}
-                          <div className="absolute inset-0 bg-alabaster/0 group-hover:bg-alabaster/20 transition-all duration-500 flex items-end justify-center pb-8">
-                            <span className="text-espresso text-[9px] tracking-[0.2em] md:tracking-[0.4em] uppercase font-bold border border-[#F0EBE1]/60 px-6 py-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">Quick View</span>
+                          <div className="absolute inset-0 bg-[#0D0D0D]/0 group-hover:bg-[#0D0D0D]/20 transition-all duration-500 flex items-end justify-center pb-8">
+                            <span className="text-[#F0EBE1] text-[9px] tracking-[0.2em] md:tracking-[0.4em] uppercase font-bold border border-[#F0EBE1]/60 px-6 py-3 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">Quick View</span>
                           </div>
                           {/* Wishlist heart */}
                           <button
                             onClick={(e) => { e.stopPropagation(); toggleWishlist(product.id); }}
                             className="absolute top-3 right-3 z-10 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md transition-transform duration-300 hover:scale-110"
                           >
-                            {isWishlisted(product.id) ? <HeartFilled className="w-4 h-4 text-[#B89F7D]" /> : <Heart className="w-4 h-4 text-black/40" />}
+                            {isWishlisted(product.id) ? <HeartFilled className="w-4 h-4 text-[#A6957A]" /> : <Heart className="w-4 h-4 text-black/40" />}
                           </button>
                           {/* Index badge */}
-                          <span className="absolute top-4 left-4 text-[9px] font-mono text-espresso/60 bg-black/30 px-2 py-1 backdrop-blur-sm">
+                          <span className="absolute top-4 left-4 text-[9px] font-mono text-white/60 bg-black/30 px-2 py-1 backdrop-blur-sm">
                             {String(i + 1).padStart(2, '0')}
                           </span>
                         </div>
@@ -672,7 +650,7 @@
                             <h3 className="font-serif text-base md:text-lg tracking-tight mb-1 group-hover:italic transition-all duration-500 truncate">{product._product.name}</h3>
                             <p className="text-[9px] tracking-[0.15em] md:tracking-[0.3em] uppercase text-black/40 font-bold">{product.cat}</p>
                           </div>
-                          <span className="font-serif text-lg italic text-[#B89F7D] shrink-0">₹{product.price.toLocaleString('en-IN')}</span>
+                          <span className="font-serif text-lg italic text-[#A6957A] shrink-0">₹{product.price.toLocaleString('en-IN')}</span>
                         </div>
                       </div>
                     </Reveal>
@@ -708,76 +686,35 @@
             }, []);
 
             return (
-                <div className="bg-alabaster text-espresso">
-                    {/* Awwwards Editorial Asymmetrical Hero */}
-                    <section className="relative min-h-screen w-full flex flex-col lg:flex-row overflow-hidden border-b border-champagne/20">
-                        {/* Left Side: Typography & CTA */}
-                        <div className="w-full lg:w-[45%] h-[50vh] lg:h-screen flex flex-col justify-center px-8 md:px-16 relative z-10 pt-24 lg:pt-0">
-                            <RevealText delay={100}>
-                                <p className="text-[10px] tracking-[0.4em] uppercase font-bold text-champagne mb-8">Limitless Production</p>
-                            </RevealText>
-                            
-                            <div className="relative z-10 mix-blend-difference lg:mix-blend-normal text-alabaster lg:text-espresso">
-                                <RevealText delay={300}>
-                                    <h1 className="font-serif text-[12vw] lg:text-[7vw] leading-[0.85] tracking-tighter uppercase mb-4 text-espresso">
-                                        Made with
-                                    </h1>
-                                </RevealText>
-                                <RevealText delay={500}>
-                                    <h1 className="font-serif text-[12vw] lg:text-[7vw] leading-[0.85] tracking-tighter uppercase italic text-champagne ml-[10%]">
-                                        Intent.
-                                    </h1>
-                                </RevealText>
-                            </div>
-
-                            <RevealText delay={700}>
-                                <p className="text-[11px] md:text-sm tracking-[0.1em] uppercase max-w-sm mt-12 mb-12 font-light leading-relaxed text-espresso/80">
-                                    A premium collection designed for the woman who wears her confidence as naturally as she wears her clothes.
-                                </p>
-                            </RevealText>
-                            
-                            <Reveal delay={900}>
-                                <MagneticButton>
-                                    <button onClick={() => { window.scrollTo(0,0); setPage('shop'); }} className="group relative inline-flex items-center justify-center gap-4 border border-espresso px-8 py-5 text-[10px] tracking-[0.3em] uppercase font-bold text-espresso overflow-hidden transition-colors hover:text-alabaster">
-                                        <span className="absolute inset-0 bg-espresso translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
-                                        <span className="relative z-10">Explore Collection</span>
-                                        <ArrowRight className="w-4 h-4 relative z-10 group-hover:translate-x-2 transition-transform duration-500" />
-                                    </button>
-                                </MagneticButton>
-                            </Reveal>
-                        </div>
-                        
-                        {/* Right Side: Cinematic Visuals */}
-                        <div className="w-full lg:w-[55%] h-[60vh] lg:h-screen relative overflow-hidden group">
-                            {/* Mask overlay for smooth reveal */}
-                            <div className="absolute inset-0 bg-alabaster z-20 animate-[slideRight_1.5s_cubic-bezier(0.76,0,0.24,1)_forwards]" />
-                            
+                <div className="bg-[#0D0D0D] text-[#F0EBE1]">
+                    <section className="relative h-screen w-full flex flex-col items-center justify-center overflow-hidden">
+                        <div className="absolute inset-0 z-0">
                             <video
                                 autoPlay
                                 muted
                                 loop
                                 playsInline
-                                className="absolute inset-0 w-full h-full object-cover scale-110 group-hover:scale-100 transition-transform duration-[2s] ease-[cubic-bezier(0.19,1,0.22,1)]"
-                                style={{ filter: 'contrast(1.1) brightness(0.95)' }}
+                                className="w-full h-full object-cover"
+                                style={{ filter: 'brightness(0.45)' }}
                             >
                                 <source src="https://res.cloudinary.com/dlxiy6aiq/video/upload/q_auto/f_auto/v1778839358/Tiiha_-_May_Teaser_Rani_Reel_1_ytbqow.mp4" type="video/mp4" />
-                                <img src="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg" className="w-full h-full object-cover" alt="Hero" />
+                                {/* Fallback for browsers that don't support video */}
+                                <img src="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg" className="w-full h-full object-cover" alt="Hero" fetchpriority="high" />
                             </video>
-                            
-                            {/* Soft vignette */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-espresso/40 via-transparent to-transparent pointer-events-none" />
+                        </div>
+                        <div className="z-10 w-full px-6 md:px-16 flex flex-col justify-end h-full pb-12 md:pb-24">
+                            <RevealText delay={200}>
+                                <h1 className="font-serif text-5xl md:text-7xl lg:text-[5.5vw] leading-[1.1] md:leading-[0.9] tracking-[-0.02em] text-[#F0EBE1] mb-6 select-none uppercase">Explore<br/><span className="text-[#A6957A] italic ml-[4vw]">Our Collection</span></h1>
+                            </RevealText>
+                            <div className="flex flex-col md:flex-row justify-between items-start md:items-end mt-6 md:mt-10 gap-8 border-t border-white/10 pt-8 md:pt-10">
+                                <RevealText delay={400}><p className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold max-w-sm leading-loose opacity-70">Made with intent, for the woman who wears her confidence as naturally as she wears her clothes.</p></RevealText>
+                                <RevealText delay={600}><MagneticButton><button onClick={() => { window.scrollTo(0,0); setPage('shop'); }} className="text-[10px] tracking-[0.2em] md:tracking-[0.4em] uppercase border border-[#F0EBE1] text-[#F0EBE1] px-8 md:px-10 py-4 md:py-5 font-bold bg-white/5 backdrop-blur-md hover:bg-[#F0EBE1] hover:text-[#0D0D0D] transition-colors">Explore our Collection</button></MagneticButton></RevealText>
+                            </div>
                         </div>
                     </section>
                     
-                    <style>{`
-                        @keyframes slideRight {
-                            0% { transform: translateX(0); }
-                            100% { transform: translateX(100%); }
-                        }
-                    `}</style>
-
-                    <section className="py-6 bg-champagne text-alabaster border-y border-champagne/20 overflow-hidden relative">
-                        <div className="flex whitespace-nowrap overflow-hidden opacity-90 mix-blend-multiply">
+                    <section className="py-10 bg-[#A6957A] text-[#0D0D0D] border-y border-white/10">
+                        <div className="flex whitespace-nowrap overflow-hidden">
                             <div className="flex animate-[marquee_35s_linear_infinite] font-serif text-lg md:text-xl italic tracking-wide">
                                 <span>&nbsp;CRAFTED WITH INTENT · SHIPPED ACROSS INDIA · EASY RETURNS · QUALITY YOU CAN FEEL&nbsp;</span>
                                 <span>&nbsp;CRAFTED WITH INTENT · SHIPPED ACROSS INDIA · EASY RETURNS · QUALITY YOU CAN FEEL&nbsp;</span>
@@ -787,10 +724,9 @@
                         <style>{`@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }`}</style>
                     </section>
 
-                    <section className="py-16 md:py-60 bg-alabaster text-espresso relative">
-                        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0IiBoZWlnaHQ9IjQiPgo8cmVjdCB3aWR0aD0iNCIgaGVpZ2h0PSI0IiBmaWxsPSIjZmZmIi8+CjxyZWN0IHdpZHRoPSIxIiBoZWlnaHQ9IjEiIGZpbGw9IiNjY2MiLz4KPC9zdmc+')] opacity-20 pointer-events-none mix-blend-multiply"></div>
-                        <div className="max-w-[1800px] mx-auto relative z-10">
-                            <div className="mb-8 md:mb-40 flex justify-between items-end border-b border-espresso/10 pb-6 md:pb-10 px-6 md:px-16">
+                    <section className="py-16 md:py-60 bg-[#F0EBE1] text-[#0D0D0D]">
+                        <div className="max-w-[1800px] mx-auto">
+                            <div className="mb-8 md:mb-40 flex justify-between items-end border-b border-black/10 pb-6 md:pb-10 px-6 md:px-16">
                                 <RevealText><h2 className="font-serif text-3xl md:text-5xl tracking-[-0.02em]">New Arrivals</h2></RevealText>
                                 <button onClick={() => { window.scrollTo(0,0); setPage('shop'); }} className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold border-b border-black pb-2">View All</button>
                             </div>
@@ -801,17 +737,17 @@
                                         <div key={prod.id} className="flex-shrink-0 w-[72vw] md:w-auto snap-center">
                                         <Reveal delay={index * 200} className="">
                                             <div className="group cursor-pointer md:cursor-none flex flex-col h-full" onClick={() => onSelect(prod)} onMouseEnter={() => setCursor('text', 'VIEW')} onMouseLeave={() => setCursor('default')}>
-                                             <div className="aspect-[3/4] bg-neutral-200 w-full overflow-hidden relative mb-4 md:mb-10 shadow-xl border border-espresso/10">
+                                             <div className="aspect-[3/4] bg-neutral-200 w-full overflow-hidden relative mb-4 md:mb-10 shadow-xl border border-black/5">
                                                     <img src={prod.image} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-0" alt={prod.name} />
                                                     <img src={prod.hoverImage} loading="lazy" className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-700 group-hover:opacity-100" alt={prod.name} />
                                                     {/* Wishlist heart */}
                                                     <button onClick={(e) => { e.stopPropagation(); toggleWishlist(prod.id); }} className="absolute top-4 right-4 z-10 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-md transition-transform duration-300 hover:scale-110">
-                                                        {isWishlisted(prod.id) ? <HeartFilled className="w-4 h-4 text-[#B89F7D]" /> : <Heart className="w-4 h-4 text-black/40" />}
+                                                        {isWishlisted(prod.id) ? <HeartFilled className="w-4 h-4 text-[#A6957A]" /> : <Heart className="w-4 h-4 text-black/40" />}
                                                     </button>
                                                 </div>
                                                 <div className="flex justify-between items-start">
                                                     <div><h3 className="font-serif text-lg md:text-2xl mb-1 md:mb-3 group-hover:italic transition-all duration-700 tracking-tight leading-tight">{prod.name}</h3><p className="text-[9px] tracking-[0.2em] md:tracking-[0.4em] uppercase text-black/40 font-bold">{prod.category}</p></div>
-                                                    <span className="font-serif text-base md:text-xl italic text-[#B89F7D] whitespace-nowrap ml-2">₹{prod.price.toLocaleString('en-IN')}</span>
+                                                    <span className="font-serif text-base md:text-xl italic text-[#A6957A] whitespace-nowrap ml-2">₹{prod.price.toLocaleString('en-IN')}</span>
                                                 </div>
                                             </div>
                                         </Reveal>
@@ -822,14 +758,14 @@
                         </div>
                     </section>
 
-                    <section className="py-32 md:py-48 bg-alabaster text-espresso">
+                    <section className="py-32 md:py-48 bg-[#0D0D0D] text-[#F0EBE1]">
                         <div className="max-w-[1800px] mx-auto px-8 md:px-16">
-                            <div className="flex flex-col md:flex-row justify-between items-end mb-24 border-b border-espresso/10 pb-12">
+                            <div className="flex flex-col md:flex-row justify-between items-end mb-24 border-b border-white/10 pb-12">
                                 <div>
-                                    <RevealText><span className="text-[10px] tracking-[0.2em] md:tracking-[0.5em] uppercase font-bold text-[#B89F7D] block mb-6">SS 2026</span></RevealText>
-                                    <RevealText delay={100}><h2 className="font-serif text-4xl md:text-5xl tracking-[-0.03em] uppercase leading-none">Featured<br/><span className="italic text-[#B89F7D]">Categories</span></h2></RevealText>
+                                    <RevealText><span className="text-[10px] tracking-[0.2em] md:tracking-[0.5em] uppercase font-bold text-[#A6957A] block mb-6">SS 2026</span></RevealText>
+                                    <RevealText delay={100}><h2 className="font-serif text-4xl md:text-5xl tracking-[-0.03em] uppercase leading-none">Featured<br/><span className="italic text-[#A6957A]">Categories</span></h2></RevealText>
                                 </div>
-                                <RevealText delay={200}><p className="text-[11px] tracking-[0.2em] uppercase text-espresso/40 max-w-xs leading-loose font-light border-l border-[#B89F7D] pl-6 mt-8 md:mt-0">Distinct worlds. Each a different expression of style. Enter yours.</p></RevealText>
+                                <RevealText delay={200}><p className="text-[11px] tracking-[0.2em] uppercase text-white/40 max-w-xs leading-loose font-light border-l border-[#A6957A] pl-6 mt-8 md:mt-0">Distinct worlds. Each a different expression of style. Enter yours.</p></RevealText>
                             </div>
 
                             {/* Collection Cards — horizontal scroll on mobile, grid on desktop */}
@@ -850,17 +786,17 @@
                                             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/10 group-hover:from-black/90 transition-all duration-700" />
                                             {/* Content always visible on mobile */}
                                             <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
-                                                <span className="text-[9px] tracking-[0.2em] md:tracking-[0.4em] uppercase text-[#B89F7D] font-bold mb-2 md:mb-3 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 md:translate-y-2 md:group-hover:translate-y-0">{col.subtitle}</span>
-                                                <h3 className="font-serif text-2xl md:text-4xl italic text-espresso leading-tight mb-2 md:mb-4">{col.name}</h3>
-                                                <p className="text-[10px] tracking-[0.2em] uppercase text-espresso/60 font-light leading-loose md:opacity-0 md:group-hover:opacity-100 transition-all duration-700 md:translate-y-4 md:group-hover:translate-y-0 line-clamp-2 md:line-clamp-none">{col.desc}</p>
+                                                <span className="text-[9px] tracking-[0.2em] md:tracking-[0.4em] uppercase text-[#A6957A] font-bold mb-2 md:mb-3 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 md:translate-y-2 md:group-hover:translate-y-0">{col.subtitle}</span>
+                                                <h3 className="font-serif text-2xl md:text-4xl italic text-white leading-tight mb-2 md:mb-4">{col.name}</h3>
+                                                <p className="text-[10px] tracking-[0.2em] uppercase text-white/60 font-light leading-loose md:opacity-0 md:group-hover:opacity-100 transition-all duration-700 md:translate-y-4 md:group-hover:translate-y-0 line-clamp-2 md:line-clamp-none">{col.desc}</p>
                                                 <div className="mt-4 md:mt-6 flex items-center gap-4 md:opacity-0 md:group-hover:opacity-100 transition-all duration-500 md:translate-y-4 md:group-hover:translate-y-0">
-                                                    <span className="text-[9px] tracking-[0.2em] md:tracking-[0.4em] uppercase text-espresso font-bold">Explore</span>
-                                                    <div className="flex-1 h-[1px] bg-[#B89F7D]" />
-                                                    <ArrowRight className="w-4 h-4 text-[#B89F7D]" />
+                                                    <span className="text-[9px] tracking-[0.2em] md:tracking-[0.4em] uppercase text-white font-bold">Explore</span>
+                                                    <div className="flex-1 h-[1px] bg-[#A6957A]" />
+                                                    <ArrowRight className="w-4 h-4 text-[#A6957A]" />
                                                 </div>
                                             </div>
                                             {/* Index */}
-                                            <span className="absolute top-6 right-6 font-serif text-4xl italic text-espresso/10 select-none">0{i+1}</span>
+                                            <span className="absolute top-6 right-6 font-serif text-4xl italic text-white/10 select-none">0{i+1}</span>
                                         </div>
                                     </Reveal>
                                     </div>
@@ -870,7 +806,7 @@
                     </section>
 
                     {/* Trust Strip */}
-                    <section className="py-16 bg-alabaster border-t border-espresso/10">
+                    <section className="py-16 bg-[#0D0D0D] border-t border-white/5">
                         <div className="max-w-[1800px] mx-auto px-8 md:px-16">
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-4">
                                 {[
@@ -880,10 +816,10 @@
                                     { icon: <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>, title: 'Secure Payments', sub: 'UPI · Cards · Net Banking' },
                                 ].map(({ icon, title, sub }) => (
                                     <div key={title} className="flex flex-col items-center text-center gap-3 group">
-                                        <div className="text-[#B89F7D] group-hover:scale-110 transition-transform duration-300">{icon}</div>
+                                        <div className="text-[#A6957A] group-hover:scale-110 transition-transform duration-300">{icon}</div>
                                         <div>
-                                            <p className="text-[11px] tracking-[0.25em] uppercase font-bold text-espresso mb-1">{title}</p>
-                                            <p className="text-[10px] text-espresso/40 tracking-[0.05em]">{sub}</p>
+                                            <p className="text-[11px] tracking-[0.25em] uppercase font-bold text-[#F0EBE1] mb-1">{title}</p>
+                                            <p className="text-[10px] text-white/40 tracking-[0.05em]">{sub}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -891,10 +827,10 @@
                         </div>
                     </section>
 
-                    <section className="py-60 px-8 md:px-16 bg-alabaster text-espresso flex flex-col items-center text-center border-t border-espresso/10">
-                        <RevealText><span className="text-[10px] tracking-[0.2em] md:tracking-[0.5em] uppercase font-bold text-[#B89F7D] block mb-10">A Brand Built with Intent</span></RevealText>
+                    <section className="py-60 px-8 md:px-16 bg-[#F0EBE1] text-[#0D0D0D] flex flex-col items-center text-center border-t border-black/5">
+                        <RevealText><span className="text-[10px] tracking-[0.2em] md:tracking-[0.5em] uppercase font-bold text-[#A6957A] block mb-10">A Brand Built with Intent</span></RevealText>
                         <RevealText delay={200}><h2 className="font-serif text-3xl md:text-4xl leading-[1.2] max-w-4xl mx-auto mb-20 tracking-tighter uppercase">"Tiiha was born from a belief that what you wear should feel like a choice that is deliberate, personal, and yours."</h2></RevealText>
-                        <RevealText delay={400}><MagneticButton><button onClick={() => { window.scrollTo(0,0); setPage('about'); }} className="text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase font-bold border-b-2 border-[#0D0D0D] pb-3 hover:text-[#B89F7D] hover:border-[#B89F7D] transition-colors">Read Our Story</button></MagneticButton></RevealText>
+                        <RevealText delay={400}><MagneticButton><button onClick={() => { window.scrollTo(0,0); setPage('about'); }} className="text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase font-bold border-b-2 border-[#0D0D0D] pb-3 hover:text-[#A6957A] hover:border-[#A6957A] transition-colors">Read Our Story</button></MagneticButton></RevealText>
                     </section>
                     <Newsletter />
                 </div>
@@ -919,13 +855,13 @@
                 }, 900);
             };
             return (
-                <div className="border-t border-espresso/10 pt-5 mb-5">
+                <div className="border-t border-black/8 pt-5 mb-5">
                     <p className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-black/40 mb-3">Check Delivery</p>
                     <div className="flex gap-2">
                         <input type="text" maxLength={6} value={pin} onChange={e => { setPin(e.target.value.replace(/\D/g,'')); setResult(null); }}
-                            placeholder="Enter PIN code" className="flex-1 border border-espresso/10 bg-white px-3 py-2.5 text-sm font-serif focus:outline-none focus:border-[#B89F7D] transition-colors" />
+                            placeholder="Enter PIN code" className="flex-1 border border-black/20 bg-white px-3 py-2.5 text-sm font-serif focus:outline-none focus:border-[#A6957A] transition-colors" />
                         <button onClick={check} disabled={checking}
-                            className="px-5 bg-alabaster text-espresso text-[9px] tracking-[0.2em] uppercase font-bold hover:bg-[#B89F7D] transition-colors disabled:opacity-50">
+                            className="px-5 bg-[#0D0D0D] text-white text-[9px] tracking-[0.2em] uppercase font-bold hover:bg-[#A6957A] transition-colors disabled:opacity-50">
                             {checking ? '...' : 'CHECK'}
                         </button>
                     </div>
@@ -993,9 +929,9 @@
 
             return (
                 <>
-                <div data-lenis-prevent className="fixed inset-0 z-[200] bg-alabaster text-espresso flex flex-col lg:flex-row animate-[pageFadeIn_0.8s_cubic-bezier(0.19,1,0.22,1)] overflow-y-auto lg:overflow-hidden" style={{cursor:'auto'}}>
+                <div data-lenis-prevent className="fixed inset-0 z-[200] bg-[#F0EBE1] text-[#0D0D0D] flex flex-col lg:flex-row animate-[pageFadeIn_0.8s_cubic-bezier(0.19,1,0.22,1)] overflow-y-auto lg:overflow-hidden" style={{cursor:'auto'}}>
                     {/* LEFT: Media Viewer */}
-                    <div className="w-full lg:w-1/2 h-[75vh] lg:h-screen relative bg-alabaster flex flex-col flex-shrink-0">
+                    <div className="w-full lg:w-1/2 h-[75vh] lg:h-screen relative bg-[#0D0D0D] flex flex-col flex-shrink-0">
                         {/* Main media display — swipeable on mobile */}
                         <div
                             className="flex-1 relative overflow-hidden"
@@ -1047,7 +983,7 @@
                                 />
                             )}
                             {/* Zoom hint badge — mobile only */}
-                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 lg:hidden bg-black/70 backdrop-blur-sm text-espresso rounded-full px-3 py-1.5 flex items-center gap-1.5 text-[9px] tracking-[0.15em] uppercase font-bold pointer-events-none z-20">
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 lg:hidden bg-black/70 backdrop-blur-sm text-white rounded-full px-3 py-1.5 flex items-center gap-1.5 text-[9px] tracking-[0.15em] uppercase font-bold pointer-events-none z-20">
                                 <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
                                 </svg>
@@ -1061,12 +997,12 @@
                                     />
                                 ))}
                             </div>
-                            <div className="hidden lg:block absolute top-6 right-6 bg-black/50 backdrop-blur-sm text-espresso text-[10px] tracking-[0.2em] px-3 py-1 font-bold">
+                            <div className="hidden lg:block absolute top-6 right-6 bg-black/50 backdrop-blur-sm text-white text-[10px] tracking-[0.2em] px-3 py-1 font-bold">
                                 {activeMediaIdx + 1} / {mediaItems.length}
                             </div>
                             {/* Mobile close */}
                             <button onClick={onClose} className="absolute top-6 left-6 lg:hidden p-3 bg-black/50 backdrop-blur-sm rounded-full z-10">
-                                <X className="w-5 h-5 text-espresso" />
+                                <X className="w-5 h-5 text-white" />
                             </button>
                         </div>
                         {/* Thumbnail strip */}
@@ -1076,11 +1012,11 @@
                                     <button
                                         key={i}
                                         onClick={() => setActiveMediaIdx(i)}
-                                        className={`relative flex-shrink-0 w-16 h-16 overflow-hidden transition-all duration-300 snap-center ${activeMediaIdx === i ? 'ring-2 ring-[#B89F7D] opacity-100' : 'opacity-40 hover:opacity-70'}`}
+                                        className={`relative flex-shrink-0 w-16 h-16 overflow-hidden transition-all duration-300 snap-center ${activeMediaIdx === i ? 'ring-2 ring-[#A6957A] opacity-100' : 'opacity-40 hover:opacity-70'}`}
                                     >
                                         {m.type === 'video' ? (
                                             <div className="w-full h-full bg-[#1a1a1a] flex items-center justify-center">
-                                                <Play className="w-5 h-5 text-[#B89F7D]" />
+                                                <Play className="w-5 h-5 text-[#A6957A]" />
                                             </div>
                                         ) : (
                                             <img src={m.url} loading="lazy" className="w-full h-full object-cover" />
@@ -1094,19 +1030,19 @@
                     <div data-lenis-prevent className="w-full lg:w-1/2 h-auto lg:h-screen lg:overflow-y-auto flex flex-col relative scroll-smooth" style={{cursor:'auto'}}>
                         <div className="px-8 py-8 lg:px-12 flex-shrink-0">
                             {/* Close Button on Desktop */}
-                            <button onClick={onClose} className="hidden lg:block absolute right-8 top-8 p-2 hover:rotate-90 transition-transform duration-500 z-10 bg-alabaster"><X className="w-6 h-6" strokeWidth={1.5} /></button>
+                            <button onClick={onClose} className="hidden lg:block absolute right-8 top-8 p-2 hover:rotate-90 transition-transform duration-500 z-10 bg-[#F0EBE1]"><X className="w-6 h-6" strokeWidth={1.5} /></button>
                             
-                            <p className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase text-[#B89F7D] font-bold mb-2">{product.category}</p>
+                            <p className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase text-[#A6957A] font-bold mb-2">{product.category}</p>
                             <h1 className="font-serif text-3xl md:text-4xl leading-tight tracking-[-0.02em] mb-4 uppercase pr-8">{product.name}</h1>
                             <div className="flex items-baseline gap-4 mb-6">
-                                <p className="font-serif text-3xl text-[#B89F7D]">₹{product.price.toLocaleString('en-IN')}</p>
+                                <p className="font-serif text-3xl text-[#A6957A]">₹{product.price.toLocaleString('en-IN')}</p>
                                 <span className="text-[10px] tracking-[0.1em] text-green-600 font-bold">FREE Delivery in 6 Days</span>
                             </div>
 
                             {/* Size Selection */}
                             <div className="flex justify-between items-center mb-3">
-                                <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-espresso">Select Size</span>
-                                <button onClick={() => onSizeGuide && onSizeGuide()} className="text-[9px] tracking-[0.15em] uppercase text-[#B89F7D] underline hover:text-espresso transition-colors">Size Guide</button>
+                                <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#0D0D0D]">Select Size</span>
+                                <button onClick={() => onSizeGuide && onSizeGuide()} className="text-[9px] tracking-[0.15em] uppercase text-[#A6957A] underline hover:text-[#0D0D0D] transition-colors">Size Guide</button>
                             </div>
                             <div className="flex gap-2 flex-wrap mb-3">
                                 {(product.sizes ? product.sizes.split(',').map(s=>s.trim()) : ['S','M','L']).map(size => {
@@ -1116,8 +1052,8 @@
                                     <button key={size} onClick={() => setSelectedSize(size)}
                                         className={`min-w-[52px] py-2.5 px-3 text-[11px] tracking-[0.1em] uppercase font-bold border-2 transition-all duration-200 rounded relative ${
                                             selectedSize === size
-                                                ? 'bg-alabaster text-espresso border-[#0D0D0D]'
-                                                : 'border-espresso/10 text-black/60 hover:border-black hover:text-black'
+                                                ? 'bg-[#0D0D0D] text-white border-[#0D0D0D]'
+                                                : 'border-black/20 text-black/60 hover:border-black hover:text-black'
                                         }`}>
                                         {size}
                                         {stockCount > 0 && <span className="block text-[8px] text-black/50 font-normal normal-case mt-0.5">{stockCount} left</span>}
@@ -1137,13 +1073,13 @@
                             <div className="flex gap-3 mt-6 mb-4">
                                 <button onClick={() => { if(selectedSize && product.stock?.[selectedSize] !== 0){onAdd(product,selectedSize);setSelectedSize(null);}else if (!selectedSize){alert('Please select a size first.');} }}
                                     className={`flex-1 py-4 text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold border-2 flex items-center justify-center gap-3 transition-all ${
-                                        selectedSize && product.stock?.[selectedSize] !== 0 ? 'border-[#0D0D0D] text-espresso hover:bg-alabaster hover:text-espresso' : 'border-espresso/10 text-black/25 cursor-not-allowed'
+                                        selectedSize && product.stock?.[selectedSize] !== 0 ? 'border-[#0D0D0D] text-[#0D0D0D] hover:bg-[#0D0D0D] hover:text-white' : 'border-black/15 text-black/25 cursor-not-allowed'
                                     }`}>
                                     <ShoppingBag className="w-4 h-4" /> Add to Bag
                                 </button>
                                 <button onClick={() => { if(selectedSize && product.stock?.[selectedSize] !== 0){ onAdd(product,selectedSize); }else if(!selectedSize){ alert('Please select a size first.'); } }}
                                     className={`flex-1 py-4 text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold flex items-center justify-center gap-3 transition-all ${
-                                        selectedSize && product.stock?.[selectedSize] !== 0 ? 'bg-[#B89F7D] text-espresso hover:bg-alabaster' : 'bg-black/8 text-black/25 cursor-not-allowed'
+                                        selectedSize && product.stock?.[selectedSize] !== 0 ? 'bg-[#A6957A] text-white hover:bg-[#0D0D0D]' : 'bg-black/8 text-black/25 cursor-not-allowed'
                                     }`}>
                                     Buy Now <ArrowRight className="w-4 h-4" />
                                 </button>
@@ -1151,7 +1087,7 @@
                             <p className="text-center text-[9px] text-black/35 tracking-[0.1em] mb-8">✓ Free delivery in 6 days &nbsp;·&nbsp; ✓ Easy 7-day returns &nbsp;·&nbsp; ✓ 100% authentic</p>
 
                             {/* Description */}
-                            <div className="border-t border-espresso/10 pt-6 mb-6">
+                            <div className="border-t border-black/8 pt-6 mb-6">
                                 <p className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-black/40 mb-3">About this Piece</p>
                                 <p className="text-base font-light leading-relaxed text-black/70">{product.desc}</p>
                             </div>
@@ -1162,28 +1098,28 @@
                             {/* Care & Trust */}
                             <div className="grid grid-cols-3 gap-3 mb-6">
                                 <div className="flex flex-col items-center text-center gap-1 p-3 bg-black/3 rounded">
-                                    <svg className="w-5 h-5 text-[#B89F7D]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                                    <svg className="w-5 h-5 text-[#A6957A]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
                                     <span className="text-[8px] tracking-[0.1em] uppercase font-bold text-black/50">Easy Returns<br/>7 Days</span>
                                 </div>
                                 <div className="flex flex-col items-center text-center gap-1 p-3 bg-black/3 rounded">
-                                    <ShieldCheck className="w-5 h-5 text-[#B89F7D]" strokeWidth={1.5} />
+                                    <ShieldCheck className="w-5 h-5 text-[#A6957A]" strokeWidth={1.5} />
                                     <span className="text-[8px] tracking-[0.1em] uppercase font-bold text-black/50">100%<br/>Authentic</span>
                                 </div>
                                 <div className="flex flex-col items-center text-center gap-1 p-3 bg-black/3 rounded">
-                                    <Truck className="w-5 h-5 text-[#B89F7D]" strokeWidth={1.5} />
+                                    <Truck className="w-5 h-5 text-[#A6957A]" strokeWidth={1.5} />
                                     <span className="text-[8px] tracking-[0.1em] uppercase font-bold text-black/50">Free<br/>Delivery</span>
                                 </div>
                             </div>
 
                             {/* Fabric */}
-                            <div className="border-t border-espresso/10 pt-6 mb-6">
+                            <div className="border-t border-black/8 pt-6 mb-6">
                                 <p className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-black/40 mb-2">Fabric & Care</p>
                                 <p className="text-sm font-light text-black/60 leading-relaxed">{product.detail || 'Premium quality fabric. Handle with care. Dry clean recommended.'}</p>
                             </div>
 
                             {/* Related */}
                             {relatedItems.length > 0 && (
-                                <div className="border-t border-espresso/10 pt-6 mb-8">
+                                <div className="border-t border-black/8 pt-6 mb-8">
                                     <p className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-black/40 mb-4">You May Also Like</p>
                                     <div className="grid grid-cols-3 gap-3">
                                         {relatedItems.slice(0,3).map(item => (
@@ -1192,7 +1128,7 @@
                                                     <img src={item.image} loading="lazy" alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                                 </div>
                                                 <p className="font-serif text-xs leading-tight truncate">{item.name}</p>
-                                                <p className="text-[9px] text-[#B89F7D]">₹{item.price.toLocaleString('en-IN')}</p>
+                                                <p className="text-[9px] text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</p>
                                             </div>
                                         ))}
                                     </div>
@@ -1205,7 +1141,7 @@
                                 const rvItems = ids.filter(id => id !== product.id).map(id => PRODUCTS.find(p => p.id === id)).filter(Boolean).slice(0, 4);
                                 if (!rvItems.length) return null;
                                 return (
-                                    <div className="border-t border-espresso/10 pt-6">
+                                    <div className="border-t border-black/8 pt-6">
                                         <p className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-black/40 mb-4">Recently Viewed</p>
                                         <div className="grid grid-cols-4 gap-2">
                                             {rvItems.map(item => (
@@ -1214,7 +1150,7 @@
                                                         <img src={item.image} loading="lazy" alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                                                     </div>
                                                     <p className="font-serif text-[10px] leading-tight truncate">{item.name}</p>
-                                                    <p className="text-[9px] text-[#B89F7D]">₹{item.price.toLocaleString('en-IN')}</p>
+                                                    <p className="text-[9px] text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -1240,7 +1176,7 @@
                             style={{ zIndex: 99999 }}
                             onClick={(e) => { e.stopPropagation(); setZoomOpen(false); }}
                         >
-                            <X className="w-6 h-6 text-espresso" />
+                            <X className="w-6 h-6 text-white" />
                         </button>
                         
                         {/* Image */}
@@ -1255,7 +1191,7 @@
                         />
 
                         {/* Hint */}
-                        <p className="absolute bottom-6 left-0 right-0 text-center text-espresso/40 text-[10px] tracking-[0.2em] uppercase font-bold pointer-events-none" style={{ zIndex: 99999 }}>
+                        <p className="absolute bottom-6 left-0 right-0 text-center text-white/40 text-[10px] tracking-[0.2em] uppercase font-bold pointer-events-none" style={{ zIndex: 99999 }}>
                             Pinch to zoom · Tap outside to close
                         </p>
                         
@@ -1268,7 +1204,7 @@
                                 onMouseEnter={() => setCursor('default')}
                                 onMouseLeave={() => setCursor('close')}
                             >
-                                <ChevronLeft className="w-6 h-6 text-espresso" />
+                                <ChevronLeft className="w-6 h-6 text-white" />
                             </button>
                             <button
                                 className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center transition-colors cursor-pointer pointer-events-auto"
@@ -1277,7 +1213,7 @@
                                 onMouseEnter={() => setCursor('default')}
                                 onMouseLeave={() => setCursor('close')}
                             >
-                                <ChevronRight className="w-6 h-6 text-espresso" />
+                                <ChevronRight className="w-6 h-6 text-white" />
                             </button>
                         </>)}
                     </div>
@@ -1398,7 +1334,7 @@
                                 setSubmitting(false);
                             },
                             prefill: { name: `${form.firstName} ${form.lastName}`, email: form.email, contact: form.phone },
-                            theme: { color: '#B89F7D' },
+                            theme: { color: '#A6957A' },
                             modal: { ondismiss: () => setSubmitting(false) }
                         };
                         const rzp = new window.Razorpay(options);
@@ -1440,7 +1376,7 @@
                             setSubmitting(false);
                         },
                         prefill: { name: `${form.firstName} ${form.lastName}`, email: form.email, contact: form.phone },
-                        theme: { color: '#B89F7D' },
+                        theme: { color: '#A6957A' },
                         modal: { ondismiss: () => setSubmitting(false) }
                     };
                     const rzp = new window.Razorpay(options);
@@ -1457,25 +1393,25 @@
             return (
                 <div className={`fixed inset-0 z-[300] pointer-events-none transition-all duration-[1s] ease-[cubic-bezier(0.19,1,0.22,1)] ${isOpen ? 'bg-black/20 backdrop-blur-sm' : 'bg-transparent'}`}>
                     <div className={`absolute inset-0 pointer-events-auto ${isOpen ? 'block' : 'hidden'}`} onClick={onClose} />
-                    <div className={`absolute top-0 right-0 w-full md:w-[500px] h-full bg-alabaster text-espresso pointer-events-auto transform transition-transform duration-[1s] ease-[cubic-bezier(0.19,1,0.22,1)] shadow-2xl flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
-                        <div className="flex justify-between items-center p-8 border-b border-espresso/10">
+                    <div className={`absolute top-0 right-0 w-full md:w-[500px] h-full bg-[#F0EBE1] text-[#0D0D0D] pointer-events-auto transform transition-transform duration-[1s] ease-[cubic-bezier(0.19,1,0.22,1)] shadow-2xl flex flex-col ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+                        <div className="flex justify-between items-center p-8 border-b border-black/5">
                             <div>
                                 {checkoutStep > 0 && checkoutStep < 4 && <button onClick={() => setCheckoutStep(s => s-1)} className="text-[9px] tracking-[0.15em] md:tracking-[0.3em] uppercase opacity-40 mb-1 block hover:opacity-100">← Back</button>}
-                                <h2 className="font-serif text-2xl tracking-wide">{checkoutStep === 4 ? 'Order Confirmed!' : stepLabel[checkoutStep]} {checkoutStep === 0 && <span className="text-[#B89F7D] ml-2 font-sans text-lg">({cart.length})</span>}</h2>
+                                <h2 className="font-serif text-2xl tracking-wide">{checkoutStep === 4 ? 'Order Confirmed!' : stepLabel[checkoutStep]} {checkoutStep === 0 && <span className="text-[#A6957A] ml-2 font-sans text-lg">({cart.length})</span>}</h2>
                             </div>
                             <button onClick={() => { onClose(); setCheckoutStep(0); }} className="p-3 hover:rotate-90 transition-transform duration-700 -mr-2"><X className="w-6 h-6" strokeWidth={1.5} /></button>
                         </div>
-                        <div className="px-8 py-3 bg-[#B89F7D] text-espresso text-[9px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-center">
+                        <div className="px-8 py-3 bg-[#A6957A] text-[#0D0D0D] text-[9px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-center">
                             ✨ Free shipping on all orders across India
                         </div>
                         {checkoutStep > 0 && checkoutStep < 4 && (
-                            <div className="flex px-8 py-3 bg-black/3 border-b border-espresso/10 gap-2">
+                            <div className="flex px-8 py-3 bg-black/3 border-b border-black/5 gap-2">
                                 {['Contact', 'Delivery', 'Payment'].map((s, i) => (
                                     <div key={i} className="flex items-center gap-2 flex-1">
-                                        <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold flex-shrink-0 ${ checkoutStep > i + 1 ? 'bg-green-500 text-espresso' : checkoutStep === i + 1 ? 'bg-[#B89F7D] text-espresso' : 'bg-black/10 text-black/30' }`}>
+                                        <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold flex-shrink-0 ${ checkoutStep > i + 1 ? 'bg-green-500 text-white' : checkoutStep === i + 1 ? 'bg-[#A6957A] text-white' : 'bg-black/10 text-black/30' }`}>
                                             {checkoutStep > i + 1 ? '✓' : i + 1}
                                         </div>
-                                        <span className={`text-[8px] tracking-[0.15em] uppercase font-bold ${ checkoutStep === i + 1 ? 'text-[#B89F7D]' : checkoutStep > i + 1 ? 'text-green-600' : 'text-black/25' }`}>{s}</span>
+                                        <span className={`text-[8px] tracking-[0.15em] uppercase font-bold ${ checkoutStep === i + 1 ? 'text-[#A6957A]' : checkoutStep > i + 1 ? 'text-green-600' : 'text-black/25' }`}>{s}</span>
                                         {i < 2 && <div className={`flex-1 h-[1px] ${ checkoutStep > i + 1 ? 'bg-green-400' : 'bg-black/10' }`} />}
                                     </div>
                                 ))}
@@ -1492,7 +1428,7 @@
                                             <p className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase text-black/30">Add items to get started</p>
                                         </div>
                                     ) : cart.map((item, i) => (
-                                        <div key={i} className="flex gap-4 pb-6 border-b border-espresso/10 last:border-0">
+                                        <div key={i} className="flex gap-4 pb-6 border-b border-black/5 last:border-0">
                                             <div className="w-20 h-28 bg-black/5 overflow-hidden flex-shrink-0 rounded-sm">
                                                 <img src={item.image} loading="lazy" alt={item.name} className="w-full h-full object-cover" />
                                             </div>
@@ -1505,32 +1441,32 @@
                                                     <p className="text-[9px] text-black/40 tracking-[0.2em] uppercase mt-1 font-bold">Size: {item.size}</p>
                                                     <span className="inline-block mt-1 text-[8px] tracking-[0.2em] uppercase font-bold text-green-600 bg-green-50 px-2 py-0.5">FREE Delivery in 6 Days</span>
                                                 </div>
-                                                <p className="font-serif text-lg italic text-[#B89F7D]">₹{item.price.toLocaleString('en-IN')}</p>
+                                                <p className="font-serif text-lg italic text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</p>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
                                 {cart.length > 0 && (
-                                    <div className="p-8 border-t border-espresso/10 bg-white/60 backdrop-blur-md">
-                                        {!couponMsg && <p className="text-[10px] tracking-[0.1em] text-[#B89F7D] font-bold mb-3">💡 New here? Try code <span className="underline cursor-pointer" onClick={() => setCouponCode('WELCOME10')}>WELCOME10</span> for 10% off</p>}
+                                    <div className="p-8 border-t border-black/5 bg-white/60 backdrop-blur-md">
+                                        {!couponMsg && <p className="text-[10px] tracking-[0.1em] text-[#A6957A] font-bold mb-3">💡 New here? Try code <span className="underline cursor-pointer" onClick={() => setCouponCode('WELCOME10')}>WELCOME10</span> for 10% off</p>}
                                         <div className="mb-5 flex gap-2">
-                                            <input type="text" value={couponCode} onChange={e=>setCouponCode(e.target.value)} placeholder="Enter coupon code" className="w-full bg-white border border-espresso/10 px-4 py-3 text-[10px] tracking-[0.15em] uppercase focus:outline-none focus:border-[#B89F7D] placeholder-black/30" />
+                                            <input type="text" value={couponCode} onChange={e=>setCouponCode(e.target.value)} placeholder="Enter coupon code" className="w-full bg-white border border-black/20 px-4 py-3 text-[10px] tracking-[0.15em] uppercase focus:outline-none focus:border-[#A6957A] placeholder-black/30" />
                                             <button onClick={() => {
                                                 const code = couponCode.toUpperCase().trim();
                                                 if(code==='WELCOME10'){setDiscount(0.1);setCouponMsg('✓ 10% off applied!');}
                                                 else if(code==='TIIHA20'){setDiscount(0.2);setCouponMsg('✓ 20% off applied!');}
                                                 else if(code==='H@RI15'){setDiscount(0.15);setCouponMsg('✓ Exclusive 15% off applied!');}
                                                 else{setDiscount(0);setCouponMsg('Invalid code.');}
-                                            }} className="px-8 bg-alabaster text-espresso text-[9px] tracking-[0.2em] uppercase font-bold hover:bg-[#B89F7D] transition-colors whitespace-nowrap">APPLY</button>
+                                            }} className="px-8 bg-[#0D0D0D] text-white text-[9px] tracking-[0.2em] uppercase font-bold hover:bg-[#A6957A] transition-colors whitespace-nowrap">APPLY</button>
                                         </div>
                                         {couponMsg && <p className={`text-[10px] tracking-[0.1em] uppercase font-bold mb-4 ${discount>0?'text-green-600':'text-red-500'}`}>{couponMsg}</p>}
                                         <div className="space-y-2 mb-4 text-[10px] tracking-[0.2em] uppercase">
                                             <div className="flex justify-between text-black/50"><span>Subtotal ({cart.length} item{cart.length>1?'s':''})</span><span>₹{subtotal.toLocaleString('en-IN')}</span></div>
                                             <div className="flex justify-between text-green-600 font-bold"><span>Delivery</span><span>FREE</span></div>
                                             {discount>0 && <div className="flex justify-between text-green-600 font-bold"><span>Discount ({discount*100}%)</span><span>-₹{(subtotal*discount).toLocaleString('en-IN')}</span></div>}
-                                            <div className="flex justify-between text-espresso font-bold text-sm border-t border-espresso/10 pt-2 mt-2"><span>Total Amount</span><span className="font-serif text-xl">₹{total.toLocaleString('en-IN')}</span></div>
+                                            <div className="flex justify-between text-[#0D0D0D] font-bold text-sm border-t border-black/10 pt-2 mt-2"><span>Total Amount</span><span className="font-serif text-xl">₹{total.toLocaleString('en-IN')}</span></div>
                                         </div>
-                                        <button onClick={() => setCheckoutStep(1)} className="w-full py-4 bg-[#B89F7D] text-espresso font-bold text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase text-center hover:bg-alabaster transition-colors mt-3">PLACE ORDER →</button>
+                                        <button onClick={() => setCheckoutStep(1)} className="w-full py-4 bg-[#A6957A] text-white font-bold text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase text-center hover:bg-[#0D0D0D] transition-colors mt-3">PLACE ORDER →</button>
                                         <p className="text-center text-[9px] text-black/30 tracking-[0.1em] uppercase mt-3">Safe &amp; Secure Payments</p>
                                     </div>
                                 )}
@@ -1539,9 +1475,9 @@
 
                         {checkoutStep === 1 && (
                             <div data-lenis-prevent className="flex-1 overflow-y-auto p-8 no-scrollbar">
-                                <div className="bg-[#B89F7D]/10 border border-[#B89F7D]/20 px-5 py-3 mb-8 flex justify-between items-center">
+                                <div className="bg-[#A6957A]/10 border border-[#A6957A]/20 px-5 py-3 mb-8 flex justify-between items-center">
                                     <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-black/50">{cart.length} item{cart.length>1?'s':''} · Total</span>
-                                    <span className="font-serif text-xl text-[#B89F7D]">₹{total.toLocaleString('en-IN')}</span>
+                                    <span className="font-serif text-xl text-[#A6957A]">₹{total.toLocaleString('en-IN')}</span>
                                 </div>
                                 <p className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase text-black/40 mb-8 font-bold">Contact Information</p>
                                 <div className="space-y-6">
@@ -1549,53 +1485,53 @@
                                         {[['firstName','First Name'],['lastName','Last Name']].map(([k,label]) => (
                                             <div key={k}>
                                                 <label className="text-[9px] tracking-[0.2em] uppercase text-black/40 font-bold block mb-1">{label} *</label>
-                                                <input type="text" value={form[k]} onChange={e=>updateForm(k,e.target.value)} className="w-full bg-white border border-espresso/10 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#B89F7D] transition-colors" placeholder={label} />
+                                                <input type="text" value={form[k]} onChange={e=>updateForm(k,e.target.value)} className="w-full bg-white border border-black/15 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#A6957A] transition-colors" placeholder={label} />
                                             </div>
                                         ))}
                                     </div>
                                     {[['email','Email Address','email'],['phone','Phone Number (10 digits)','tel']].map(([k,label,type]) => (
                                         <div key={k}>
                                             <label className="text-[9px] tracking-[0.2em] uppercase text-black/40 font-bold block mb-1">{label} *</label>
-                                            <input type={type} value={form[k]} onChange={e=>updateForm(k,e.target.value)} className="w-full bg-white border border-espresso/10 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#B89F7D] transition-colors" placeholder={label} />
+                                            <input type={type} value={form[k]} onChange={e=>updateForm(k,e.target.value)} className="w-full bg-white border border-black/15 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#A6957A] transition-colors" placeholder={label} />
                                         </div>
                                     ))}
                                 </div>
-                                <button onClick={() => { if(validateStep1()) setCheckoutStep(2); }} className="mt-8 w-full py-4 bg-[#B89F7D] text-espresso font-bold text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase hover:bg-alabaster transition-colors">CONTINUE TO DELIVERY →</button>
+                                <button onClick={() => { if(validateStep1()) setCheckoutStep(2); }} className="mt-8 w-full py-4 bg-[#A6957A] text-white font-bold text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase hover:bg-[#0D0D0D] transition-colors">CONTINUE TO DELIVERY →</button>
                             </div>
                         )}
 
                         {checkoutStep === 2 && (
                             <div data-lenis-prevent className="flex-1 overflow-y-auto p-8 no-scrollbar">
-                                <div className="bg-[#B89F7D]/10 border border-[#B89F7D]/20 px-5 py-3 mb-8 flex justify-between items-center">
+                                <div className="bg-[#A6957A]/10 border border-[#A6957A]/20 px-5 py-3 mb-8 flex justify-between items-center">
                                     <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-black/50">{cart.length} item{cart.length>1?'s':''} · Total</span>
-                                    <span className="font-serif text-xl text-[#B89F7D]">₹{total.toLocaleString('en-IN')}</span>
+                                    <span className="font-serif text-xl text-[#A6957A]">₹{total.toLocaleString('en-IN')}</span>
                                 </div>
                                 <p className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase text-black/40 mb-8 font-bold">Delivery Address</p>
                                 <div className="space-y-5">
                                     <div>
                                         <label className="text-[9px] tracking-[0.2em] uppercase text-black/40 font-bold block mb-1">Full Address *</label>
-                                        <textarea rows={2} value={form.address} onChange={e=>updateForm('address',e.target.value)} className="w-full bg-white border border-espresso/10 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#B89F7D] transition-colors resize-none" placeholder="House/Flat No., Street, Area" />
+                                        <textarea rows={2} value={form.address} onChange={e=>updateForm('address',e.target.value)} className="w-full bg-white border border-black/15 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#A6957A] transition-colors resize-none" placeholder="House/Flat No., Street, Area" />
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
                                             <label className="text-[9px] tracking-[0.2em] uppercase text-black/40 font-bold block mb-1">City *</label>
-                                            <input type="text" value={form.city} onChange={e=>updateForm('city',e.target.value)} className="w-full bg-white border border-espresso/10 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#B89F7D] transition-colors" placeholder="City" />
+                                            <input type="text" value={form.city} onChange={e=>updateForm('city',e.target.value)} className="w-full bg-white border border-black/15 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#A6957A] transition-colors" placeholder="City" />
                                         </div>
                                         <div>
                                             <label className="text-[9px] tracking-[0.2em] uppercase text-black/40 font-bold block mb-1">PIN Code *</label>
-                                            <input type="text" maxLength={6} value={form.postal} onChange={e=>updateForm('postal',e.target.value.replace(/\D/g,''))} className="w-full bg-white border border-espresso/10 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#B89F7D] transition-colors" placeholder="6-digit PIN" />
+                                            <input type="text" maxLength={6} value={form.postal} onChange={e=>updateForm('postal',e.target.value.replace(/\D/g,''))} className="w-full bg-white border border-black/15 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#A6957A] transition-colors" placeholder="6-digit PIN" />
                                         </div>
                                     </div>
                                     <div>
                                         <label className="text-[9px] tracking-[0.2em] uppercase text-black/40 font-bold block mb-1">State</label>
-                                        <input type="text" value={form.state||''} onChange={e=>updateForm('state',e.target.value)} className="w-full bg-white border border-espresso/10 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#B89F7D] transition-colors" placeholder="State" />
+                                        <input type="text" value={form.state||''} onChange={e=>updateForm('state',e.target.value)} className="w-full bg-white border border-black/15 px-4 py-3 text-base font-serif focus:outline-none focus:border-[#A6957A] transition-colors" placeholder="State" />
                                     </div>
                                     <div className="flex items-center gap-2 text-[10px] text-green-600 font-bold tracking-[0.1em] uppercase">
                                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>
                                         Free delivery to this address
                                     </div>
                                 </div>
-                                <button onClick={() => { if(validateStep2()) setCheckoutStep(3); }} className="mt-6 w-full py-4 bg-[#B89F7D] text-espresso font-bold text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase hover:bg-alabaster transition-colors">CONTINUE TO PAYMENT →</button>
+                                <button onClick={() => { if(validateStep2()) setCheckoutStep(3); }} className="mt-6 w-full py-4 bg-[#A6957A] text-white font-bold text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase hover:bg-[#0D0D0D] transition-colors">CONTINUE TO PAYMENT →</button>
                             </div>
                         )}
 
@@ -1609,21 +1545,21 @@
                                                 <p className="font-serif leading-tight">{item.name}</p>
                                                 <p className="text-[9px] text-black/40 uppercase tracking-wider">Size: {item.size}</p>
                                             </div>
-                                            <span className="font-serif text-[#B89F7D]">₹{item.price.toLocaleString('en-IN')}</span>
+                                            <span className="font-serif text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</span>
                                         </div>
                                     ))}
                                 </div>
-                                <div className="border border-espresso/10 p-5 bg-white/60 mb-6 space-y-2 text-[10px] tracking-[0.15em] uppercase">
+                                <div className="border border-black/10 p-5 bg-white/60 mb-6 space-y-2 text-[10px] tracking-[0.15em] uppercase">
                                     <div className="flex justify-between text-black/50"><span>Subtotal</span><span>₹{subtotal.toLocaleString('en-IN')}</span></div>
                                     <div className="flex justify-between text-green-600 font-bold"><span>Delivery</span><span>FREE</span></div>
                                     {discount>0 && <div className="flex justify-between text-green-600 font-bold"><span>Coupon Discount</span><span>-₹{(subtotal*discount).toLocaleString('en-IN')}</span></div>}
-                                    <div className="flex justify-between font-bold text-sm border-t border-espresso/10 pt-3 mt-2"><span>Total Payable</span><span className="font-serif text-lg">₹{total.toLocaleString('en-IN')}</span></div>
+                                    <div className="flex justify-between font-bold text-sm border-t border-black/10 pt-3 mt-2"><span>Total Payable</span><span className="font-serif text-lg">₹{total.toLocaleString('en-IN')}</span></div>
                                 </div>
-                                <div className="p-4 border border-[#B89F7D]/30 bg-[#B89F7D]/5 mb-5 flex gap-3 items-center">
-                                    <svg className="w-6 h-6 text-[#B89F7D] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                                <div className="p-4 border border-[#A6957A]/30 bg-[#A6957A]/5 mb-5 flex gap-3 items-center">
+                                    <svg className="w-6 h-6 text-[#A6957A] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
                                     <p className="text-[10px] tracking-[0.1em] text-black/60 font-bold">100% Secure Payment via Razorpay<br/><span className="text-green-600">UPI · Cards · Net Banking · Wallets</span></p>
                                 </div>
-                                <button onClick={handlePayment} disabled={submitting} className="w-full py-4 bg-[#B89F7D] text-espresso font-bold text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase hover:bg-alabaster transition-colors disabled:opacity-50 flex items-center justify-center gap-3">{submitting ? <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Processing...</> : <>PAY ₹{total.toLocaleString('en-IN')} SECURELY</>}</button>
+                                <button onClick={handlePayment} disabled={submitting} className="w-full py-4 bg-[#A6957A] text-white font-bold text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase hover:bg-[#0D0D0D] transition-colors disabled:opacity-50 flex items-center justify-center gap-3">{submitting ? <><div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Processing...</> : <>PAY ₹{total.toLocaleString('en-IN')} SECURELY</>}</button>
                                 <p className="text-center text-[9px] text-black/30 tracking-[0.1em] uppercase mt-3">By placing order you agree to our Terms &amp; Conditions</p>
                             </div>
                         )}
@@ -1631,25 +1567,25 @@
                         {checkoutStep === 4 && (
                             <div className="flex-1 flex flex-col items-center justify-center p-10 text-center">
                                 <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-8">
-                                    <svg className="w-8 h-8 text-espresso" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+                                    <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
                                 </div>
-                                <h3 className="font-serif text-4xl mb-3 text-espresso">Order Placed!</h3>
+                                <h3 className="font-serif text-4xl mb-3 text-[#0D0D0D]">Order Placed!</h3>
                                 <p className="text-[10px] tracking-[0.2em] uppercase text-black/40 font-bold mb-2">Thank you for shopping with Tiiha</p>
-                                <p className="text-sm text-black/50 mb-8 leading-relaxed">A confirmation has been sent to<br/><span className="font-bold text-espresso">{form.email}</span></p>
-                                <div className="w-full bg-[#B89F7D]/10 border border-[#B89F7D]/20 p-5 mb-8 text-left space-y-2">
+                                <p className="text-sm text-black/50 mb-8 leading-relaxed">A confirmation has been sent to<br/><span className="font-bold text-[#0D0D0D]">{form.email}</span></p>
+                                <div className="w-full bg-[#A6957A]/10 border border-[#A6957A]/20 p-5 mb-8 text-left space-y-2">
                                     <p className="text-[9px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-black/40 mb-3">Order Summary</p>
                                     {cart.map((item, i) => (
                                         <div key={i} className="flex justify-between text-sm">
                                             <span className="font-serif">{item.name} <span className="text-black/40 text-xs">({item.size})</span></span>
-                                            <span className="text-[#B89F7D]">₹{item.price.toLocaleString('en-IN')}</span>
+                                            <span className="text-[#A6957A]">₹{item.price.toLocaleString('en-IN')}</span>
                                         </div>
                                     ))}
-                                    <div className="border-t border-espresso/10 pt-2 mt-2 flex justify-between font-bold text-sm">
-                                        <span>Total Paid</span><span className="font-serif text-[#B89F7D]">₹{total.toLocaleString('en-IN')}</span>
+                                    <div className="border-t border-black/10 pt-2 mt-2 flex justify-between font-bold text-sm">
+                                        <span>Total Paid</span><span className="font-serif text-[#A6957A]">₹{total.toLocaleString('en-IN')}</span>
                                     </div>
                                 </div>
                                 <p className="text-[9px] tracking-[0.2em] uppercase text-black/30 mb-8">Estimated delivery: 5–7 business days</p>
-                                <button onClick={() => { onClose(); setCheckoutStep(0); }} className="w-full py-4 bg-[#B89F7D] text-espresso font-bold text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase hover:bg-alabaster transition-colors">CONTINUE SHOPPING</button>
+                                <button onClick={() => { onClose(); setCheckoutStep(0); }} className="w-full py-4 bg-[#A6957A] text-white font-bold text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase hover:bg-[#0D0D0D] transition-colors">CONTINUE SHOPPING</button>
                             </div>
                         )}
                     </div>
@@ -1693,9 +1629,9 @@
             }[s] || s);
 
             return (
-                <div className="pt-32 md:pt-48 pb-32 md:pb-60 px-6 md:px-16 max-w-3xl mx-auto bg-alabaster text-espresso">
-                    <RevealText><span className="text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase font-bold text-[#B89F7D] block mb-6">Track Your Order</span></RevealText>
-                    <RevealText delay={100}><h1 className="font-serif text-4xl md:text-5xl tracking-tight uppercase mb-6 md:mb-8 leading-tight md:leading-none">Where is<br/><span className="italic text-[#B89F7D]">my order?</span></h1></RevealText>
+                <div className="pt-32 md:pt-48 pb-32 md:pb-60 px-6 md:px-16 max-w-3xl mx-auto bg-[#F0EBE1] text-[#0D0D0D]">
+                    <RevealText><span className="text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase font-bold text-[#A6957A] block mb-6">Track Your Order</span></RevealText>
+                    <RevealText delay={100}><h1 className="font-serif text-4xl md:text-5xl tracking-tight uppercase mb-6 md:mb-8 leading-tight md:leading-none">Where is<br/><span className="italic text-[#A6957A]">my order?</span></h1></RevealText>
                     <RevealText delay={200}><p className="text-sm md:text-base text-black/50 font-light mb-10 md:mb-12 leading-relaxed">Enter the email address or phone number you used at checkout to see your order status.</p></RevealText>
                     <Reveal delay={300}>
                         <div className="flex gap-3 mb-8">
@@ -1703,9 +1639,9 @@
                                 type="text" value={query} onChange={e => setQuery(e.target.value)}
                                 onKeyDown={e => e.key === 'Enter' && track()}
                                 placeholder="Email or phone number"
-                                className="flex-1 bg-white border-2 border-espresso/10 px-5 py-4 font-serif text-base focus:outline-none focus:border-[#B89F7D] transition-colors placeholder:text-black/30"
+                                className="flex-1 bg-white border-2 border-black/15 px-5 py-4 font-serif text-base focus:outline-none focus:border-[#A6957A] transition-colors placeholder:text-black/30"
                             />
-                            <button onClick={track} disabled={loading} className="px-8 bg-alabaster text-espresso text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold hover:bg-[#B89F7D] transition-colors disabled:opacity-50">
+                            <button onClick={track} disabled={loading} className="px-8 bg-[#0D0D0D] text-white text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold hover:bg-[#A6957A] transition-colors disabled:opacity-50">
                                 {loading ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : 'Track'}
                             </button>
                         </div>
@@ -1718,16 +1654,16 @@
                         {order && (
                             <div className="space-y-6">
                                 {order.map((o, i) => (
-                                    <div key={i} className="border border-espresso/10 bg-white p-6">
+                                    <div key={i} className="border border-black/10 bg-white p-6">
                                         <div className="flex justify-between items-start mb-4">
                                             <div>
                                                 <p className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-black/40 mb-1">Order #{o.id?.slice(-8).toUpperCase()}</p>
                                                 <p className={`text-sm font-bold ${statusColor(o.status)}`}>{statusLabel(o.status)}</p>
                                             </div>
-                                            <span className="font-serif text-xl text-[#B89F7D]">₹{o.total_amount?.toLocaleString('en-IN')}</span>
+                                            <span className="font-serif text-xl text-[#A6957A]">₹{o.total_amount?.toLocaleString('en-IN')}</span>
                                         </div>
                                         {o.awb_code && (
-                                            <div className="bg-[#B89F7D]/10 border border-[#B89F7D]/20 p-3 mb-4">
+                                            <div className="bg-[#A6957A]/10 border border-[#A6957A]/20 p-3 mb-4">
                                                 <p className="text-[10px] tracking-[0.2em] uppercase font-bold text-black/50 mb-1">Tracking AWB</p>
                                                 <p className="font-mono text-sm font-bold">{o.awb_code}</p>
                                                 {o.courier_name && <p className="text-[10px] text-black/40 mt-1">via {o.courier_name}</p>}
@@ -1736,7 +1672,7 @@
                                         <p className="text-[10px] text-black/40">Shipping to: {o.shipping_address}</p>
                                     </div>
                                 ))}
-                                <a href="https://wa.me/919213578396?text=Hi%20Tiiha%2C%20I%20need%20help%20with%20my%20order" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full py-3 border border-[#25D366] text-[#25D366] text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold hover:bg-[#25D366] hover:text-espresso transition-colors">
+                                <a href="https://wa.me/919213578396?text=Hi%20Tiiha%2C%20I%20need%20help%20with%20my%20order" target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full py-3 border border-[#25D366] text-[#25D366] text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold hover:bg-[#25D366] hover:text-white transition-colors">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
                                     Need Help? Chat on WhatsApp
                                 </a>
@@ -1753,17 +1689,17 @@
             }, []);
 
             return (
-                <div className="bg-alabaster text-espresso pt-32 md:pt-48 pb-40 px-6 md:px-12 relative">
+                <div className="bg-[#F0EBE1] text-[#0D0D0D] pt-32 md:pt-48 pb-40 px-6 md:px-12 relative">
                     <div className="max-w-[1600px] mx-auto relative z-10">
                         
                         <div className="mb-12 md:mb-20">
                             <RevealText>
-                                <span className="text-[10px] tracking-[0.3em] uppercase font-bold text-[#B89F7D] block mb-6">The Story of Tiiha</span>
+                                <span className="text-[10px] tracking-[0.3em] uppercase font-bold text-[#A6957A] block mb-6">The Story of Tiiha</span>
                             </RevealText>
                             <RevealText delay={200}>
                                 <h1 className="font-serif text-4xl md:text-5xl lg:text-[4.5vw] leading-tight md:leading-[1.25] tracking-[-0.02em] uppercase pb-2">
                                     Made with Intent.<br/>
-                                    <span className="italic text-[#B89F7D] lg:ml-8 mt-2 inline-block">Worn with Confidence.</span>
+                                    <span className="italic text-[#A6957A] lg:ml-8 mt-2 inline-block">Worn with Confidence.</span>
                                 </h1>
                             </RevealText>
                         </div>
@@ -1773,7 +1709,7 @@
                             {/* Image Column */}
                             <div className="lg:col-span-5 relative lg:sticky lg:top-32 order-first lg:order-last">
                                 <Reveal delay={300}>
-                                    <div className="relative aspect-[4/5] overflow-hidden shadow-xl bg-neutral-200 border border-espresso/10">
+                                    <div className="relative aspect-[4/5] overflow-hidden shadow-xl bg-neutral-200 border border-black/5">
                                         <img 
                                             src="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg" 
                                             className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" 
@@ -1786,7 +1722,7 @@
                             </div>
 
                             {/* Text Column */}
-                            <div className="lg:col-span-7 flex flex-col space-y-8 md:space-y-10 order-last lg:order-first border-t border-espresso/10 pt-8 md:pt-12">
+                            <div className="lg:col-span-7 flex flex-col space-y-8 md:space-y-10 order-last lg:order-first border-t border-black/10 pt-8 md:pt-12">
                                 <Reveal delay={400}>
                                     <p className="text-base md:text-xl font-light leading-relaxed text-black/80">
                                         Tiiha began the way most meaningful things do, with something personal. The name carries the initials of its founder: Ti from Tilokani, Ha from Hari. The double 'i' was added with intention, a small detail, placed deliberately, because at Tiiha, that is exactly where the difference lives. In the details. That belief runs through everything we make.
@@ -1808,7 +1744,7 @@
                                     </p>
                                 </Reveal>
                                 <Reveal delay={800}>
-                                    <p className="text-lg md:text-2xl font-serif italic text-[#B89F7D] leading-relaxed pt-6 border-t border-espresso/10">
+                                    <p className="text-lg md:text-2xl font-serif italic text-[#A6957A] leading-relaxed pt-6 border-t border-black/10">
                                         This is what Tiiha stands for: confidence, intention, and timeless style worn by real women, living real lives.
                                     </p>
                                 </Reveal>
@@ -1828,7 +1764,7 @@
         function InquiryPage() {
             useEffect(() => window.scrollTo(0,0), []);
             return (
-                <div className="pt-32 md:pt-48 pb-32 md:pb-60 px-6 md:px-16 max-w-[1800px] mx-auto bg-alabaster text-espresso">
+                <div className="pt-32 md:pt-48 pb-32 md:pb-60 px-6 md:px-16 max-w-[1800px] mx-auto bg-[#F0EBE1] text-[#0D0D0D]">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 lg:gap-32">
                         <div className="flex flex-col justify-between">
                             <div>
@@ -1836,7 +1772,7 @@
                                     <h1 className="font-serif text-5xl md:text-[6vw] tracking-tighter uppercase mb-8 md:mb-12 leading-none">Contact Us</h1>
                                 </RevealText>
                                 <RevealText delay={200}>
-                                    <p className="text-base md:text-lg font-light text-black/50 max-w-md leading-relaxed border-l-2 border-[#B89F7D] pl-6">
+                                    <p className="text-base md:text-lg font-light text-black/50 max-w-md leading-relaxed border-l-2 border-[#A6957A] pl-6">
                                         We'd love to hear from you, whether it's a random question, an order update, or simply a hello. The Tiiha team is here.
                                     </p>
                                 </RevealText>
@@ -1844,19 +1780,19 @@
                             <div className="mt-16 md:mt-32 space-y-12 md:space-y-20">
                                 <Reveal delay={400}>
                                     <div>
-                                        <span className="text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-[#B89F7D] block mb-4 md:mb-6">Email</span>
-                                        <a href="mailto:hello@tiiha.in" className="font-serif text-2xl md:text-4xl italic hover:text-[#B89F7D] transition-colors duration-500 border-b border-black pb-2">hello@tiiha.in</a>
+                                        <span className="text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-[#A6957A] block mb-4 md:mb-6">Email</span>
+                                        <a href="mailto:hello@tiiha.in" className="font-serif text-2xl md:text-4xl italic hover:text-[#A6957A] transition-colors duration-500 border-b border-black pb-2">hello@tiiha.in</a>
                                     </div>
                                 </Reveal>
                                 <Reveal delay={500}>
                                     <div>
-                                        <span className="text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-[#B89F7D] block mb-4 md:mb-6">Phone</span>
+                                        <span className="text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold text-[#A6957A] block mb-4 md:mb-6">Phone</span>
                                         <p className="font-serif text-2xl md:text-4xl italic">+91 92135 78396</p>
                                     </div>
                                 </Reveal>
                             </div>
                         </div>
-                        <div className="bg-alabaster text-espresso p-10 md:p-20 lg:p-32 relative overflow-hidden shadow-2xl rounded-sm">
+                        <div className="bg-[#0D0D0D] text-[#F0EBE1] p-10 md:p-20 lg:p-32 relative overflow-hidden shadow-2xl rounded-sm">
                             <div className="absolute top-10 right-10 md:top-16 md:right-16 text-[10px] tracking-[0.2em] md:tracking-[0.4em] uppercase opacity-30 font-bold">Write to us</div>
                             <form className="mt-12 md:mt-16 space-y-12 md:space-y-20" onSubmit={e => {
                                 e.preventDefault();
@@ -1869,18 +1805,18 @@
                                 window.open(wa, '_blank');
                             }}>
                                 <div className="relative">
-                                    <input type="text" required id="name" className="w-full bg-transparent border-b border-espresso/10 py-4 md:py-6 text-xl md:text-2xl font-serif focus:outline-none focus:border-[#B89F7D] peer placeholder-transparent transition-colors text-espresso" placeholder="Name" />
-                                    <label htmlFor="name" className="absolute left-0 top-4 md:top-6 text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase opacity-50 transition-all peer-focus:-top-6 peer-focus:text-[10px] peer-focus:text-[#B89F7D] peer-valid:-top-6 peer-valid:text-[10px]">Full Name</label>
+                                    <input type="text" required id="name" className="w-full bg-transparent border-b border-white/20 py-4 md:py-6 text-xl md:text-2xl font-serif focus:outline-none focus:border-[#A6957A] peer placeholder-transparent transition-colors text-white" placeholder="Name" />
+                                    <label htmlFor="name" className="absolute left-0 top-4 md:top-6 text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase opacity-50 transition-all peer-focus:-top-6 peer-focus:text-[10px] peer-focus:text-[#A6957A] peer-valid:-top-6 peer-valid:text-[10px]">Full Name</label>
                                 </div>
                                 <div className="relative">
-                                    <input type="email" required id="email" className="w-full bg-transparent border-b border-espresso/10 py-4 md:py-6 text-xl md:text-2xl font-serif focus:outline-none focus:border-[#B89F7D] peer placeholder-transparent transition-colors text-espresso" placeholder="Email" />
-                                    <label htmlFor="email" className="absolute left-0 top-4 md:top-6 text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase opacity-50 transition-all peer-focus:-top-6 peer-focus:text-[10px] peer-focus:text-[#B89F7D] peer-valid:-top-6 peer-valid:text-[10px]">Email Address</label>
+                                    <input type="email" required id="email" className="w-full bg-transparent border-b border-white/20 py-4 md:py-6 text-xl md:text-2xl font-serif focus:outline-none focus:border-[#A6957A] peer placeholder-transparent transition-colors text-white" placeholder="Email" />
+                                    <label htmlFor="email" className="absolute left-0 top-4 md:top-6 text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase opacity-50 transition-all peer-focus:-top-6 peer-focus:text-[10px] peer-focus:text-[#A6957A] peer-valid:-top-6 peer-valid:text-[10px]">Email Address</label>
                                 </div>
                                 <div className="relative">
-                                    <textarea required id="message" rows="3" className="w-full bg-transparent border-b border-espresso/10 py-4 md:py-6 text-xl md:text-2xl font-serif focus:outline-none focus:border-[#B89F7D] peer placeholder-transparent transition-colors resize-none text-espresso" placeholder="Message"></textarea>
-                                    <label htmlFor="message" className="absolute left-0 top-4 md:top-6 text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase opacity-50 transition-all peer-focus:-top-6 peer-focus:text-[10px] peer-focus:text-[#B89F7D] peer-valid:-top-6 peer-valid:text-[10px]">Your Message</label>
+                                    <textarea required id="message" rows="3" className="w-full bg-transparent border-b border-white/20 py-4 md:py-6 text-xl md:text-2xl font-serif focus:outline-none focus:border-[#A6957A] peer placeholder-transparent transition-colors resize-none text-white" placeholder="Message"></textarea>
+                                    <label htmlFor="message" className="absolute left-0 top-4 md:top-6 text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase opacity-50 transition-all peer-focus:-top-6 peer-focus:text-[10px] peer-focus:text-[#A6957A] peer-valid:-top-6 peer-valid:text-[10px]">Your Message</label>
                                 </div>
-                                <button type="submit" className="w-full py-6 md:py-8 bg-alabaster text-espresso text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase font-bold hover:bg-[#B89F7D] transition-colors flex items-center justify-center gap-4 md:gap-6 group disabled:opacity-50">
+                                <button type="submit" className="w-full py-6 md:py-8 bg-[#F0EBE1] text-[#0D0D0D] text-[11px] tracking-[0.2em] md:tracking-[0.4em] uppercase font-bold hover:bg-[#A6957A] transition-colors flex items-center justify-center gap-4 md:gap-6 group disabled:opacity-50">
                                     Send Message <ArrowRight className="w-5 h-5 group-hover:translate-x-3 transition-transform" />
                                 </button>
                             </form>
@@ -1961,13 +1897,13 @@
             useEffect(() => window.scrollTo(0,0), [contentKey]);
             if (!data) return null;
             return (
-                <div className="pt-48 pb-60 px-8 md:px-16 max-w-4xl mx-auto bg-alabaster text-espresso">
+                <div className="pt-48 pb-60 px-8 md:px-16 max-w-4xl mx-auto bg-[#F0EBE1] text-[#0D0D0D]">
                     <RevealText><h1 className="font-serif text-4xl md:text-5xl tracking-[-0.03em] uppercase mb-16">{data.title}</h1></RevealText>
                     <Reveal delay={200}>
                         <div className="space-y-12 text-black/70 font-light leading-relaxed">
                             {data.sections.map((sec, i) => (
                                 <div key={i}>
-                                    {sec.title && <h2 className="font-serif text-3xl mb-4 text-espresso">{sec.title}</h2>}
+                                    {sec.title && <h2 className="font-serif text-3xl mb-4 text-[#0D0D0D]">{sec.title}</h2>}
                                     <div dangerouslySetInnerHTML={{ __html: sec.content }} />
                                 </div>
                             ))}
@@ -2333,13 +2269,13 @@
             };
 
             if (loading) return (
-                <div className="fixed inset-0 bg-alabaster flex flex-col items-center justify-center z-[1000] text-espresso">
+                <div className="fixed inset-0 bg-[#0D0D0D] flex flex-col items-center justify-center z-[1000] text-[#F0EBE1]">
                     <div className="overflow-hidden relative mb-16">
                         <h1 className="font-serif text-5xl md:text-6xl tracking-[0.2em]">Tiiha</h1>
-                        <div className={`absolute top-0 left-0 w-full h-full bg-alabaster transition-transform duration-[2s] ease-[cubic-bezier(0.19,1,0.22,1)] ${progress === 100 ? 'translate-x-full' : 'translate-x-0'}`} />
+                        <div className={`absolute top-0 left-0 w-full h-full bg-[#0D0D0D] transition-transform duration-[2s] ease-[cubic-bezier(0.19,1,0.22,1)] ${progress === 100 ? 'translate-x-full' : 'translate-x-0'}`} />
                     </div>
                     <div className="w-64 h-[1px] bg-white/10 relative overflow-hidden">
-                        <div className="absolute top-0 left-0 h-full bg-[#B89F7D] transition-all duration-300 ease-out" style={{ width: `${progress}%` }} />
+                        <div className="absolute top-0 left-0 h-full bg-[#A6957A] transition-all duration-300 ease-out" style={{ width: `${progress}%` }} />
                     </div>
                     <div className="mt-8 text-[9px] tracking-[0.2em] md:tracking-[0.5em] uppercase font-bold opacity-40">{progress}%</div>
                 </div>
@@ -2347,11 +2283,11 @@
 
             const navTop = bannerShown ? 'mt-10' : '';
             const isDarkHero = currentPage === 'home' && !isScrolled;
-            const navTextColor = isDarkHero ? 'text-espresso' : 'text-espresso';
-            const navBgColor = isScrolled ? 'py-6 bg-alabaster/95 backdrop-blur-md border-b border-espresso/' : 'py-12 bg-transparent border-b border-transparent';
+            const navTextColor = isDarkHero ? 'text-[#F0EBE1]' : 'text-[#0D0D0D]';
+            const navBgColor = isScrolled ? 'py-6 bg-[#F0EBE1]/95 backdrop-blur-md border-b border-black/5' : 'py-12 bg-transparent border-b border-transparent';
 
             return (
-                <div className={`relative min-h-screen transition-colors duration-1000 ease-in-out ${currentPage === 'home' ? 'bg-alabaster' : 'bg-alabaster text-espresso'}`}>
+                <div className={`relative min-h-screen transition-colors duration-1000 ease-in-out ${currentPage === 'home' ? 'bg-[#0D0D0D]' : 'bg-[#F0EBE1] text-[#0D0D0D]'}`}>
                     <CustomCursor />
                     <AnnouncementBanner onDismiss={() => setBannerShown(false)} />
                     <PageCurtain isActive={isCurtainActive} nextTitle={pendingPage === 'shop' ? 'Collections' : pendingPage === 'about' ? 'About Us' : pendingPage === 'contact' ? 'Contact Us' : 'Home'} />
@@ -2372,7 +2308,7 @@
                             </div>
                         </div>
                         <div className="w-1/3 flex justify-center"><MagneticButton><button onClick={() => handlePageChange('home')} className="font-serif text-2xl md:text-3xl tracking-[0.15em] md:tracking-[0.3em]"><HoverWaveText text="Tiiha" /></button></MagneticButton></div>
-                        <div className="flex gap-6 md:gap-16 items-center justify-end text-[10px] tracking-[0.2em] md:tracking-[0.4em] uppercase font-bold w-1/3"><MagneticButton><button onClick={() => handlePageChange('contact')} className={`hidden md:block relative pb-1 hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:bg-current after:transition-all after:duration-500 ${currentPage === 'contact' ? 'after:w-full' : 'after:w-0'}`}>Contact Us</button></MagneticButton><MagneticButton><button onClick={() => setCartOpen(true)} className="flex items-center gap-3 group"><span>Bag</span><span className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold transition-colors duration-700 ${isDarkHero ? 'bg-[#B89F7D] text-espresso' : 'bg-alabaster text-espresso'}`}>{cart.length}</span></button></MagneticButton></div>
+                        <div className="flex gap-6 md:gap-16 items-center justify-end text-[10px] tracking-[0.2em] md:tracking-[0.4em] uppercase font-bold w-1/3"><MagneticButton><button onClick={() => handlePageChange('contact')} className={`hidden md:block relative pb-1 hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:bg-current after:transition-all after:duration-500 ${currentPage === 'contact' ? 'after:w-full' : 'after:w-0'}`}>Contact Us</button></MagneticButton><MagneticButton><button onClick={() => setCartOpen(true)} className="flex items-center gap-3 group"><span>Bag</span><span className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold transition-colors duration-700 ${isDarkHero ? 'bg-[#A6957A] text-[#0D0D0D]' : 'bg-[#0D0D0D] text-[#F0EBE1]'}`}>{cart.length}</span></button></MagneticButton></div>
                     </nav>
                     <main key={currentPage} className="animate-[pageFadeIn_1.5s_cubic-bezier(0.19,1,0.22,1)_forwards]">
                         {currentPage === 'home' && <HomePage products={liveProducts} setPage={handlePageChange} onSelect={setSelectedProduct} goToCollection={goToCollection} />}
@@ -2387,16 +2323,16 @@
                     <CartDrawer cart={cart} isOpen={cartOpen} onClose={() => setCartOpen(false)} onRemove={removeFromCart} />
                     <BackToTop hide={cartOpen} />
                     <WhatsAppButton hide={cartOpen} />
-                    <footer className="bg-alabaster text-espresso pt-40 pb-16 px-8 md:px-16 border-t border-espresso/10 relative z-10">
+                    <footer className="bg-[#0D0D0D] text-[#F0EBE1] pt-40 pb-16 px-8 md:px-16 border-t border-white/5 relative z-10">
                         <div className="max-w-[1800px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-24">
-                            <div className="md:col-span-5"><div className="font-serif text-4xl tracking-[0.1em] mb-12"><HoverWaveText text="Tiiha" /></div><p className="text-[11px] tracking-[0.1em] text-espresso/50 leading-loose max-w-md font-light uppercase">Made with intent, for the woman who wears her confidence as naturally as she wears her clothes.</p></div>
+                            <div className="md:col-span-5"><div className="font-serif text-4xl tracking-[0.1em] mb-12"><HoverWaveText text="Tiiha" /></div><p className="text-[11px] tracking-[0.1em] text-white/50 leading-loose max-w-md font-light uppercase">Made with intent, for the woman who wears her confidence as naturally as she wears her clothes.</p></div>
                             <div className="md:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-16 text-[9px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold">
-                                <div className="space-y-10"><span className="text-[#B89F7D] mb-8 block font-serif text-lg normal-case tracking-normal italic">The Brand</span><ul className="space-y-6 opacity-40 font-light"><li><button onClick={() => handlePageChange('about')}>About Us</button></li><li><button onClick={() => handlePageChange('contact')}>Contact Us</button></li></ul></div>
-                                <div className="space-y-10"><span className="text-[#B89F7D] mb-8 block font-serif text-lg normal-case tracking-normal italic">Client Services</span><ul className="space-y-6 opacity-40 font-light"><li><button onClick={() => handlePageChange('shipping')}>Shipping</button></li><li><button onClick={() => handlePageChange('returns')}>Returns</button></li><li><button onClick={() => handlePageChange('faqs')}>FAQs</button></li><li><button onClick={() => handlePageChange('track')}>Track Order</button></li></ul></div>
-                                <div className="space-y-10 col-span-2 md:col-span-1"><span className="text-[#B89F7D] mb-8 block font-serif text-lg normal-case tracking-normal italic">Network</span><ul className="space-y-6 opacity-40 font-light"><li><a href="https://www.instagram.com/tiiha.in?igsh=MW9ucmVuMjUxNWYyeQ==" target="_blank" rel="noopener noreferrer" className="hover:text-espresso transition-colors">Instagram</a></li><li><button>Newsletter</button></li><li className="pt-4 mt-4 border-t border-espresso/10">Vadodara, Gujarat</li></ul></div>
+                                <div className="space-y-10"><span className="text-[#A6957A] mb-8 block font-serif text-lg normal-case tracking-normal italic">The Brand</span><ul className="space-y-6 opacity-40 font-light"><li><button onClick={() => handlePageChange('about')}>About Us</button></li><li><button onClick={() => handlePageChange('contact')}>Contact Us</button></li></ul></div>
+                                <div className="space-y-10"><span className="text-[#A6957A] mb-8 block font-serif text-lg normal-case tracking-normal italic">Client Services</span><ul className="space-y-6 opacity-40 font-light"><li><button onClick={() => handlePageChange('shipping')}>Shipping</button></li><li><button onClick={() => handlePageChange('returns')}>Returns</button></li><li><button onClick={() => handlePageChange('faqs')}>FAQs</button></li><li><button onClick={() => handlePageChange('track')}>Track Order</button></li></ul></div>
+                                <div className="space-y-10 col-span-2 md:col-span-1"><span className="text-[#A6957A] mb-8 block font-serif text-lg normal-case tracking-normal italic">Network</span><ul className="space-y-6 opacity-40 font-light"><li><a href="https://www.instagram.com/tiiha.in?igsh=MW9ucmVuMjUxNWYyeQ==" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Instagram</a></li><li><button>Newsletter</button></li><li className="pt-4 mt-4 border-t border-white/10">Vadodara, Gujarat</li></ul></div>
                             </div>
                         </div>
-                        <div className="max-w-[1800px] mx-auto mt-40 pt-10 border-t border-espresso/10 flex flex-col md:flex-row justify-between items-center text-[9px] tracking-[0.15em] md:tracking-[0.3em] opacity-30 uppercase font-light gap-6"><span>© 2026 Tiiha. All Rights Reserved.</span><span className="flex gap-4"><button onClick={() => handlePageChange('terms')}>Terms</button> / <button onClick={() => handlePageChange('privacy')}>Privacy</button></span></div>
+                        <div className="max-w-[1800px] mx-auto mt-40 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-[9px] tracking-[0.15em] md:tracking-[0.3em] opacity-30 uppercase font-light gap-6"><span>© 2026 Tiiha. All Rights Reserved.</span><span className="flex gap-4"><button onClick={() => handlePageChange('terms')}>Terms</button> / <button onClick={() => handlePageChange('privacy')}>Privacy</button></span></div>
                     </footer>
                     <style>{`@keyframes pageFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }`}</style>
                 </div>
