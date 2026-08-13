@@ -50,8 +50,8 @@ tr:hover td{background:#0f0f0f}
       <p class="text-[10px] tracking-[0.4em] uppercase text-white/30 font-bold">Admin Secure Access</p>
     </div>
     <div class="space-y-4">
-      <input type="text" id="admin-id" placeholder="ADMIN ID" class="text-center !bg-transparent border-b border-white/10 !border-x-0 !border-t-0 focus:border-[#A6957A] !rounded-none py-4 text-sm tracking-[0.4em] uppercase outline-none transition-all duration-500">
-      <input type="password" id="admin-pass" placeholder="ACCESS CODE" class="text-center !bg-transparent border-b border-white/10 !border-x-0 !border-t-0 focus:border-[#A6957A] !rounded-none py-4 text-sm tracking-[0.4em] uppercase outline-none transition-all duration-500">
+      <input type="email" id="admin-id" placeholder="ADMIN EMAIL" class="text-center !bg-transparent border-b border-white/10 !border-x-0 !border-t-0 focus:border-[#A6957A] !rounded-none py-4 text-sm tracking-[0.4em] uppercase outline-none transition-all duration-500">
+      <input type="password" id="admin-pass" placeholder="PASSWORD" class="text-center !bg-transparent border-b border-white/10 !border-x-0 !border-t-0 focus:border-[#A6957A] !rounded-none py-4 text-sm tracking-[0.4em] uppercase outline-none transition-all duration-500">
       <button onclick="checkAdminPass()" class="w-full py-4 bg-[#A6957A] text-black font-bold text-[11px] tracking-[0.4em] uppercase hover:bg-white transition-colors duration-500 mt-4">Authenticate</button>
       <p id="login-error" class="text-red-500 text-[10px] tracking-widest uppercase opacity-0 transition-opacity">Invalid ID or Access Code</p>
     </div>
@@ -792,35 +792,60 @@ document.querySelectorAll('.modal-bg').forEach(bg=>bg.addEventListener('click',e
 init();
 </script>
 <script>
-  // SECURITY: Admin ID and Password
-  const ADMIN_ID = 'TIIHA_OWNER';
-  const ADMIN_PASSWORD = 'TIIHA_ADMIN_2024'; 
+  // SECURITY: Admin authentication via Supabase Auth (real server-side auth)
+  // The admin email/password is stored in Supabase Auth, NOT in this file.
 
-  function checkAdminPass() {
+  async function checkAdminPass() {
     const idInput = document.getElementById('admin-id');
     const passInput = document.getElementById('admin-pass');
     const error = document.getElementById('login-error');
     const overlay = document.getElementById('login-overlay');
+    const btn = document.querySelector('button[onclick="checkAdminPass()"]');
 
-    if (idInput.value === ADMIN_ID && passInput.value === ADMIN_PASSWORD) {
+    if (btn) { btn.textContent = 'Verifying...'; btn.disabled = true; }
+
+    try {
+      // Use Supabase Auth — credentials are NEVER in client code
+      const { data, error: authError } = await sb.auth.signInWithPassword({
+        email: idInput.value.trim(),
+        password: passInput.value
+      });
+
+      if (authError || !data?.session) {
+        error.style.opacity = '1';
+        passInput.value = '';
+        setTimeout(() => { error.style.opacity = '0'; }, 3000);
+        if (btn) { btn.textContent = 'Authenticate'; btn.disabled = false; }
+        return;
+      }
+
+      // Authenticated via Supabase — store session token (not a plain flag)
+      localStorage.setItem('tiiha_admin_session', data.session.access_token);
       overlay.style.opacity = '0';
       setTimeout(() => {
         overlay.style.display = 'none';
         document.body.classList.remove('overflow-hidden');
       }, 1000);
-      localStorage.setItem('tiiha_admin_auth', 'true');
-    } else {
+    } catch(e) {
+      console.error('Auth error:', e);
       error.style.opacity = '1';
-      input.value = '';
-      setTimeout(() => { error.style.opacity = '0'; }, 2000);
+      error.textContent = 'Authentication service unavailable. Try again.';
+      setTimeout(() => { error.style.opacity = '0'; error.textContent = 'Invalid ID or Access Code'; }, 3000);
+      if (btn) { btn.textContent = 'Authenticate'; btn.disabled = false; }
     }
   }
 
-  // Persistence check
-  if (localStorage.getItem('tiiha_admin_auth') === 'true') {
-    document.getElementById('login-overlay').style.display = 'none';
-    document.body.classList.remove('overflow-hidden');
-  }
+  // Persistence check — verify session with Supabase on page load
+  (async function() {
+    // Clear old insecure localStorage flag if present
+    localStorage.removeItem('tiiha_admin_auth');
+    
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      document.getElementById('login-overlay').style.display = 'none';
+      document.body.classList.remove('overflow-hidden');
+    }
+  })();
 
   // Allow enter key
   document.getElementById('admin-pass').addEventListener('keypress', (e) => {

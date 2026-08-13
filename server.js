@@ -33,6 +33,39 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', shiprocket: SHIPROCKET_EMAIL ? 'configured' : 'missing credentials' });
 });
 
+// ⚠️ LOCALHOST TEST ONLY — visit http://localhost:3000/test-email to send a real test email
+app.get('/test-email', async (req, res) => {
+  const nodemailer = require('nodemailer');
+  const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'tiha.clothing@gmail.com';
+  if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    return res.send('❌ SMTP not configured in .env');
+  }
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT) || 587,
+    secure: Number(process.env.SMTP_PORT) === 465,
+    auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS }
+  });
+  try {
+    await transporter.sendMail({
+      from: `"TIIHA" <tiha.clothing@gmail.com>`,
+      to: ADMIN_EMAIL,
+      subject: '🧪 Tiiha Test Email — Server Working!',
+      html: `<div style="font-family:sans-serif;padding:32px;border:2px solid #A6957A;max-width:500px">
+        <h2 style="color:#A6957A">✅ Email System Working!</h2>
+        <p>This is a test email from your localhost server.</p>
+        <p>Sent to: <strong>${ADMIN_EMAIL}</strong></p>
+        <p>Time: <strong>${new Date().toLocaleString('en-IN')}</strong></p>
+        <p style="color:#888;font-size:12px">TIIHA Order Notification System — Brevo SMTP</p>
+      </div>`
+    });
+    res.send(`✅ Test email sent to <strong>${ADMIN_EMAIL}</strong> — check your inbox (and spam folder)!`);
+  } catch(err) {
+    console.error('Test email error:', err);
+    res.send(`❌ Email failed: ${err.message}`);
+  }
+});
+
 // Configuration endpoint
 app.get('/api/get-config', (req, res) => {
   res.json({
@@ -276,9 +309,76 @@ app.get('/api/products/:id', async (req, res) => {
 // Email Confirmation Endpoint
 const nodemailer = require('nodemailer');
 
+// Helper to send admin WhatsApp notifications using Meta Cloud API template messages
+async function sendWhatsAppNotification({ customer_name, customer_phone, total_amount, shipping_address, order_items }) {
+  const token = process.env.WHATSAPP_ACCESS_TOKEN;
+  const phoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  const recipient = process.env.ADMIN_PHONE;
+  const templateName = process.env.WHATSAPP_TEMPLATE_NAME || 'tiiha_new_order';
+
+  if (!token || !phoneId || !recipient) {
+    console.log('WhatsApp credentials or recipient missing, skipping WhatsApp notification.');
+    return { success: false, reason: 'Credentials missing' };
+  }
+
+  // Format parameters: items list like "Product A (M), Product B (L)"
+  const itemsSummary = order_items.map(i => `${i.name} (${i.size || 'N/A'})`).join(', ');
+
+  try {
+    const response = await fetch(
+      `https://graph.facebook.com/v20.0/${phoneId}/messages`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          messaging_product: "whatsapp",
+          recipient_type: "individual",
+          to: recipient,
+          type: "template",
+          template: {
+            name: templateName,
+            language: {
+              code: "en"
+            },
+            components: [
+              {
+                type: "body",
+                parameters: [
+                  { type: "text", text: customer_name || 'N/A' },
+                  { type: "text", text: itemsSummary || 'N/A' },
+                  { type: "text", text: `₹${Number(total_amount).toLocaleString('en-IN')}` },
+                  { type: "text", text: shipping_address || 'N/A' },
+                  { type: "text", text: customer_phone || 'N/A' }
+                ]
+              }
+            ]
+          }
+        })
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      console.error('WhatsApp API Error Response:', data);
+      return { success: false, error: data };
+    }
+
+    console.log('WhatsApp notification sent successfully:', data);
+    return { success: true, data };
+  } catch (error) {
+    console.error('WhatsApp fetch error:', error);
+    return { success: false, error: error.message };
+  }
+}
+
 app.post('/api/send-confirmation', async (req, res) => {
   try {
-    const { customer_name, customer_email, order_items, total_amount } = req.body;
+    const { customer_name, customer_email, customer_phone, shipping_address, order_items, total_amount } = req.body;
+
+    const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'tiha.clothing@gmail.com';
 
     if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
       return res.status(200).json({ message: 'SMTP not configured, skipping email.' });
@@ -294,31 +394,83 @@ app.post('/api/send-confirmation', async (req, res) => {
       }
     });
 
-    let itemsHtml = order_items.map(i => `<li>${i.name} (Size: ${i.size || 'N/A'}) - ₹${i.price}</li>`).join('');
+    const itemsTableHtml = order_items.map(i =>
+      `<tr>
+        <td style="padding:8px;border-bottom:1px solid #eee;">${i.name}</td>
+        <td style="padding:8px;border-bottom:1px solid #eee;">${i.size || 'N/A'}</td>
+        <td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">₹${Number(i.price).toLocaleString('en-IN')}</td>
+      </tr>`
+    ).join('');
 
-    const mailOptions = {
-      from: `"TIIHA" <${process.env.SMTP_USER}>`,
+    // 1. Send Customer email confirmation
+    const customerMailOptions = {
+      from: `"TIIHA" <tiha.clothing@gmail.com>`,
       to: customer_email,
-      subject: 'Order Confirmation — TIIHA',
+      subject: 'Order Confirmed — TIIHA ✓',
       html: `
-        <div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee;">
-          <h2 style="color: #A6957A;">Thank you for your order, ${customer_name}!</h2>
-          <p>We have successfully received your payment of <strong>₹${total_amount}</strong>.</p>
-          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-          <h3>Order Details:</h3>
-          <ul>${itemsHtml}</ul>
-          <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-          <p>We will notify you once your order is shipped.</p>
-          <p>Warm regards,<br><strong>TIIHA Team</strong></p>
+        <div style="font-family:sans-serif;max-width:600px;margin:auto;padding:32px;border:1px solid #eee;">
+          <h1 style="font-family:Georgia,serif;color:#A6957A;letter-spacing:0.1em;">TIIHA</h1>
+          <h2 style="color:#222;">Thank you, ${customer_name}! 🎉</h2>
+          <p style="color:#555;">Your order has been placed successfully. We'll notify you once it ships.</p>
+          <hr style="border:0;border-top:1px solid #eee;margin:20px 0;">
+          <h3 style="color:#222;">Order Summary</h3>
+          <table style="width:100%;border-collapse:collapse;">
+            <thead><tr style="background:#f9f9f9;">
+              <th style="padding:8px;text-align:left;font-size:11px;color:#999;">ITEM</th>
+              <th style="padding:8px;text-align:left;font-size:11px;color:#999;">SIZE</th>
+              <th style="padding:8px;text-align:right;font-size:11px;color:#999;">PRICE</th>
+            </tr></thead>
+            <tbody>${itemsTableHtml}</tbody>
+          </table>
+          <p style="text-align:right;font-size:18px;font-family:Georgia,serif;color:#A6957A;margin-top:12px;"><strong>Total: ₹${Number(total_amount).toLocaleString('en-IN')}</strong></p>
+          <hr style="border:0;border-top:1px solid #eee;margin:20px 0;">
+          <p style="color:#888;font-size:12px;">Estimated delivery: 5–7 business days · Free shipping across India</p>
+          <p style="color:#888;">Warm regards,<br><strong style="color:#A6957A;">TIIHA Team</strong></p>
         </div>
       `
     };
 
-    await transporter.sendMail(mailOptions);
-    res.status(200).json({ success: true, message: 'Email sent successfully' });
+    await transporter.sendMail(customerMailOptions);
+
+    // 2. Send Admin notification email
+    const adminMailOptions = {
+      from: `"TIIHA" <tiha.clothing@gmail.com>`,
+      to: ADMIN_EMAIL,
+      subject: `🛍️ New Order — ₹${Number(total_amount).toLocaleString('en-IN')} from ${customer_name}`,
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:auto;padding:32px;border:2px solid #A6957A;">
+          <h2 style="color:#A6957A;">🛍️ New Order Received!</h2>
+          <table style="width:100%;border-collapse:collapse;margin-bottom:16px;">
+            <tr><td style="padding:6px;color:#999;font-size:12px;">Customer Name</td><td style="padding:6px;font-weight:bold;">${customer_name}</td></tr>
+            <tr style="background:#f9f9f9;"><td style="padding:6px;color:#999;font-size:12px;">Email</td><td style="padding:6px;">${customer_email}</td></tr>
+            <tr><td style="padding:6px;color:#999;font-size:12px;">Phone</td><td style="padding:6px;">${customer_phone || 'N/A'}</td></tr>
+            <tr style="background:#f9f9f9;"><td style="padding:6px;color:#999;font-size:12px;">Address</td><td style="padding:6px;">${shipping_address || 'N/A'}</td></tr>
+            <tr><td style="padding:6px;color:#999;font-size:12px;">Total Paid</td><td style="padding:6px;font-size:20px;font-weight:bold;color:#A6957A;">₹${Number(total_amount).toLocaleString('en-IN')}</td></tr>
+          </table>
+          <h3 style="color:#222;">Items Ordered:</h3>
+          <table style="width:100%;border-collapse:collapse;">
+            <thead><tr style="background:#f9f9f9;">
+              <th style="padding:8px;text-align:left;font-size:11px;color:#999;">ITEM</th>
+              <th style="padding:8px;text-align:left;font-size:11px;color:#999;">SIZE</th>
+              <th style="padding:8px;text-align:right;font-size:11px;color:#999;">PRICE</th>
+            </tr></thead>
+            <tbody>${itemsTableHtml}</tbody>
+          </table>
+          <p style="margin-top:20px;color:#888;font-size:12px;">Login to your admin panel to manage this order.</p>
+        </div>
+      `
+    };
+
+    await transporter.sendMail(adminMailOptions).catch(e => console.error('Admin email error:', e));
+
+    // 3. Send WhatsApp notification to Admin/Client
+    await sendWhatsAppNotification({ customer_name, customer_phone, total_amount, shipping_address, order_items })
+      .catch(e => console.error('WhatsApp error:', e));
+
+    res.status(200).json({ success: true, message: 'Notification emails and WhatsApp sent.' });
   } catch (err) {
-    console.error('Email error:', err);
-    res.status(500).json({ error: 'Failed to send email', details: err.message });
+    console.error('Email/Notification error:', err);
+    res.status(500).json({ error: 'Failed to send confirmation', details: err.message });
   }
 });
 

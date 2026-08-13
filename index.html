@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tiiha | Premium Women's Clothing, Festive Wear & Summer Dresses</title>
@@ -28,6 +27,29 @@
     <link rel="dns-prefetch" href="https://res.cloudinary.com">
     <link rel="dns-prefetch" href="https://checkout.razorpay.com">
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Tiiha",
+      "url": "https://tiiha.in",
+      "logo": "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778870332/Tiiha_Logo_-_Ivory_BG_Black_1_jkdbmw.png",
+      "sameAs": [
+        "https://www.instagram.com/tiiha.in/"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Tiiha",
+      "url": "https://tiiha.in/"
+    }
+    </script>
+
     <!-- Google Analytics (Loaded Dynamically) -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -149,12 +171,12 @@
 
         // --- DATA ---
         const PRODUCTS = [
-          { id: 'TII-01', name: 'The Cloudnine Dress', category: 'SUMMER EDIT', price: 4799, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4332.JPG_ba0fau.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755490/IMG_4336.JPG_s0szc1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755486/IMG_4338.JPG_q0qxy1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755483/IMG_4337.JPG_tqgrmn.jpg"]', desc: 'The Pinteresty dress of your dreams, this powder blue dress with a structured corset bodice that holds you exactly where it should, softening into a flared skirt that moves with unhurried grace.', detail: 'Fabric: 100% Linen. Silhouette: Corset bodice, square neck, flared midi skirt. Sleeves: Sleeveless with structured shoulder straps. Colour: Powder Blue. Care: Gentle machine wash, cold water. Do not tumble dry. Iron on low heat.', sizes: 'S, M, L', stock: { S: 2, M: 2, L: 2 } },
-          { id: 'TII-02', name: 'A Navy Affair', category: 'SUMMER EDIT', price: 2499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4299.JPG_g8dg2c.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755294/IMG_4303.JPG_p3tz3z.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4302.JPG_yvwkyw.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4300.JPG_oxjytp.jpg"]', desc: 'A one-shoulder dress in a deep navy, features a self-tie waist that cinches without constraining and a flared skirt that follows every step you take. The single puff sleeve is the only detail this dress needs, and it is exactly enough.', detail: 'Fabric: Rayon. Silhouette: One-shoulder midi dress with self-tie waist. Sleeves: Single puff sleeve. Colour: Navy Blue. Care: Gentle machine wash, cold water. Do not wring. Iron on low heat.', sizes: 'S, M, L', stock: { S: 5, M: 4, L: 5 } },
-          { id: 'TII-03', name: 'The Muted Sage Co-ord Set', category: 'SUMMER EDIT', price: 2999, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6707_f31zrz.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6711_gsjvmi.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6708_eal5kc.jpg"]', desc: 'A collared shirt and straight-leg trousers in satin silk, in a colour that sits somewhere between calm and confident. The placket and cuffs are finished with delicate champagne-toned embroidery detail that earns its place without asking for attention. Wear them together for a complete look.', detail: 'Fabric: Satin Silk. Includes: Collared shirt + Straight-leg trousers (sold as a set). Embroidery: Delicate silver embroidery on placket and cuffs. Colour: Muted Sage Green. Care: Dry clean recommended. If hand washing, use cold water and mild detergent. SIZE & FIT: The Muted Sage Set is relaxed through the shirt and straight through the trousers. Fits true to size.', sizes: 'S, M, L', stock: { S: 3, M: 3, L: 5 } },
-          { id: 'TII-04', name: 'Satin Cinema', category: 'PARTY EDIT', price: 5499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4324.JPG_vixvg0.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754964/IMG_4327.JPG_s2s6ej.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754963/IMG_4326.JPG_vsrpw1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754960/IMG_4328.JPG_qjmnyx.jpg"]', desc: 'A floor-length modal silk slip dress in deep black, paired with a scarf dupatta that carries the drama of 90s cinema. The combination is minimal until the light finds it. Then it is everything. Wear it for the nights that deserve to be remembered.', detail: 'Dress Fabric: Modal Silk. Silhouette: Floor-length slip dress. Colour: Deep Black. Inspiration: 90s Bollywood. Care: Dry clean recommended.', sizes: 'S, M, L', stock: { S: 4, M: 4, L: 4 } },
-          { id: 'TII-05', name: 'Noor Gharara Set', category: 'FESTIVE EDIT', price: 5499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4314.JPG_vuivoe.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4315.JPG_ljzg65.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4316.JPG_in1xjv.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754761/IMG_4318.JPG_k4cxmu.jpg"]', desc: 'A deep violet bandhani peplum top paired with a matching flared gharara, finished with gold zari borders that catch the light at every turn. This is a two-piece set designed for the festive evenings that are worth dressing for.', detail: 'Fabric: Modal silk. Craft: Original hand-tied bandhani. Includes: Peplum kurta + Flared gharara (2-piece set). Embellishment: Gold zari borders. Colour: Deep Violet. Care: Dry clean recommended to preserve the bandhani and zari work.', sizes: 'S, M, L', stock: { S: 2, M: 2, L: 2 } },
-          { id: 'TII-06', name: 'Chandni Suit Set', category: 'FESTIVE EDIT', price: 6999, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6717_frho8n.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6716_w19s0m.jpg"]', desc: 'Chandni is an ivory silk kurta set with woven gold detailing with a straight palazzo pant that carries the same quiet opulence. The rani pink bandhani dupatta adds the right amount of beauty to the set. Together, the contrast is exactly what it should be: the stillness of ivory meeting the celebration of rani pink, worn at once, worn with intention.', detail: 'Kurta & Palazzo Pant Fabric: Ivory Silk with woven gold detailing. Dupatta Fabric: Rani Pink Bandhani. Includes: Kurta + Straight Palazzo Pant + Bandhani Dupatta (3-piece set). Colour: Ivory with Rani Pink. Care: Dry clean recommended to preserve the silk and bandhani dupatta. SIZE & FIT: Chandni fits true to size with a relaxed, straight silhouette. For a more oversized drape, size up.', sizes: 'S, M, L', stock: { S: 5, M: 4, L: 4 } },
+          { id: 'TII-01', name: 'The Cloudnine Dress', category: 'SUMMER EDIT', price: 4799, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4332.JPG_ba0fau.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755490/IMG_4336.JPG_s0szc1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755486/IMG_4338.JPG_q0qxy1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755483/IMG_4337.JPG_tqgrmn.jpg"]', desc: 'The Cloudnine Dress is a premium powder blue linen corset midi dress perfect for summer brunches and daytime events. It features a structured corset bodice that softly flows into a flared midi skirt.', detail: 'Fabric: 100% Linen. Silhouette: Corset bodice, square neck, flared midi skirt. Sleeves: Sleeveless with structured shoulder straps. Colour: Powder Blue. Care: Gentle machine wash, cold water. Do not tumble dry. Iron on low heat.', sizes: 'S, M, L', stock: { S: 2, M: 2, L: 2 } },
+          { id: 'TII-02', name: 'A Navy Affair', category: 'SUMMER EDIT', price: 2499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4299.JPG_g8dg2c.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755294/IMG_4303.JPG_p3tz3z.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4302.JPG_yvwkyw.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4300.JPG_oxjytp.jpg"]', desc: 'A Navy Affair is an elegant one-shoulder midi dress in deep navy blue, ideal for evening parties and summer wear. It features a flattering self-tie waist and a single statement puff sleeve.', detail: 'Fabric: Rayon. Silhouette: One-shoulder midi dress with self-tie waist. Sleeves: Single puff sleeve. Colour: Navy Blue. Care: Gentle machine wash, cold water. Do not wring. Iron on low heat.', sizes: 'S, M, L', stock: { S: 5, M: 4, L: 5 } },
+          { id: 'TII-03', name: 'The Muted Sage Co-ord Set', category: 'SUMMER EDIT', price: 2999, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6707_f31zrz.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6711_gsjvmi.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6708_eal5kc.jpg"]', desc: 'The Muted Sage Co-ord Set is a luxury two-piece satin silk outfit featuring a relaxed collared shirt and straight-leg trousers. Finished with delicate champagne-toned embroidery, it\'s a sophisticated designer co-ord set for women.', detail: 'Fabric: Satin Silk. Includes: Collared shirt + Straight-leg trousers (sold as a set). Embroidery: Delicate silver embroidery on placket and cuffs. Colour: Muted Sage Green. Care: Dry clean recommended. If hand washing, use cold water and mild detergent. SIZE & FIT: The Muted Sage Set is relaxed through the shirt and straight through the trousers. Fits true to size.', sizes: 'S, M, L', stock: { S: 3, M: 3, L: 5 } },
+          { id: 'TII-04', name: 'Satin Cinema', category: 'PARTY EDIT', price: 5499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4324.JPG_vixvg0.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754964/IMG_4327.JPG_s2s6ej.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754963/IMG_4326.JPG_vsrpw1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754960/IMG_4328.JPG_qjmnyx.jpg"]', desc: 'Satin Cinema is a stunning black floor-length modal silk slip dress paired with a dramatic 90s-inspired scarf dupatta. This elegant designer party outfit is perfect for your most memorable evenings.', detail: 'Dress Fabric: Modal Silk. Silhouette: Floor-length slip dress. Colour: Deep Black. Inspiration: 90s Bollywood. Care: Dry clean recommended.', sizes: 'S, M, L', stock: { S: 4, M: 4, L: 4 } },
+          { id: 'TII-05', name: 'Noor Gharara Set', category: 'FESTIVE EDIT', price: 5499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4314.JPG_vuivoe.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4315.JPG_ljzg65.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4316.JPG_in1xjv.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754761/IMG_4318.JPG_k4cxmu.jpg"]', desc: 'The Noor Gharara Set is a luxurious two-piece festive outfit featuring a deep violet hand-tied bandhani peplum kurta and a flared gharara. Embellished with premium gold zari borders, it\'s the ultimate designer ethnic wear.', detail: 'Fabric: Modal silk. Craft: Original hand-tied bandhani. Includes: Peplum kurta + Flared gharara (2-piece set). Embellishment: Gold zari borders. Colour: Deep Violet. Care: Dry clean recommended to preserve the bandhani and zari work.', sizes: 'S, M, L', stock: { S: 2, M: 2, L: 2 } },
+          { id: 'TII-06', name: 'Chandni Suit Set', category: 'FESTIVE EDIT', price: 6999, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6717_frho8n.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6716_w19s0m.jpg"]', desc: 'The Chandni Suit Set is an opulent 3-piece luxury ethnic outfit featuring an ivory silk straight kurta, matching palazzo pants, and a vibrant rani pink bandhani dupatta. A masterpiece of traditional Indian festive wear.', detail: 'Kurta & Palazzo Pant Fabric: Ivory Silk with woven gold detailing. Dupatta Fabric: Rani Pink Bandhani. Includes: Kurta + Straight Palazzo Pant + Bandhani Dupatta (3-piece set). Colour: Ivory with Rani Pink. Care: Dry clean recommended to preserve the silk and bandhani dupatta. SIZE & FIT: Chandni fits true to size with a relaxed, straight silhouette. For a more oversized drape, size up.', sizes: 'S, M, L', stock: { S: 5, M: 4, L: 4 } },
         ];
 
 
@@ -497,14 +519,29 @@
             const [status, setStatus] = useState('idle'); // idle, sending, success
             const { setCursor } = useStore();
 
-            const handleSubmit = (e) => {
+            const handleSubmit = async (e) => {
                 e?.preventDefault();
                 if (!email || !email.includes('@')) return;
                 setStatus('sending');
-                setTimeout(() => {
-                    setStatus('success');
-                    setEmail('');
-                }, 1500);
+                try {
+                    const res = await fetch('/api/newsletter', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email: email.trim(), source: 'homepage' })
+                    });
+                    const data = await res.json();
+                    if (res.ok && data.success) {
+                        setStatus('success');
+                        setEmail('');
+                    } else {
+                        setStatus('error');
+                        setTimeout(() => setStatus('idle'), 3000);
+                    }
+                } catch (err) {
+                    console.error('Newsletter error:', err);
+                    setStatus('error');
+                    setTimeout(() => setStatus('idle'), 3000);
+                }
             };
 
             return (
@@ -524,8 +561,8 @@
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             disabled={status !== 'idle'}
-                                            placeholder={status === 'success' ? "THANK YOU FOR SUBSCRIBING" : "ENTER YOUR EMAIL"}
-                                            className={`w-full bg-transparent border-b ${status === 'success' ? 'border-[#A6957A] text-[#A6957A]' : 'border-white/20 text-white focus:border-[#A6957A]'} py-6 md:py-8 text-lg md:text-xl font-serif focus:outline-none transition-colors placeholder:text-white/10 uppercase tracking-widest disabled:opacity-70`}
+                                            placeholder={status === 'success' ? "THANK YOU FOR SUBSCRIBING" : status === 'error' ? "SOMETHING WENT WRONG — TRY AGAIN" : "ENTER YOUR EMAIL"}
+                                            className={`w-full bg-transparent border-b ${status === 'success' ? 'border-[#A6957A] text-[#A6957A]' : status === 'error' ? 'border-red-500 text-red-400' : 'border-white/20 text-white focus:border-[#A6957A]'} py-6 md:py-8 text-lg md:text-xl font-serif focus:outline-none transition-colors placeholder:text-white/10 uppercase tracking-widest disabled:opacity-70`}
                                             required
                                         />
                                         <button 
@@ -537,6 +574,8 @@
                                                 <div className="w-5 h-5 border-2 border-current border-t-transparent rounded-full animate-spin" />
                                             ) : status === 'success' ? (
                                                 <Check className="w-6 h-6" />
+                                            ) : status === 'error' ? (
+                                                <span className="text-red-400 text-xl">✕</span>
                                             ) : (
                                                 <ArrowRight className="w-6 h-6" />
                                             )}
@@ -699,7 +738,7 @@
                             >
                                 <source src="https://res.cloudinary.com/dlxiy6aiq/video/upload/q_auto/f_auto/v1778839358/Tiiha_-_May_Teaser_Rani_Reel_1_ytbqow.mp4" type="video/mp4" />
                                 {/* Fallback for browsers that don't support video */}
-                                <img src="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg" className="w-full h-full object-cover" alt="Hero" fetchpriority="high" />
+                                <img src="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg" className="w-full h-full object-cover" alt="Tiiha Premium Women's Clothing Hero" fetchpriority="high" />
                             </video>
                         </div>
                         <div className="z-10 w-full px-6 md:px-16 flex flex-col justify-end h-full pb-12 md:pb-24">
@@ -968,7 +1007,7 @@
                                 <img
                                     key={activeMedia?.url}
                                     src={activeMedia?.url}
-                                    alt={product.name}
+                                    alt={`${product.name} - Tiiha Premium Fashion`}
                                     loading="lazy"
                                     className="absolute inset-0 w-full h-full object-contain transition-opacity duration-700"
                                 />
@@ -1019,7 +1058,7 @@
                                                 <Play className="w-5 h-5 text-[#A6957A]" />
                                             </div>
                                         ) : (
-                                            <img src={m.url} loading="lazy" className="w-full h-full object-cover" />
+                                            <img src={m.url} loading="lazy" className="w-full h-full object-cover" alt={`${product.name} gallery view ${i + 1}`} />
                                         )}
                                     </button>
                                 ))}
@@ -1252,23 +1291,41 @@
                 return true;
             };
 
-            const handleOrder = async () => {
+            const handleOrder = async (razorpayIds = {}) => {
                 setSubmitting(true);
 
-                // 1. Save order to Supabase (non-blocking — email always sends even if this fails)
-                try {
-                    await supabaseClient.from('orders').insert([{
-                        customer_name: `${form.firstName} ${form.lastName}`,
-                        customer_email: form.email,
-                        customer_phone: form.phone,
-                        shipping_address: `${form.address}, ${form.city} ${form.postal}`,
-                        total_amount: total,
-                        items: JSON.stringify(cart.map(i=>({id:i.id,name:i.name,price:i.price,size:i.size}))),
-                        status: 'pending'
-                    }]);
-                } catch(e) { console.log('Order DB save error (non-critical):', e); }
+                const orderPayload = {
+                    customer_name: `${form.firstName} ${form.lastName}`,
+                    customer_email: form.email,
+                    customer_phone: form.phone,
+                    shipping_address: form.address,
+                    city: form.city,
+                    state: form.state || 'India',
+                    country: 'India',
+                    pincode: form.postal,
+                    items: cart.map(i => ({ id: i.id, name: i.name, price: i.price, size: i.size })),
+                    total_amount: total,
+                    shipping_amount: 0,
+                    discount_amount: Math.round(subtotal * discount),
+                    payment_id: razorpayIds.payment_id || null,
+                    razorpay_order_id: razorpayIds.order_id || null,
+                    razorpay_signature: razorpayIds.signature || null,
+                };
 
-                // 2. Always send email confirmation regardless of DB result
+                // Save order via secure backend (includes payment verification)
+                try {
+                    const res = await fetch('/api/orders', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(orderPayload)
+                    });
+                    const data = await res.json();
+                    if (!res.ok) {
+                        console.error('Order save error:', data);
+                    }
+                } catch(e) { console.log('Order save error:', e); }
+
+                // Send email confirmation
                 fetch('/api/send-confirmation', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1278,11 +1335,11 @@
                         customer_phone: form.phone,
                         shipping_address: `${form.address}, ${form.city}, ${form.state || ''} ${form.postal}`,
                         total_amount: total,
-                        order_items: cart.map(i=>({name:i.name, price:i.price, size:i.size}))
+                        order_items: cart.map(i => ({ name: i.name, price: i.price, size: i.size }))
                     })
                 }).catch(e => console.log('Email error:', e));
 
-                // 3. Trigger Shiprocket (non-blocking)
+                // Trigger Shiprocket (non-blocking)
                 fetch('/api/create-shipment', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -1308,6 +1365,16 @@
             const handlePayment = async () => {
                 setSubmitting(true);
                 try {
+                    // Load Razorpay dynamically only when needed (not on every page load)
+                    if (!window.Razorpay) {
+                        await new Promise((resolve, reject) => {
+                            const script = document.createElement('script');
+                            script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+                            script.onload = resolve;
+                            script.onerror = reject;
+                            document.body.appendChild(script);
+                        });
+                    }
                     // 1. Create Razorpay order server-side
                     const orderRes = await fetch('/api/razorpay-order', {
                         method: 'POST',
@@ -1365,13 +1432,21 @@
                                 });
                                 const verifyData = await verifyRes.json();
                                 if (verifyData.verified) {
-                                    await handleOrder();
+                                    // Only save order AFTER payment is verified
+                                    await handleOrder({
+                                        payment_id: response.razorpay_payment_id,
+                                        order_id: response.razorpay_order_id,
+                                        signature: response.razorpay_signature
+                                    });
                                 } else {
-                                    alert('Payment verification failed. Please contact support.');
+                                    setSubmitting(false);
+                                    alert('Payment verification failed. Your payment was not confirmed. Please contact support@tiiha.in');
                                 }
                             } catch(e) {
-                                // Fallback: save order even if verify fails (Razorpay already confirmed)
-                                await handleOrder();
+                                // Network error during verification — do NOT create order
+                                setSubmitting(false);
+                                console.error('Payment verify network error:', e);
+                                alert('Could not verify payment. Please contact support@tiiha.in with your payment ID: ' + response.razorpay_payment_id);
                             }
                             setSubmitting(false);
                         },
@@ -1712,8 +1787,8 @@
                                     <div className="relative aspect-[4/5] overflow-hidden shadow-xl bg-neutral-200 border border-black/5">
                                         <img 
                                             src="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg" 
+                                            alt="Tiiha Summer Edit Model in Powder Blue Linen"
                                             className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" 
-                                            alt="The Story of Tiiha" 
                                             loading="lazy"
                                         />
                                         <div className="absolute inset-0 bg-black/5" />
@@ -1932,6 +2007,35 @@
             const [config, setConfig] = useState({ razorpay_key_id: '' });
             const { setCursor } = useStore();
 
+            // --- URL SLUG HELPERS ---
+            const slugify = (str) => str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+            const VALID_PAGES = ['home', 'shop', 'about', 'contact', 'track', 'privacy', 'terms', 'faqs', 'shipping', 'returns'];
+
+            // Parse hash: #/products/slug, #/collections/slug, #/shop, etc.
+            const parseHash = (hash, allProducts) => {
+                if (!hash || hash === '#' || hash === '#/') return { page: 'home', product: null };
+                const path = hash.replace(/^#\/?/, '');
+                const parts = path.split('/');
+                if (parts[0] === 'products' && parts[1]) {
+                    const slug = parts[1];
+                    const prod = (allProducts || PRODUCTS).find(p => slugify(p.name) === slug || slugify(p.id) === slug);
+                    if (prod) return { page: 'shop', product: prod };
+                }
+                if (parts[0] === 'collections' && parts[1]) {
+                    const slug = parts[1];
+                    const col = COLLECTIONS.find(c => slugify(c.id) === slug || slugify(c.name) === slug);
+                    if (col) return { page: 'shop', collection: col };
+                }
+                if (VALID_PAGES.includes(parts[0])) return { page: parts[0], product: null };
+                return { page: 'home', product: null };
+            };
+
+            // Write URL hash (does not reload page)
+            const setHash = (hashPath) => {
+                const newUrl = window.location.pathname + window.location.search + (hashPath ? '#' + hashPath : '');
+                window.history.pushState({ hash: hashPath }, '', newUrl);
+            };
+
             // Dynamic Google Analytics Loader
             const initGoogleAnalytics = (gaId) => {
                 if (!gaId) return;
@@ -2027,50 +2131,82 @@
                     .catch(() => { /* silently fall back to static PRODUCTS */ });
             }, []);
 
-            // Initialize history state on load
+            // Initialize from URL hash on load
             useEffect(() => {
-                if (!window.history.state || !window.history.state.page) {
-                    window.history.replaceState({ page: 'home' }, '');
+                const hash = window.location.hash;
+                if (hash && hash.length > 1) {
+                    const { page, product, collection } = parseHash(hash, liveProducts);
+                    if (product) {
+                        setCurrentPage(page);
+                        setSelectedProductState(product);
+                    } else if (collection) {
+                        setCurrentPage('shop');
+                        setActiveCollection(collection);
+                    } else if (page !== 'home') {
+                        setCurrentPage(page);
+                    }
+                } else if (!window.location.hash) {
+                    window.history.replaceState({ hash: '/' }, '', window.location.pathname + '#/');
                 }
             }, []);
 
             const handlePageChange = (page, skipHistory = false) => {
-                if (page === currentPage) return;
+                if (page === currentPage && !selectedProduct) return;
+                setSelectedProductState(null);
                 if (!skipHistory) {
-                    window.history.pushState({ page }, '');
+                    const hashPath = page === 'home' ? '/' : '/' + page;
+                    const newUrl = window.location.pathname + window.location.search + '#' + hashPath;
+                    window.history.pushState({ hash: hashPath, page }, '', newUrl);
                 }
                 setPendingPage(page);
                 setIsCurtainActive(true);
                 setTimeout(() => {
                     setCurrentPage(page);
-                    window.scrollTo(0,0);
+                    window.scrollTo(0, 0);
                     setTimeout(() => {
                         setIsCurtainActive(false);
                     }, 800);
                 }, 1000);
             };
 
-            // Custom hook to handle back button via History API
+            // Handle browser back/forward with hash routing
             useEffect(() => {
                 const handlePopState = (e) => {
-                    if (selectedProduct) {
+                    const hash = window.location.hash;
+                    if (!hash || hash === '#' || hash === '#/') {
                         setSelectedProductState(null);
-                    } else if (cartOpen) {
-                        setCartOpen(false);
-                    } else if (e.state && e.state.page) {
-                        handlePageChange(e.state.page, true);
+                        setCurrentPage('home');
+                        return;
+                    }
+                    const { page, product, collection } = parseHash(hash, liveProducts);
+                    if (product) {
+                        setCurrentPage(page);
+                        setSelectedProductState(product);
+                    } else {
+                        setSelectedProductState(null);
+                        if (collection) {
+                            setCurrentPage('shop');
+                            setActiveCollection(collection);
+                        } else {
+                            handlePageChange(page, true);
+                        }
                     }
                 };
                 window.addEventListener('popstate', handlePopState);
                 return () => window.removeEventListener('popstate', handlePopState);
-            }, [selectedProduct, cartOpen, currentPage]);
+            }, [liveProducts]);
 
             const setSelectedProduct = (prod) => {
-                if (prod && !selectedProduct) {
-                    window.history.pushState({ product: prod.id }, '');
-                } else if (!prod && selectedProduct && window.history.state?.product) {
-                    window.history.back(); // Native back will trigger popstate and close it
-                    return;
+                if (prod) {
+                    const slug = slugify(prod.name);
+                    const hashPath = `/products/${slug}`;
+                    const newUrl = window.location.pathname + window.location.search + '#' + hashPath;
+                    window.history.pushState({ hash: hashPath, productId: prod.id }, '', newUrl);
+                } else if (selectedProduct) {
+                    // Closing product — go back to shop hash
+                    const hashPath = currentPage === 'home' ? '/' : '/' + currentPage;
+                    const newUrl = window.location.pathname + window.location.search + '#' + hashPath;
+                    window.history.pushState({ hash: hashPath, page: currentPage }, '', newUrl);
                 }
                 setSelectedProductState(prod);
             };
@@ -2120,12 +2256,12 @@
 
             // Dynamic Head Management (SEO Optimization)
             useEffect(() => {
-                let title = "Tiiha | Made with Intent!";
-                let description = "Tiiha — Made with intent! Shop premium women's clothing: festive wear, summer dresses, and party outfits. Free delivery across India.";
+                let title = "Tiiha | Premium Women's Clothing, Festive Wear & Summer Dresses";
+                let description = "Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, summer dresses, co-ord sets, and party outfits designed with intent. Free delivery across India.";
                 let ogImage = "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778870332/Tiiha_Logo_-_Ivory_BG_Black_1_jkdbmw.png";
 
                 if (selectedProduct) {
-                    title = `${selectedProduct.name} | Tiiha`;
+                    title = `${selectedProduct.name} - Premium Indian Fashion | Tiiha`;
                     description = selectedProduct.desc || `Shop ${selectedProduct.name} at Tiiha. ${selectedProduct.detail || ''}`;
                     if (selectedProduct.image) {
                         ogImage = selectedProduct.image;
@@ -2133,16 +2269,16 @@
                 } else {
                     switch (currentPage) {
                         case 'home':
-                            title = "Tiiha | Made with Intent!";
-                            description = "Tiiha — Made with intent! Shop premium women's clothing: festive wear, summer dresses, and party outfits. Free delivery across India.";
+                            title = "Tiiha | Premium Women's Clothing, Festive Wear & Summer Dresses";
+                            description = "Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, summer dresses, co-ord sets, and party outfits designed with intent. Free delivery across India.";
                             break;
 
                         case 'shop':
                             if (activeCollection) {
-                                title = `${activeCollection.name} | Tiiha`;
-                                description = activeCollection.desc || `Explore the curated ${activeCollection.name} collection at Tiiha. Free shipping across India.`;
+                                title = `${activeCollection.name} - Luxury Ethnic & Festive Wear | Tiiha`;
+                                description = activeCollection.desc || `Explore the curated ${activeCollection.name} collection at Tiiha. Premium women's fashion with free shipping across India.`;
                             } else {
-                                title = "Collections & Shop | Tiiha";
+                                title = "Collections & Shop - Premium Indian Fashion | Tiiha";
                                 description = "Browse our full range of premium womenswear, including the Summer Edit, Party Edit, and Festive Edit. Quality you can feel.";
                             }
                             break;
@@ -2194,9 +2330,10 @@
                 // Update Canonical URL
                 let canonicalUrl = 'https://tiiha.in';
                 if (selectedProduct) {
-                    canonicalUrl = `https://tiiha.in/?product=${selectedProduct.id}`;
+                    const slug = slugify(selectedProduct.name);
+                    canonicalUrl = `https://tiiha.in/#/products/${slug}`;
                 } else if (currentPage !== 'home') {
-                    canonicalUrl = `https://tiiha.in/?page=${currentPage}`;
+                    canonicalUrl = `https://tiiha.in/#/${currentPage}`;
                 }
                 const canonicalLink = document.querySelector('link[rel="canonical"]');
                 if (canonicalLink) {
@@ -2250,7 +2387,7 @@
                         "sku": selectedProduct.id,
                         "offers": {
                             "@type": "Offer",
-                            "url": `https://tiiha.in/?product=${selectedProduct.id}`,
+                            "url": `https://tiiha.in/#/products/${slugify(selectedProduct.name)}`,
                             "priceCurrency": "INR",
                             "price": selectedProduct.price,
                             "itemCondition": "https://schema.org/NewCondition",
@@ -2269,9 +2406,14 @@
             }, [selectedProduct]);
 
 
-            const goToCollection = (col) => { 
-                setActiveCollection(col); 
-                handlePageChange('shop');
+            const goToCollection = (col) => {
+                setActiveCollection(col);
+                // Write collection hash for shareable URLs
+                const colSlug = col.id || slugify(col.name);
+                const hashPath = `/collections/${colSlug}`;
+                const newUrl = window.location.pathname + window.location.search + '#' + hashPath;
+                window.history.pushState({ hash: hashPath, collectionId: col.id }, '', newUrl);
+                handlePageChange('shop', true); // skipHistory=true since we already pushed
             };
 
             const addToCart = (product, size) => { 

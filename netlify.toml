@@ -18,8 +18,20 @@
   status = 200
 
 [[redirects]]
+  from = "/api/newsletter"
+  to = "/.netlify/functions/newsletter"
+  status = 200
+
+[[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/:splat"
+  status = 200
+
+# SPA Fallback — serve index.html for all non-API routes
+# (hash routing works without this, but needed for future path-based routes)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
   status = 200
 
 # Security headers

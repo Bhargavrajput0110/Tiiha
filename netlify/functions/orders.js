@@ -30,7 +30,7 @@ exports.handler = async (event, context) => {
       customer_name, customer_email, customer_phone, 
       shipping_address, city, state, country, pincode, 
       items, total_amount, shipping_amount, discount_amount, 
-      payment_id, razorpay_signature 
+      payment_id, razorpay_signature, razorpay_order_id 
     } = body;
 
     if (!customer_name || !customer_email || !customer_phone || !shipping_address || !city || !state || !pincode || !items || !total_amount) {
@@ -40,20 +40,42 @@ exports.handler = async (event, context) => {
       };
     }
 
-    // Verify Razorpay signature if provided
-    if (payment_id && razorpay_signature && RAZORPAY_KEY_SECRET) {
-      const payload = payment_id + '|' + total_amount;
+    // Verify Razorpay signature — BOTH payment_id AND razorpay_signature required
+    if (payment_id || razorpay_signature) {
+      // If either is present, BOTH must be present
+      if (!payment_id || !razorpay_signature) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: 'Both payment_id and razorpay_signature are required for payment verification' })
+        };
+      }
+      // Verify signature using correct Razorpay format: order_id|payment_id
+      if (!RAZORPAY_KEY_SECRET) {
+        console.error('RAZORPAY_KEY_SECRET not configured');
+        return {
+          statusCode: 500,
+          body: JSON.stringify({ error: 'Payment verification not configured on server' })
+        };
+      }
+      if (!razorpay_order_id) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: 'razorpay_order_id is required for signature verification' })
+        };
+      }
+      const payload = `${razorpay_order_id}|${payment_id}`;
       const expectedSignature = crypto.createHmac('sha256', RAZORPAY_KEY_SECRET).update(payload).digest('hex');
       if (expectedSignature !== razorpay_signature) {
         return {
           statusCode: 400,
-          body: JSON.stringify({ error: 'Invalid payment signature' })
+          body: JSON.stringify({ error: 'Invalid payment signature — payment not verified' })
         };
       }
-    } else if (!payment_id && !process.env.DISABLE_PAYMENT) {
+    } else if (!process.env.DISABLE_PAYMENT) {
+      // No payment info provided at all
       return {
         statusCode: 400,
-        body: JSON.stringify({ error: 'Payment verification required' })
+        body: JSON.stringify({ error: 'Payment verification required — payment_id, razorpay_order_id, and razorpay_signature must be provided' })
       };
     }
 
@@ -77,10 +99,11 @@ exports.handler = async (event, context) => {
       payment_status: 'paid',
       status: 'pending',
       payment_id: payment_id || null,
+      razorpay_order_id: razorpay_order_id || null,
       notes: body.notes || null
     };
 
-    const { error } = await supabase.from('orders').insert([orderData]);
+    const { error } = await supabase.from('ORDERS').insert([orderData]);
 
     if (error) {
       console.error('Order insert error:', error);

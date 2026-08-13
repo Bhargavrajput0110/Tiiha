@@ -1,6 +1,72 @@
 const nodemailer = require('nodemailer');
+const fetch = require('node-fetch');
 
-const ADMIN_EMAIL = 'tilokanihari4@gmail.com';
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'tilokanihari4@gmail.com';
+
+// Helper to send admin WhatsApp notifications using Meta Cloud API template messages
+async function sendWhatsAppNotification({ customer_name, customer_phone, total_amount, shipping_address, order_items }) {
+  const token = process.env.WHATSAPP_ACCESS_TOKEN;
+  const phoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+  const recipient = process.env.ADMIN_PHONE;
+  const templateName = process.env.WHATSAPP_TEMPLATE_NAME || 'tiiha_new_order';
+
+  if (!token || !phoneId || !recipient) {
+    console.log('WhatsApp credentials or recipient missing, skipping WhatsApp notification.');
+    return { success: false, reason: 'Credentials missing' };
+  }
+
+  // Format parameters: items list like "Product A (M), Product B (L)"
+  const itemsSummary = order_items.map(i => `${i.name} (${i.size || 'N/A'})`).join(', ');
+
+  try {
+    const response = await fetch(
+      `https://graph.facebook.com/v20.0/${phoneId}/messages`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          messaging_product: "whatsapp",
+          recipient_type: "individual",
+          to: recipient,
+          type: "template",
+          template: {
+            name: templateName,
+            language: {
+              code: "en"
+            },
+            components: [
+              {
+                type: "body",
+                parameters: [
+                  { type: "text", text: customer_name || 'N/A' },
+                  { type: "text", text: itemsSummary || 'N/A' },
+                  { type: "text", text: `₹${Number(total_amount).toLocaleString('en-IN')}` },
+                  { type: "text", text: shipping_address || 'N/A' },
+                  { type: "text", text: customer_phone || 'N/A' }
+                ]
+              }
+            ]
+          }
+        })
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      console.error('WhatsApp API Error Response:', data);
+      return { success: false, error: data };
+    }
+
+    console.log('WhatsApp notification sent successfully:', data);
+    return { success: true, data };
+  } catch (error) {
+    console.error('WhatsApp fetch error:', error);
+    return { success: false, error: error.message };
+  }
+}
 
 exports.handler = async (event, context) => {
   if (event.httpMethod !== "POST") {
@@ -92,16 +158,20 @@ exports.handler = async (event, context) => {
       `
     });
 
+    // 3. Send WhatsApp notification to Admin/Client
+    await sendWhatsAppNotification({ customer_name, customer_phone, total_amount, shipping_address, order_items })
+      .catch(e => console.error('WhatsApp error:', e));
+
     return {
       statusCode: 200,
-      body: JSON.stringify({ success: true, message: 'Emails sent to customer and admin.' })
+      body: JSON.stringify({ success: true, message: 'Emails and WhatsApp notification sent.' })
     };
 
   } catch (err) {
     console.error('Email error:', err);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Failed to send email', details: err.message })
+      body: JSON.stringify({ error: 'Failed to send notification', details: err.message })
     };
   }
 };
