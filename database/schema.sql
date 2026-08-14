@@ -568,76 +568,117 @@ CREATE TRIGGER trg_users_updated BEFORE UPDATE ON users FOR EACH ROW EXECUTE FUN
 -- ROW LEVEL SECURITY POLICIES
 -- ============================================
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public write products" ON products;
+DROP POLICY IF EXISTS "Admin full products" ON products;
+DROP POLICY IF EXISTS "Public read active products" ON products;
 CREATE POLICY "Admin full products" ON products FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Public read active products" ON products FOR SELECT TO anon USING (is_active = TRUE);
 
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public write categories" ON categories;
+DROP POLICY IF EXISTS "Admin full categories" ON categories;
+DROP POLICY IF EXISTS "Public read active categories" ON categories;
 CREATE POLICY "Admin full categories" ON categories FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Public read active categories" ON categories FOR SELECT TO anon USING (is_active = TRUE);
 
 ALTER TABLE collections ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public write collections" ON collections;
+DROP POLICY IF EXISTS "Admin full collections" ON collections;
+DROP POLICY IF EXISTS "Public read active collections" ON collections;
 CREATE POLICY "Admin full collections" ON collections FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Public read active collections" ON collections FOR SELECT TO anon USING (is_active = TRUE);
 
 ALTER TABLE product_images ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full images" ON product_images;
+DROP POLICY IF EXISTS "Public read images" ON product_images;
 CREATE POLICY "Admin full images" ON product_images FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Public read images" ON product_images FOR SELECT TO anon USING (true);
 
 ALTER TABLE product_videos ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full videos" ON product_videos;
+DROP POLICY IF EXISTS "Public read videos" ON product_videos;
 CREATE POLICY "Admin full videos" ON product_videos FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Public read videos" ON product_videos FOR SELECT TO anon USING (is_active = TRUE);
 
 ALTER TABLE product_seo ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full seo" ON product_seo;
+DROP POLICY IF EXISTS "Public read seo" ON product_seo;
 CREATE POLICY "Admin full seo" ON product_seo FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Public read seo" ON product_seo FOR SELECT TO anon USING (true);
 
 ALTER TABLE product_collections ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full prod_collections" ON product_collections;
 CREATE POLICY "Admin full prod_collections" ON product_collections FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 ALTER TABLE tags ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full tags" ON tags;
+DROP POLICY IF EXISTS "Public read tags" ON tags;
 CREATE POLICY "Admin full tags" ON tags FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Public read tags" ON tags FOR SELECT TO anon USING (true);
 
 ALTER TABLE product_tags ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full prod_tags" ON product_tags;
 CREATE POLICY "Admin full prod_tags" ON product_tags FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 ALTER TABLE variants ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full variants" ON variants;
 CREATE POLICY "Admin full variants" ON variants FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 ALTER TABLE content_blocks ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public write content_blocks" ON content_blocks;
+DROP POLICY IF EXISTS "Admin full content_blocks" ON content_blocks;
+DROP POLICY IF EXISTS "Public read active blocks" ON content_blocks;
 CREATE POLICY "Admin full content_blocks" ON content_blocks FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Public read active blocks" ON content_blocks FOR SELECT TO anon USING (is_active = TRUE AND (published_at IS NULL OR published_at <= NOW()));
 
 ALTER TABLE pages ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full pages" ON pages;
+DROP POLICY IF EXISTS "Public read published pages" ON pages;
 CREATE POLICY "Admin full pages" ON pages FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Public read published pages" ON pages FOR SELECT TO anon USING (status = 'published');
 
 ALTER TABLE page_templates ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full templates" ON page_templates;
 CREATE POLICY "Admin full templates" ON page_templates FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 ALTER TABLE media ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full media" ON media;
+DROP POLICY IF EXISTS "Public read media" ON media;
 CREATE POLICY "Admin full media" ON media FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Public read media" ON media FOR SELECT TO anon USING (true);
 
 ALTER TABLE site_settings ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public write settings" ON site_settings;
+DROP POLICY IF EXISTS "Admin full settings" ON site_settings;
+DROP POLICY IF EXISTS "Public read settings" ON site_settings;
 CREATE POLICY "Admin full settings" ON site_settings FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Public read settings" ON site_settings FOR SELECT TO anon USING (true);
 
 ALTER TABLE navigation_menu ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public write navigation_menu" ON navigation_menu;
+DROP POLICY IF EXISTS "Admin full nav" ON navigation_menu;
+DROP POLICY IF EXISTS "Public read nav" ON navigation_menu;
 CREATE POLICY "Admin full nav" ON navigation_menu FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "Public read nav" ON navigation_menu FOR SELECT TO anon USING (is_active = TRUE);
 
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Public read orders" ON orders;
+DROP POLICY IF EXISTS "Public read orders" ON "ORDERS";
+DROP POLICY IF EXISTS "Admin full orders" ON orders;
 CREATE POLICY "Admin full orders" ON orders FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 ALTER TABLE order_items ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full order_items" ON order_items;
 CREATE POLICY "Admin full order_items" ON order_items FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 ALTER TABLE order_status_history ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full order_history" ON order_status_history;
 CREATE POLICY "Admin full order_history" ON order_status_history FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full users" ON users;
 CREATE POLICY "Admin full users" ON users FOR ALL TO authenticated USING (true) WITH CHECK (true);
 
 ALTER TABLE activity_log ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS "Admin full activity" ON activity_log;
 CREATE POLICY "Admin full activity" ON activity_log FOR ALL TO authenticated USING (true) WITH CHECK (true);

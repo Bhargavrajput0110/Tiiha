@@ -113,6 +113,64 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Automatically create Shiprocket Shipment if paid and credentials exist
+    const SHIPROCKET_EMAIL = process.env.SHIPROCKET_EMAIL;
+    const SHIPROCKET_PASSWORD = process.env.SHIPROCKET_PASSWORD;
+    if (payment_id && SHIPROCKET_EMAIL && SHIPROCKET_PASSWORD) {
+        try {
+            const authRes = await fetch('https://apiv2.shiprocket.in/v1/external/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: SHIPROCKET_EMAIL, password: SHIPROCKET_PASSWORD })
+            });
+            const authData = await authRes.json();
+            
+            if (authData.token) {
+                const parsedItems = Array.isArray(items) ? items : JSON.parse(items);
+                const orderItems = parsedItems.map(item => ({
+                    name: item.name,
+                    sku: item.id || 'SKU-UNKNOWN',
+                    units: item.quantity || 1,
+                    selling_price: item.price
+                }));
+                const d = new Date();
+                const orderDateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+                
+                const payload = {
+                    order_id: orderId,
+                    order_date: orderDateStr,
+                    pickup_location: "Primary",
+                    billing_customer_name: customer_name,
+                    billing_address: shipping_address,
+                    billing_city: city,
+                    billing_pincode: pincode,
+                    billing_state: state,
+                    billing_country: country || 'India',
+                    billing_email: customer_email,
+                    billing_phone: customer_phone,
+                    shipping_is_billing: true,
+                    order_items: orderItems,
+                    payment_method: "Prepaid",
+                    sub_total: total_amount,
+                    length: 30, breadth: 25, height: 5, weight: 0.5
+                };
+                
+                const shipRes = await fetch('https://apiv2.shiprocket.in/v1/external/orders/create/adhoc', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authData.token}` },
+                    body: JSON.stringify(payload)
+                });
+                const shipData = await shipRes.json();
+                
+                if (shipData.status_code === 1) {
+                    await supabase.from('ORDERS').update({ shipment_id: String(shipData.shipment_id) }).eq('id', orderId);
+                } else {
+                    console.error("Shiprocket error in order creation:", shipData);
+                }
+            }
+        } catch (e) { console.error("Shiprocket integration error:", e); }
+    }
+
     return {
       statusCode: 201,
       body: JSON.stringify({ success: true, order_id: orderId })

@@ -75,80 +75,8 @@ app.get('/api/get-config', (req, res) => {
 });
 
 
-app.post('/api/create-shipment', async (req, res) => {
-    try {
-        if (!SHIPROCKET_EMAIL || !SHIPROCKET_PASSWORD) {
-            return res.status(500).json({ error: 'Shiprocket credentials not configured' });
-        }
-        
-        const { orderData, cart, total } = req.body;
-
-        // 1. Authenticate with Shiprocket
-        const authRes = await fetch('https://apiv2.shiprocket.in/v1/external/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: SHIPROCKET_EMAIL, password: SHIPROCKET_PASSWORD })
-        });
-        const authData = await authRes.json();
-
-        if (!authData.token) {
-            return res.status(401).json({ error: 'Shiprocket authentication failed' });
-        }
-
-        // 2. Format Order Items
-        const orderItems = cart.map(item => ({
-            name: item.name,
-            sku: item.id || 'SKU-UNKNOWN',
-            units: 1,
-            selling_price: item.price
-        }));
-
-        // Format Date
-        const d = new Date();
-        const orderDateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-
-        // 3. Create Payload
-        const payload = {
-            order_id: `TIIHA-${Date.now()}`,
-            order_date: orderDateStr,
-            pickup_location: "Primary", // Must match exactly with Shiprocket dashboard pickup location name
-            billing_customer_name: orderData.customer_name,
-            billing_address: orderData.address,
-            billing_city: orderData.city,
-            billing_pincode: orderData.zip,
-            billing_state: orderData.state,
-            billing_country: "India",
-            billing_email: orderData.customer_email,
-            billing_phone: orderData.phone,
-            shipping_is_billing: true,
-            order_items: orderItems,
-            payment_method: "Prepaid",
-            sub_total: total,
-            length: 30, breadth: 25, height: 5, weight: 0.5
-        };
-
-        // 4. Create Adhoc Shipment
-        const shipRes = await fetch('https://apiv2.shiprocket.in/v1/external/orders/create/adhoc', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authData.token}`
-            },
-            body: JSON.stringify(payload)
-        });
-        const shipData = await shipRes.json();
-
-        if (shipData.status_code === 1) {
-            res.status(200).json({ success: true, shipment_id: shipData.shipment_id });
-        } else {
-            console.error("Shiprocket error:", shipData);
-            res.status(400).json({ error: 'Shiprocket rejected payload', details: shipData });
-        }
-    } catch (error) {
-        console.error("Server Error:", error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
+// /api/create-shipment endpoint has been removed to enforce backend-verified shipments.
+// Shiprocket creation now securely happens inside /api/orders after successful payment.
 
 
 const PORT = process.env.PORT || 3000;
@@ -168,16 +96,16 @@ function generateOrderId() {
 // Create order (called after Razorpay payment success)
 app.post('/api/orders', async (req, res) => {
   try {
-    const { customer_name, customer_email, customer_phone, shipping_address, city, state, country, pincode, items, total_amount, shipping_amount, discount_amount, payment_id, razorpay_signature } = req.body;
+    const { customer_name, customer_email, customer_phone, shipping_address, city, state, country, pincode, items, total_amount, shipping_amount, discount_amount, payment_id, razorpay_order_id, razorpay_signature } = req.body;
 
     if (!customer_name || !customer_email || !customer_phone || !shipping_address || !city || !state || !pincode || !items || !total_amount) {
       return res.status(400).json({ error: 'Missing required fields' });
     }
 
     // Verify Razorpay signature if provided
-    if (payment_id && razorpay_signature && RAZORPAY_KEY_SECRET) {
+    if (payment_id && razorpay_order_id && razorpay_signature && RAZORPAY_KEY_SECRET) {
       const crypto = require('crypto');
-      const payload = payment_id + '|' + total_amount;
+      const payload = razorpay_order_id + '|' + payment_id;
       const expectedSignature = crypto.createHmac('sha256', RAZORPAY_KEY_SECRET).update(payload).digest('hex');
       if (expectedSignature !== razorpay_signature) {
         return res.status(400).json({ error: 'Invalid payment signature' });
@@ -214,6 +142,62 @@ app.post('/api/orders', async (req, res) => {
     if (error) {
       console.error('Order insert error:', error);
       return res.status(500).json({ error: 'Failed to create order', details: error.message });
+    }
+
+    // Automatically create Shiprocket Shipment if paid and credentials exist
+    if (payment_id && SHIPROCKET_EMAIL && SHIPROCKET_PASSWORD) {
+        try {
+            const authRes = await fetch('https://apiv2.shiprocket.in/v1/external/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: SHIPROCKET_EMAIL, password: SHIPROCKET_PASSWORD })
+            });
+            const authData = await authRes.json();
+            
+            if (authData.token) {
+                const parsedItems = Array.isArray(items) ? items : JSON.parse(items);
+                const orderItems = parsedItems.map(item => ({
+                    name: item.name,
+                    sku: item.id || 'SKU-UNKNOWN',
+                    units: item.quantity || 1,
+                    selling_price: item.price
+                }));
+                const d = new Date();
+                const orderDateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+                
+                const payload = {
+                    order_id: orderId,
+                    order_date: orderDateStr,
+                    pickup_location: "Primary",
+                    billing_customer_name: customer_name,
+                    billing_address: shipping_address,
+                    billing_city: city,
+                    billing_pincode: pincode,
+                    billing_state: state,
+                    billing_country: country || 'India',
+                    billing_email: customer_email,
+                    billing_phone: customer_phone,
+                    shipping_is_billing: true,
+                    order_items: orderItems,
+                    payment_method: "Prepaid",
+                    sub_total: total_amount,
+                    length: 30, breadth: 25, height: 5, weight: 0.5
+                };
+                
+                const shipRes = await fetch('https://apiv2.shiprocket.in/v1/external/orders/create/adhoc', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authData.token}` },
+                    body: JSON.stringify(payload)
+                });
+                const shipData = await shipRes.json();
+                
+                if (shipData.status_code === 1) {
+                    await supabase.from('orders').update({ shipment_id: String(shipData.shipment_id) }).eq('id', orderId);
+                } else {
+                    console.error("Shiprocket error in order creation:", shipData);
+                }
+            }
+        } catch (e) { console.error("Shiprocket integration error:", e); }
     }
 
     res.status(201).json({ success: true, order_id: orderId });
@@ -272,6 +256,41 @@ app.post('/api/razorpay-order', async (req, res) => {
   } catch (err) {
     console.error('Razorpay Error:', err);
     res.status(500).json({ error: err.message });
+  }
+});
+
+// ─── Order Tracking Endpoint (Secure) ─────────────────────────────────────────
+app.get('/api/track-order', async (req, res) => {
+  try {
+    const { query, order_id } = req.query; // query is email or phone
+    if (!query || !order_id) return res.status(400).json({ error: 'Query and order_id parameters required' });
+    
+    // We use service role key so this bypasses RLS, but we validate ownership with query + order_id
+    const { data, error } = await supabase.from('ORDERS')
+        .select('*')
+        .eq('id', order_id.trim())
+        .limit(1)
+        .single();
+
+    if (error) {
+        if (error.code === 'PGRST116') {
+             return res.json([]);
+        }
+        return res.status(500).json({ error: error.message });
+    }
+
+    const safeQuery = query.trim().toLowerCase();
+    const emailMatch = data.customer_email && data.customer_email.toLowerCase() === safeQuery;
+    const phoneMatch = data.customer_phone && data.customer_phone === safeQuery;
+
+    if (!emailMatch && !phoneMatch) {
+         return res.json([]);
+    }
+
+    res.json([data]); 
+  } catch (err) {
+    console.error('Order tracking error:', err.message);
+    res.status(404).json({ error: 'Order not found or unauthorized' });
   }
 });
 
