@@ -19,8 +19,11 @@
     <meta name="twitter:title" content="Tiiha | Premium Women's Clothing & Festive Wear">
     <meta name="twitter:description" content="Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, summer dresses, and party outfits.">
     <meta name="twitter:image" content="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778870332/Tiiha_Logo_-_Ivory_BG_Black_1_jkdbmw.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://rswhedtgkfdbhsicllrj.supabase.co" crossorigin>
+    <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
+    <link rel="dns-prefetch" href="https://rswhedtgkfdbhsicllrj.supabase.co">
+    <link rel="dns-prefetch" href="https://res.cloudinary.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
     <link rel="dns-prefetch" href="https://unpkg.com">
     <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
     <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
@@ -191,14 +194,16 @@
           _product: p,
         }));
 
-        const COLLECTIONS = [
+        // COLLECTIONS: productIds are now derived dynamically from liveProducts
+        // by matching the category field — no more hardcoded IDs needed.
+        const COLLECTIONS_META = [
           {
             id: 'festive-edit',
             name: 'The Festive Edit',
             subtitle: 'Festivals are moments',
             desc: 'For the celebrations that deserve to be remembered. Rich fabrics, considered silhouettes, and a certain grace that stays with you.',
             image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4310.JPG_vdoakp.jpg',
-            productIds: ['TII-05', 'TII-06']
+            categoryMatch: 'FESTIVE EDIT'
           },
           {
             id: 'summer-edit',
@@ -206,7 +211,7 @@
             subtitle: 'Light as the season itself',
             desc: 'Breathable fabrics and effortless prints, made for sun-soaked days and every golden hour that follows.',
             image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg',
-            productIds: ['TII-01', 'TII-02', 'TII-03']
+            categoryMatch: 'SUMMER EDIT'
           },
           {
             id: 'party-edit',
@@ -214,9 +219,17 @@
             subtitle: 'Unapologetically you',
             desc: 'The kind of dressed that needs no introduction. Bold, elegant, unapologetically you.',
             image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg',
-            productIds: ['TII-04']
-          }
+            categoryMatch: 'PARTY EDIT'
+          },
         ];
+        // Build COLLECTIONS with dynamic productIds from PRODUCTS (updated to liveProducts at runtime)
+        const buildCollections = (productList) => COLLECTIONS_META.map(col => ({
+          ...col,
+          productIds: productList
+            .filter(p => (p.category || '').toUpperCase() === col.categoryMatch)
+            .map(p => p.id)
+        }));
+        const COLLECTIONS = buildCollections(PRODUCTS);
 
         const cinematicEase = [0.76, 0, 0.24, 1];
 
@@ -700,7 +713,7 @@
           );
         };
 
-        function HomePage({ products: propProducts, setPage, onSelect, goToCollection }) {
+        function HomePage({ products: propProducts, collections: propCollections, setPage, onSelect, goToCollection }) {
             const containerRef = useRef(null);
             const stickyRef = useRef(null);
             const { setCursor } = useStore();
@@ -763,6 +776,170 @@
                         <style>{`@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }`}</style>
                     </section>
 
+                    {/* ═══════════════════════════════════════════════════
+                        NEW COLLECTION LAUNCH — CINEMATIC REEL + HIGHLIGHTS
+                    ═══════════════════════════════════════════════════ */}
+                    <section style={{background:'#0D0D0D',color:'#F0EBE1',overflow:'hidden',position:'relative'}}>
+
+                        {/* ── HERO SPLIT: Text LEFT | Video RIGHT ── */}
+                        <div style={{display:'flex',flexDirection:'column',minHeight:'100vh'}} className="launch-hero-wrap">
+
+                            {/* LEFT PANEL — Text + product strip */}
+                            <div style={{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',gap:'80px',padding:'64px 32px',position:'relative',zIndex:2}} className="launch-left">
+
+                                {/* Top text */}
+                                <div>
+                                    <RevealText>
+                                        <span style={{fontSize:'9px',letterSpacing:'0.55em',fontWeight:800,color:'#A6957A',textTransform:'uppercase',display:'block',marginBottom:'28px'}}>
+                                            August 2026 — The Festive Edit
+                                        </span>
+                                    </RevealText>
+                                    <RevealText delay={120}>
+                                        <h2 style={{fontFamily:'DM Serif Display, serif',fontSize:'clamp(40px, 4.5vw, 90px)',lineHeight:0.88,letterSpacing:'-0.03em',margin:'0 0 24px',textTransform:'uppercase',wordBreak:'break-word',overflowWrap:'break-word'}}>
+                                            New<br/>
+                                            <span style={{fontStyle:'italic',color:'#A6957A'}}>Collection</span>
+                                        </h2>
+                                    </RevealText>
+                                    <RevealText delay={240}>
+                                        <p style={{fontSize:'11px',letterSpacing:'0.18em',textTransform:'uppercase',color:'rgba(240,235,225,0.4)',fontWeight:300,maxWidth:'320px',lineHeight:2.2}}>
+                                            Five new pieces. Each one deliberate,<br/>each one worth remembering.
+                                        </p>
+                                    </RevealText>
+                                    <Reveal delay={400}>
+                                        <button
+                                            onClick={() => { window.scrollTo(0,0); setPage('shop'); }}
+                                            style={{marginTop:'36px',fontSize:'9px',letterSpacing:'0.35em',textTransform:'uppercase',fontWeight:800,color:'#0D0D0D',background:'#A6957A',border:'none',padding:'14px 32px',cursor:'pointer',display:'inline-block'}}
+                                            onMouseEnter={e=>{e.currentTarget.style.background='#C9B89A';}}
+                                            onMouseLeave={e=>{e.currentTarget.style.background='#A6957A';}}
+                                        >Shop the Edit</button>
+                                    </Reveal>
+                                </div>
+
+                                {/* Bottom: 5 product thumbnails in a row */}
+                                <div style={{marginTop:'48px'}}>
+                                    <span style={{fontSize:'8px',letterSpacing:'0.4em',textTransform:'uppercase',color:'rgba(166,149,122,0.6)',fontWeight:700,display:'block',marginBottom:'16px'}}>Just Dropped — 5 New Pieces</span>
+                                    <div style={{display:'flex',gap:'10px',overflowX:'auto'}} className="no-scrollbar launch-thumbs">
+                                        {(() => {
+                                            const ids = ['TII-504','TII-502','TII-501','TII-503','TII-505'];
+                                            const all = propProducts || PRODUCTS;
+                                            return ids.map(id => all.find(p => p.id === id)).filter(Boolean);
+                                        })().map((prod, i) => (
+                                            <div
+                                                key={prod.id}
+                                                onClick={() => onSelect(prod)}
+                                                onMouseEnter={() => setCursor('text','VIEW')}
+                                                onMouseLeave={() => setCursor('default')}
+                                                style={{flexShrink:0,width:'80px',cursor:'pointer',position:'relative'}}
+                                                className="group"
+                                            >
+                                                <div style={{aspectRatio:'3/4',overflow:'hidden',borderRadius:'4px',marginBottom:'8px',border:'1px solid rgba(166,149,122,0.2)',position:'relative'}}>
+                                                    <img src={prod.image} alt={prod.name} style={{width:'100%',height:'100%',objectFit:'cover',transition:'transform 0.5s'}} className="thumb-img" />
+                                                    <div style={{position:'absolute',top:4,left:4,background:'#A6957A',color:'#0D0D0D',fontSize:'6px',fontWeight:900,letterSpacing:'0.15em',padding:'2px 6px'}}>NEW</div>
+                                                </div>
+                                                <p style={{fontSize:'8px',color:'rgba(240,235,225,0.6)',letterSpacing:'0.05em',margin:0,lineHeight:1.3}}>{prod.name}</p>
+                                                <p style={{fontSize:'9px',color:'#A6957A',fontFamily:'DM Serif Display, serif',fontStyle:'italic',margin:'2px 0 0'}}>₹{prod.price.toLocaleString('en-IN')}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* RIGHT PANEL — Full-height Video */}
+                            <div style={{position:'relative',overflow:'hidden',background:'#000'}} className="launch-right">
+                                <video
+                                    src="https://res.cloudinary.com/dlxiy6aiq/video/upload/v1787585771/PA1b_ma4c0s.mp4"
+                                    autoPlay muted loop playsInline
+                                    style={{width:'100%',height:'100%',objectFit:'cover',display:'block',minHeight:'60vw'}}
+                                />
+                                {/* Gold gradient overlay at bottom */}
+                                <div style={{position:'absolute',bottom:0,left:0,right:0,height:'40%',background:'linear-gradient(to top, rgba(13,13,13,0.9), transparent)',pointerEvents:'none'}} />
+                                {/* Floating NEW DROP badge */}
+                                <div style={{position:'absolute',top:'24px',right:'24px',background:'linear-gradient(135deg,#A6957A,#C9B89A)',borderRadius:'50%',width:'60px',height:'60px',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',boxShadow:'0 8px 32px rgba(166,149,122,0.6)',animation:'badgeSpin 10s linear infinite',zIndex:5}}>
+                                    <span style={{fontSize:'6px',fontWeight:900,letterSpacing:'0.1em',color:'#0D0D0D',textAlign:'center',lineHeight:1.3}}>NEW<br/>DROP</span>
+                                </div>
+                                {/* Bottom label */}
+                                <div style={{position:'absolute',bottom:'24px',left:'24px',zIndex:5}}>
+                                    <span style={{fontSize:'8px',letterSpacing:'0.35em',textTransform:'uppercase',color:'rgba(240,235,225,0.6)',fontWeight:700}}>Campaign Reel — 2026</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* CSS */}
+                        <style>{`
+                            @keyframes badgeSpin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+                            .group:hover .new-card-img { opacity:0; transform:scale(1.05); }
+                            .group:hover .new-card-hover { opacity:1 !important; }
+                            .group:hover .new-card-glow { box-shadow: inset 0 0 0 1px rgba(166,149,122,0.45), 0 0 40px rgba(166,149,122,0.1) !important; }
+                            .group:hover .thumb-img { transform: scale(1.07); }
+                            @media(min-width:768px) {
+                                .launch-hero-wrap { flex-direction: row !important; min-height: 100vh; }
+                                .launch-left { width: 45%; padding: 80px 48px; }
+                                .launch-right { width: 55%; min-height: 100vh !important; }
+                                .launch-right video { min-height: 100vh !important; }
+                                .launch-thumbs { flex-wrap: wrap; gap: 12px !important; }
+                                .launch-thumbs > div { width: 100px !important; }
+                                .new-dresses-grid { grid-template-columns: repeat(5,1fr) !important; gap: 28px !important; }
+                            }
+                        `}</style>
+                    </section>
+
+
+
+                    {/* ═══ EDITORIAL LOOKBOOK GALLERY ═══ */}
+                    <section style={{background:'#0D0D0D', padding:'40px 0 60px', overflow:'hidden'}}>
+                        <div style={{maxWidth:'1800px', margin:'0 auto', padding:'0 32px'}}>
+                            
+                            <div style={{textAlign:'center', marginBottom:'80px'}}>
+                                <RevealText><span style={{fontSize:'10px', letterSpacing:'0.5em', textTransform:'uppercase', color:'#A6957A', fontWeight:700, display:'block', marginBottom:'16px'}}>The Lookbook</span></RevealText>
+                                <RevealText delay={100}><h2 style={{fontFamily:'DM Serif Display, serif', fontSize:'clamp(40px, 6vw, 80px)', color:'#F0EBE1', margin:0, letterSpacing:'-0.02em', lineHeight:1}}>Editorial Details</h2></RevealText>
+                            </div>
+
+                            {/* Desktop: 3-column staggered masonry layout. Mobile: stacked with gap */}
+                            <div className="lookbook-gallery" style={{display:'grid', gap:'24px', position:'relative'}}>
+                                
+                                {/* Image 1 (Left, slightly pushed down) */}
+                                <Reveal delay={100} threshold={0.2} className="lookbook-col" style={{marginTop:'40px'}}>
+                                    <div className="group" style={{position:'relative', overflow:'hidden', borderRadius:'4px', aspectRatio:'4/5'}}>
+                                        <div style={{position:'absolute', inset:0, background:'#000', opacity:0.1, zIndex:1, transition:'opacity 0.5s'}} className="group-hover:opacity-0" />
+                                        <img src="https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787585566/Duo_Pics_jvwxte.png" alt="Editorial Look 1" style={{width:'100%', height:'100%', objectFit:'cover', transition:'transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1)'}} className="group-hover:scale-105" loading="lazy" />
+                                    </div>
+                                    <p style={{fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(240,235,225,0.5)', marginTop:'16px', textAlign:'center'}}>Quiet Details</p>
+                                </Reveal>
+
+                                {/* Image 2 (Center, featured, pushed up) */}
+                                <Reveal delay={200} threshold={0.2} className="lookbook-col" style={{marginTop:'-40px'}}>
+                                    <div className="group" style={{position:'relative', overflow:'hidden', borderRadius:'4px', aspectRatio:'3/4', boxShadow:'0 20px 60px rgba(0,0,0,0.8)'}}>
+                                        <img src="https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787585565/Duo_Pics_1_wycuyo.png" alt="Editorial Look 2" style={{width:'100%', height:'100%', objectFit:'cover', transition:'transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1)'}} className="group-hover:scale-105" loading="lazy" />
+                                        {/* Floating decorative element */}
+                                        <div style={{position:'absolute', bottom:'24px', left:'50%', transform:'translateX(-50%)', background:'rgba(10,10,10,0.6)', backdropFilter:'blur(10px)', padding:'12px 24px', border:'1px solid rgba(166,149,122,0.3)', borderRadius:'40px'}}>
+                                            <span style={{fontSize:'8px', letterSpacing:'0.4em', textTransform:'uppercase', color:'#A6957A', fontWeight:700, whiteSpace:'nowrap'}}>The Festive Edit</span>
+                                        </div>
+                                    </div>
+                                </Reveal>
+
+                                {/* Image 3 (Right, pushed down) */}
+                                <Reveal delay={300} threshold={0.2} className="lookbook-col" style={{marginTop:'60px'}}>
+                                    <div className="group" style={{position:'relative', overflow:'hidden', borderRadius:'4px', aspectRatio:'4/5'}}>
+                                        <div style={{position:'absolute', inset:0, background:'#000', opacity:0.1, zIndex:1, transition:'opacity 0.5s'}} className="group-hover:opacity-0" />
+                                        <img src="https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787585524/Duo_Pics_2_vzzpuj.png" alt="Editorial Look 3" style={{width:'100%', height:'100%', objectFit:'cover', transition:'transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1)'}} className="group-hover:scale-105" loading="lazy" />
+                                    </div>
+                                    <p style={{fontSize:'10px', letterSpacing:'0.2em', textTransform:'uppercase', color:'rgba(240,235,225,0.5)', marginTop:'16px', textAlign:'center'}}>Effortless Grace</p>
+                                </Reveal>
+
+                            </div>
+                        </div>
+
+                        <style>{`
+                            @media (max-width: 767px) {
+                                .lookbook-gallery { grid-template-columns: 1fr; gap: 40px !important; }
+                                .lookbook-col { margin-top: 0 !important; }
+                            }
+                            @media (min-width: 768px) {
+                                .lookbook-gallery { grid-template-columns: 1fr 1.2fr 1fr; align-items: center; }
+                            }
+                        `}</style>
+                    </section>
+
                     <section className="py-16 md:py-60 bg-[#F0EBE1] text-[#0D0D0D]">
                         <div className="max-w-[1800px] mx-auto">
                             <div className="mb-8 md:mb-40 flex justify-between items-end border-b border-black/10 pb-6 md:pb-10 px-6 md:px-16">
@@ -771,7 +948,7 @@
                             </div>
                             {/* Mobile: horizontal scroll | Desktop: 3-column grid */}
                             <div className="flex md:grid md:grid-cols-3 gap-5 md:gap-16 items-start overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar px-6 md:px-16 pb-4 md:pb-0">
-                                {(propProducts || PRODUCTS).slice(0, 3).map((prod, index) => {
+                                {(() => { const newArrivalIds = ['TII-504', 'TII-502', 'TII-501']; const all = propProducts || PRODUCTS; return newArrivalIds.map(id => all.find(p => p.id === id)).filter(Boolean); })().map((prod, index) => {
                                     return (
                                         <div key={prod.id} className="flex-shrink-0 w-[72vw] md:w-auto snap-center">
                                         <Reveal delay={index * 200} className="">
@@ -809,7 +986,7 @@
 
                             {/* Collection Cards — horizontal scroll on mobile, grid on desktop */}
                             <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-8 overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar -mx-8 md:mx-0 px-8 md:px-0 pb-4 md:pb-0">
-                                {COLLECTIONS.map((col, i) => (
+                                {(propCollections || COLLECTIONS).map((col, i) => (
                                     <div key={col.id} className="flex-shrink-0 w-[80vw] md:w-auto snap-center">
                                     <Reveal delay={i * 100}>
                                         <div
@@ -1100,6 +1277,7 @@
                                     </button>
                                 )})}
                             </div>
+                            <p className="text-[9px] text-black/40 mt-1 mb-3 tracking-[0.05em] italic">For 2XL, 3XL or custom sizing, <a href="https://wa.me/919213578396" target="_blank" rel="noopener noreferrer" className="underline hover:text-black font-semibold">DM us on WhatsApp</a></p>
                             {!selectedSize && <p className="text-[9px] text-black/35 mb-2 tracking-[0.15em] uppercase">Please select a size to continue</p>}
                             {selectedSize && product.stock && product.stock[selectedSize] === 0 && (
                                 <p className="text-[11px] text-red-600 font-bold mb-2 uppercase">Out of stock. <a href={`https://wa.me/919213578396?text=${encodeURIComponent('Hi! I am looking for ' + product.name + ' in size ' + selectedSize + '. Can I place an order for it?')}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-red-800">DM on WhatsApp</a></p>
@@ -1995,6 +2173,7 @@
             const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
             const [bannerShown, setBannerShown] = useState(true);
             const [liveProducts, setLiveProducts] = useState(PRODUCTS);
+            const [liveCollections, setLiveCollections] = useState(() => buildCollections(PRODUCTS));
             const [config, setConfig] = useState({ razorpay_key_id: '' });
             const { setCursor } = useStore();
 
@@ -2079,12 +2258,19 @@
                             .catch(() => {});
                     });
 
-                // Fetch Products
-                fetch('/api/products')
-                    .then(r => r.ok ? r.json() : null)
-                    .then(data => {
+                // Fetch Products directly from Supabase (works without the Node server)
+                // This ensures admin panel edits always show up on the storefront immediately.
+                window.__tiihaSupabase
+                    .from('products')
+                    .select('*')
+                    .order('id')
+                    .then(({ data, error }) => {
+                        if (error) {
+                            console.warn('Supabase products fetch error, using static fallback:', error.message);
+                            return;
+                        }
                         if (data && Array.isArray(data) && data.length > 0) {
-                            setLiveProducts(data.map(p => {
+                            const normalized = data.map(p => {
                                 let hImg = p.hoverImage || p.image;
                                 if (!p.hoverImage) {
                                     try {
@@ -2092,7 +2278,7 @@
                                         if (g.length > 0) hImg = g[0].split(/[\s,]+/)[0] || p.image;
                                     } catch {}
                                 }
-                                
+
                                 let normalizedSizes = p.sizes || 'S, M, L';
                                 let normalizedStock = p.stock;
                                 if (p.sizes && p.sizes.includes(':')) {
@@ -2110,7 +2296,9 @@
                                 }
 
                                 return { ...p, hoverImage: hImg, sizes: normalizedSizes, stock: normalizedStock };
-                            }));
+                            });
+                            setLiveProducts(normalized);
+                            setLiveCollections(buildCollections(normalized));
                         }
                     })
                     .catch(() => { /* silently fall back to static PRODUCTS */ });
@@ -2459,7 +2647,7 @@
                         <div className="flex gap-6 md:gap-16 items-center justify-end text-[10px] tracking-[0.2em] md:tracking-[0.4em] uppercase font-bold w-1/3"><MagneticButton><button onClick={() => handlePageChange('contact')} className={`hidden md:block relative pb-1 hover:after:w-full after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[1px] after:bg-current after:transition-all after:duration-500 ${currentPage === 'contact' ? 'after:w-full' : 'after:w-0'}`}>Contact Us</button></MagneticButton><MagneticButton><button onClick={() => setCartOpen(true)} className="flex items-center gap-3 group"><span>Bag</span><span className={`w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold transition-colors duration-700 ${isDarkHero ? 'bg-[#A6957A] text-[#0D0D0D]' : 'bg-[#0D0D0D] text-[#F0EBE1]'}`}>{cart.length}</span></button></MagneticButton></div>
                     </nav>
                     <main key={currentPage} className="animate-[pageFadeIn_1.5s_cubic-bezier(0.19,1,0.22,1)_forwards]">
-                        {currentPage === 'home' && <HomePage products={liveProducts} setPage={handlePageChange} onSelect={setSelectedProduct} goToCollection={goToCollection} />}
+                        {currentPage === 'home' && <HomePage products={liveProducts} collections={liveCollections} setPage={handlePageChange} onSelect={setSelectedProduct} goToCollection={goToCollection} />}
                         {currentPage === 'shop' && <InteractiveArchive products={liveProducts} setProduct={setSelectedProduct} activeCollection={activeCollection} clearCollection={() => setActiveCollection(null)} />}
 
                         {currentPage === 'about' && <ManifestoPage />}
