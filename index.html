@@ -829,7 +829,7 @@
                                                 onClick={() => onSelect(prod)}
                                                 onMouseEnter={() => setCursor('text','VIEW')}
                                                 onMouseLeave={() => setCursor('default')}
-                                                style={{flexShrink:0,width:'150px',cursor:'pointer',position:'relative'}}
+                                                style={{flexShrink:0,width:'220px',cursor:'pointer',position:'relative'}}
                                                 className="group"
                                             >
                                                 <div style={{aspectRatio:'3/4',overflow:'hidden',borderRadius:'4px',marginBottom:'8px',border:'1px solid rgba(166,149,122,0.2)',position:'relative'}}>
@@ -2600,11 +2600,13 @@
 
 
             const goToCollection = (col) => {
-                setActiveCollection(col);
+                const collectionObj = typeof col === 'string' ? liveCollections.find(c => c.categoryMatch === col) : col;
+                if (!collectionObj) return;
+                setActiveCollection(collectionObj);
                 // Write collection hash for shareable URLs
-                const colSlug = col.id || slugify(col.name);
+                const colSlug = collectionObj.id || slugify(collectionObj.name);
                 const path = `/collections/${colSlug}`;
-                window.history.pushState({ path, collectionId: col.id }, '', path);
+                window.history.pushState({ path, collectionId: collectionObj.id }, '', path);
                 handlePageChange('shop', true); // skipHistory=true since we already pushed
             };
 
