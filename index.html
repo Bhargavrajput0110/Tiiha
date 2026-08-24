@@ -871,6 +871,15 @@
                             .group:hover .new-card-hover { opacity:1 !important; }
                             .group:hover .new-card-glow { box-shadow: inset 0 0 0 1px rgba(166,149,122,0.45), 0 0 40px rgba(166,149,122,0.1) !important; }
                             .group:hover .thumb-img { transform: scale(1.07); }
+                            
+                            /* Mobile iPhone / iOS Optimization */
+                            @media (max-width: 767px) {
+                                .launch-hero-wrap { min-height: auto !important; }
+                                .launch-left { padding: 48px 24px !important; gap: 40px !important; }
+                                .launch-left h2 { font-size: 48px !important; }
+                                .launch-right { width: 100% !important; min-height: 70svh !important; }
+                                .launch-right video { min-height: 70svh !important; object-position: center top !important; }
+                            }
                             @media(min-width:768px) {
                                 .launch-hero-wrap { flex-direction: row !important; min-height: 100vh; }
                                 .launch-left { width: 45%; padding: 80px 48px; }
