@@ -1286,7 +1286,7 @@
                                     </button>
                                 )})}
                             </div>
-                            <p className="text-[9px] text-black/40 mt-1 mb-3 tracking-[0.05em] italic">For 2XL, 3XL or custom sizing, <a href="https://wa.me/919213578396" target="_blank" rel="noopener noreferrer" className="underline hover:text-black font-semibold">DM us on WhatsApp</a></p>
+                            <p className="text-[9px] text-black/40 mt-1 mb-3 tracking-[0.05em] italic">For <strong className="font-bold text-black/60">2XL, 3XL</strong> or custom sizing, <a href="https://wa.me/919213578396" target="_blank" rel="noopener noreferrer" className="underline hover:text-black font-bold">DM us on WhatsApp</a></p>
                             {!selectedSize && <p className="text-[9px] text-black/35 mb-2 tracking-[0.15em] uppercase">Please select a size to continue</p>}
                             {selectedSize && product.stock && product.stock[selectedSize] === 0 && (
                                 <p className="text-[11px] text-red-600 font-bold mb-2 uppercase">Out of stock. <a href={`https://wa.me/919213578396?text=${encodeURIComponent('Hi! I am looking for ' + product.name + ' in size ' + selectedSize + '. Can I place an order for it?')}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-red-800">DM on WhatsApp</a></p>
