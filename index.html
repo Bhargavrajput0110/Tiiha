@@ -2197,7 +2197,7 @@
             const VALID_PAGES = ['home', 'shop', 'about', 'contact', 'track', 'privacy', 'terms', 'faqs', 'shipping', 'returns'];
 
             // Parse URL path: /products/slug, /collections/slug, /shop, etc.
-            const parseUrl = (path, allProducts) => {
+            const parseUrl = (path, allProducts, allCollections) => {
                 if (!path || path === '/' || path === '/index.html') return { page: 'home', product: null };
                 const cleanPath = path.replace(/^\/+/, '');
                 const parts = cleanPath.split('/');
@@ -2208,7 +2208,7 @@
                 }
                 if (parts[0] === 'collections' && parts[1]) {
                     const slug = parts[1];
-                    const col = COLLECTIONS.find(c => slugify(c.id) === slug || slugify(c.name) === slug);
+                    const col = (allCollections || COLLECTIONS).find(c => slugify(c.id) === slug || slugify(c.name) === slug);
                     if (col) return { page: 'shop', collection: col };
                 }
                 if (VALID_PAGES.includes(parts[0])) return { page: parts[0], product: null };
@@ -2322,7 +2322,7 @@
             // Initialize from URL path on load
             useEffect(() => {
                 const path = window.location.pathname;
-                const { page, product, collection } = parseUrl(path, liveProducts);
+                const { page, product, collection } = parseUrl(path, liveProducts, liveCollections);
                 if (product) {
                     setCurrentPage(page);
                     setSelectedProductState(product);
@@ -2363,7 +2363,7 @@
                         setCurrentPage('home');
                         return;
                     }
-                    const { page, product, collection } = parseUrl(path, liveProducts);
+                    const { page, product, collection } = parseUrl(path, liveProducts, liveCollections);
                     if (product) {
                         setCurrentPage(page);
                         setSelectedProductState(product);
@@ -2379,7 +2379,7 @@
                 };
                 window.addEventListener('popstate', handlePopState);
                 return () => window.removeEventListener('popstate', handlePopState);
-            }, [liveProducts]);
+            }, [liveProducts, liveCollections]);
 
             const setSelectedProduct = (prod) => {
                 if (prod) {
@@ -2663,7 +2663,7 @@
                     </nav>
                     <main key={currentPage} className="animate-[pageFadeIn_1.5s_cubic-bezier(0.19,1,0.22,1)_forwards]">
                         {currentPage === 'home' && <HomePage products={liveProducts} collections={liveCollections} setPage={handlePageChange} onSelect={setSelectedProduct} goToCollection={goToCollection} />}
-                        {currentPage === 'shop' && <InteractiveArchive products={liveProducts} setProduct={setSelectedProduct} activeCollection={activeCollection} clearCollection={() => setActiveCollection(null)} />}
+                        {currentPage === 'shop' && <InteractiveArchive products={liveProducts} setProduct={setSelectedProduct} activeCollection={activeCollection ? liveCollections.find(c => c.id === activeCollection.id) || activeCollection : null} clearCollection={() => setActiveCollection(null)} />}
 
                         {currentPage === 'about' && <ManifestoPage />}
                         {currentPage === 'contact' && <InquiryPage />}
