@@ -2321,20 +2321,81 @@
                     .catch(() => { /* silently fall back to static PRODUCTS */ });
             }, []);
 
-            // Initialize from URL path on load
+            // Deep-link URL initialization — handles /products/:slug on first load
+            // Runs once at mount. First checks static PRODUCTS, then fetches directly from
+            // Supabase by slug if needed. This is the only reliable approach since Supabase
+            // products may load after React mounts.
+            const urlInitDoneRef = useRef(false);
             useEffect(() => {
                 const path = window.location.pathname;
-                const { page, product, collection } = parseUrl(path, liveProducts, liveCollections);
-                if (product) {
-                    setCurrentPage(page);
-                    setSelectedProductState(product);
-                } else if (collection) {
+                if (!path || path === '/' || path === '/index.html') return;
+
+                const cleanPath = path.replace(/^\/+/, '');
+                const parts = cleanPath.split('/');
+
+                // Handle /products/:slug — the key deep-link case
+                if (parts[0] === 'products' && parts[1]) {
+                    const slug = parts[1];
+
+                    // 1. Try static products first (instant, no network)
+                    const staticProd = PRODUCTS.find(p =>
+                        p.slug === slug || slugify(p.name) === slug || slugify(p.id) === slug
+                    );
+                    if (staticProd) {
+                        setCurrentPage('shop');
+                        setSelectedProductState(staticProd);
+                        urlInitDoneRef.current = true;
+                        return;
+                    }
+
+                    // 2. Product not in static list — fetch directly from Supabase by slug
+                    // This handles all DB-only products added via admin panel
+                    window.__tiihaSupabase
+                        .from('products')
+                        .select('*')
+                        .or(`slug.eq.${slug},name.ilike.${slug.replace(/-/g, ' ')}`)
+                        .limit(1)
+                        .single()
+                        .then(({ data, error }) => {
+                            if (error || !data) {
+                                // Slug not found anywhere — just stay on home
+                                console.warn('Product not found for slug:', slug);
+                                return;
+                            }
+                            // Normalize the product (same as the main products fetch)
+                            let hImg = data.hoverImage || data.image;
+                            try {
+                                const g = JSON.parse(data.gallery || '[]');
+                                if (!data.hoverImage && g.length > 0) hImg = g[0];
+                            } catch {}
+                            let normalizedSizes = data.sizes || 'S, M, L';
+                            let normalizedStock = data.stock;
+                            if (data.sizes && data.sizes.includes(':')) {
+                                const parsedStock = {};
+                                const sizeList = [];
+                                data.sizes.split(',').forEach(s => {
+                                    const p = s.split(':').map(x => x.trim());
+                                    if (p[0]) { sizeList.push(p[0]); parsedStock[p[0]] = p[1] !== undefined ? parseInt(p[1], 10) : 10; }
+                                });
+                                normalizedSizes = sizeList.join(', ');
+                                normalizedStock = parsedStock;
+                            }
+                            const prod = { ...data, hoverImage: hImg, sizes: normalizedSizes, stock: normalizedStock };
+                            setCurrentPage('shop');
+                            setSelectedProductState(prod);
+                            urlInitDoneRef.current = true;
+                        })
+                        .catch(err => console.warn('Deep-link Supabase fetch error:', err));
+                    return;
+                }
+
+                // Handle /collections/:slug and other pages
+                const { page, collection } = parseUrl(path, PRODUCTS, COLLECTIONS);
+                if (collection) {
                     setCurrentPage('shop');
                     setActiveCollection(collection);
                 } else if (page !== 'home') {
                     setCurrentPage(page);
-                } else if (path !== '/' && path !== '') {
-                    window.history.replaceState({ path: '/' }, '', '/');
                 }
             }, []);
 
@@ -2525,10 +2586,10 @@
                 // Update Canonical URL
                 let canonicalUrl = 'https://tiiha.in';
                 if (selectedProduct) {
-                    const slug = slugify(selectedProduct.name);
-                    canonicalUrl = `https://tiiha.in/#/products/${slug}`;
+                    const slug = selectedProduct.slug || slugify(selectedProduct.name);
+                    canonicalUrl = `https://tiiha.in/products/${slug}`;
                 } else if (currentPage !== 'home') {
-                    canonicalUrl = `https://tiiha.in/#/${currentPage}`;
+                    canonicalUrl = `https://tiiha.in/${currentPage}`;
                 }
                 const canonicalLink = document.querySelector('link[rel="canonical"]');
                 if (canonicalLink) {
@@ -2582,7 +2643,7 @@
                         "sku": selectedProduct.id,
                         "offers": {
                             "@type": "Offer",
-                            "url": `https://tiiha.in/#/products/${slugify(selectedProduct.name)}`,
+                            "url": `https://tiiha.in/products/${selectedProduct.slug || slugify(selectedProduct.name)}`,
                             "priceCurrency": "INR",
                             "price": selectedProduct.price,
                             "itemCondition": "https://schema.org/NewCondition",

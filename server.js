@@ -266,7 +266,7 @@ app.get('/api/track-order', async (req, res) => {
     if (!query || !order_id) return res.status(400).json({ error: 'Query and order_id parameters required' });
     
     // We use service role key so this bypasses RLS, but we validate ownership with query + order_id
-    const { data, error } = await supabase.from('ORDERS')
+    const { data, error } = await supabase.from('orders')
         .select('*')
         .eq('id', order_id.trim())
         .limit(1)
