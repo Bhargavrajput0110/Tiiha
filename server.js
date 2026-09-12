@@ -137,7 +137,7 @@ app.post('/api/orders', async (req, res) => {
       notes: req.body.notes || null
     };
 
-    const { error } = await supabase.from('orders').insert([orderData]);
+    const { error } = await supabase.from('ORDERS').insert([orderData]);
 
     if (error) {
       console.error('Order insert error:', error);
@@ -266,7 +266,7 @@ app.get('/api/track-order', async (req, res) => {
     if (!query || !order_id) return res.status(400).json({ error: 'Query and order_id parameters required' });
     
     // We use service role key so this bypasses RLS, but we validate ownership with query + order_id
-    const { data, error } = await supabase.from('orders')
+    const { data, error } = await supabase.from('ORDERS')
         .select('*')
         .eq('id', order_id.trim())
         .limit(1)
@@ -413,11 +413,17 @@ app.post('/api/send-confirmation', async (req, res) => {
       }
     });
 
+    const calculatedSubtotal = order_items.reduce((sum, item) => sum + (Number(item.price) * (item.quantity || 1)), 0);
+    const calculatedDiscount = calculatedSubtotal - Number(total_amount);
+    const invoiceNo = req.body.order_id || 'Tiiha-' + Math.floor(1000 + Math.random() * 9000);
+    const invoiceDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+
     const itemsTableHtml = order_items.map(i =>
       `<tr>
-        <td style="padding:8px;border-bottom:1px solid #eee;">${i.name}</td>
-        <td style="padding:8px;border-bottom:1px solid #eee;">${i.size || 'N/A'}</td>
-        <td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">₹${Number(i.price).toLocaleString('en-IN')}</td>
+        <td style="padding:15px;border:1px solid #c9a78e;text-align:center;font-style:italic;font-weight:bold;color:#4a2c11;">${i.name}<br/><span style="font-size:12px;font-weight:normal;">Size: ${i.size || 'N/A'}</span></td>
+        <td style="padding:15px;border:1px solid #c9a78e;text-align:center;font-style:italic;font-weight:bold;color:#4a2c11;">${i.quantity || 1} Piece</td>
+        <td style="padding:15px;border:1px solid #c9a78e;text-align:center;font-style:italic;font-weight:bold;color:#4a2c11;">₹${Number(i.price).toLocaleString('en-IN')}/-</td>
+        <td style="padding:15px;border:1px solid #c9a78e;text-align:center;font-style:italic;font-weight:bold;color:#4a2c11;">₹${Number(i.price * (i.quantity || 1)).toLocaleString('en-IN')}/-</td>
       </tr>`
     ).join('');
 
@@ -427,24 +433,72 @@ app.post('/api/send-confirmation', async (req, res) => {
       to: customer_email,
       subject: 'Order Confirmed — TIIHA ✓',
       html: `
-        <div style="font-family:sans-serif;max-width:600px;margin:auto;padding:32px;border:1px solid #eee;">
-          <h1 style="font-family:Georgia,serif;color:#A6957A;letter-spacing:0.1em;">TIIHA</h1>
-          <h2 style="color:#222;">Thank you, ${customer_name}! 🎉</h2>
-          <p style="color:#555;">Your order has been placed successfully. We'll notify you once it ships.</p>
-          <hr style="border:0;border-top:1px solid #eee;margin:20px 0;">
-          <h3 style="color:#222;">Order Summary</h3>
-          <table style="width:100%;border-collapse:collapse;">
-            <thead><tr style="background:#f9f9f9;">
-              <th style="padding:8px;text-align:left;font-size:11px;color:#999;">ITEM</th>
-              <th style="padding:8px;text-align:left;font-size:11px;color:#999;">SIZE</th>
-              <th style="padding:8px;text-align:right;font-size:11px;color:#999;">PRICE</th>
-            </tr></thead>
-            <tbody>${itemsTableHtml}</tbody>
+        <div style="font-family: 'Times New Roman', Times, serif; color: #4a2c11; background-color: #faf9f6; max-width: 800px; margin: 0 auto; padding: 40px; border: 1px solid #e3d5ca;">
+          <!-- Header -->
+          <div style="text-align: right; margin-bottom: 20px;">
+            <h1 style="margin: 0; font-size: 64px; color: #4a2c11; font-weight: bold; letter-spacing: 2px;">Tiiha</h1>
+            <p style="margin: 0; font-size: 22px; color: #4a2c11; font-style: italic;">Made with Intent</p>
+          </div>
+          
+          <!-- Invoice Title & Info -->
+          <div style="margin-bottom: 40px; position: relative;">
+            <div style="background-color: #e8dfd5; padding: 15px 40px; border-radius: 15px; display: inline-block; margin-bottom: 20px;">
+              <h2 style="margin: 0; font-size: 48px; font-style: italic; color: #4a2c11; font-weight: normal;">Invoice</h2>
+            </div>
+            <div style="text-align: right; margin-top: -60px;">
+              <p style="margin: 5px 0; font-weight: bold; font-size: 18px; letter-spacing: 1px;">Invoice No.: ${invoiceNo}</p>
+              <p style="margin: 5px 0; font-weight: bold; font-size: 18px; letter-spacing: 1px;">Invoice Date: ${invoiceDate}</p>
+            </div>
+          </div>
+
+          <!-- Bill To -->
+          <div style="margin-bottom: 30px; font-size: 18px; font-weight: bold; line-height: 1.6; letter-spacing: 1px;">
+            <p style="margin: 0 0 10px 0;">Bill To: -</p>
+            <p style="margin: 0;">Name: ${customer_name}</p>
+            <p style="margin: 0;">Phone: ${customer_phone || 'N/A'}</p>
+            <p style="margin: 0;">Email: ${customer_email}</p>
+            <p style="margin: 0;">Shipping Address: ${shipping_address}</p>
+          </div>
+
+          <!-- Table -->
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px; border: 1px solid #c9a78e; font-size: 18px;">
+            <thead>
+              <tr style="background-color: #e8dfd5;">
+                <th style="padding: 15px; border: 1px solid #c9a78e; font-style: italic; font-weight: bold; color: #4a2c11;">Product</th>
+                <th style="padding: 15px; border: 1px solid #c9a78e; font-style: italic; font-weight: bold; color: #4a2c11;">Quantity</th>
+                <th style="padding: 15px; border: 1px solid #c9a78e; font-style: italic; font-weight: bold; color: #4a2c11;">Price</th>
+                <th style="padding: 15px; border: 1px solid #c9a78e; font-style: italic; font-weight: bold; color: #4a2c11;">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${itemsTableHtml}
+            </tbody>
           </table>
-          <p style="text-align:right;font-size:18px;font-family:Georgia,serif;color:#A6957A;margin-top:12px;"><strong>Total: ₹${Number(total_amount).toLocaleString('en-IN')}</strong></p>
-          <hr style="border:0;border-top:1px solid #eee;margin:20px 0;">
-          <p style="color:#888;font-size:12px;">Estimated delivery: 5–7 business days · Free shipping across India</p>
-          <p style="color:#888;">Warm regards,<br><strong style="color:#A6957A;">TIIHA Team</strong></p>
+
+          <!-- Totals -->
+          <div style="margin-bottom: 40px; font-size: 18px; font-weight: bold; letter-spacing: 1px;">
+            <p style="margin: 5px 0;">Subtotal: - ₹${Number(calculatedSubtotal).toLocaleString('en-IN')}/-</p>
+            ${calculatedDiscount > 0 ? `<p style="margin: 5px 0;">Website Discount: - ₹${Number(calculatedDiscount).toLocaleString('en-IN')}/-</p>` : ''}
+            <p style="margin: 20px 0 5px 0; font-size: 20px;">Total - ₹${Number(total_amount).toLocaleString('en-IN')}/-</p>
+          </div>
+
+          <!-- Notes and Contact -->
+          <div style="font-size: 16px; font-weight: bold; letter-spacing: 1px; margin-bottom: 30px;">
+            <p style="margin: 5px 0;">Notes:-</p>
+            <p style="margin: 5px 0;">Thank you for choosing Tiiha.</p>
+            
+            <div style="margin-top: 30px;">
+              <p style="margin: 5px 0;">For orders & assistance:</p>
+              <p style="margin: 5px 0;">WhatsApp: +91 92135 78396 | Instagram: @tiiha.in</p>
+              <p style="margin: 5px 0;">Website: www.tiiha.in</p>
+            </div>
+          </div>
+
+          <!-- GST & Legal text -->
+          <div style="border-top: 1px solid #c9a78e; padding-top: 15px; font-size: 12px; color: #666; text-align: center;">
+            <p style="margin: 3px 0;"><strong>GSTIN:</strong> 24BWYPT0700K1Z4</p>
+            <p style="margin: 3px 0;"><strong>Legal / Terms:</strong> All disputes are subject to Vadodara jurisdiction. Returns accepted within 7 days of delivery.</p>
+          </div>
         </div>
       `
     };

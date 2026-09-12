@@ -329,7 +329,7 @@ async function fetchProducts(){
   }
 }
 async function fetchOrders(){
-  const{data,error}=await sb.from('orders').select('*').order('created_at',{ascending:false});
+  const{data,error}=await sb.from('ORDERS').select('*').order('created_at',{ascending:false});
   if(!error)orders=data||[];
 }
 async function fetchCollections(){

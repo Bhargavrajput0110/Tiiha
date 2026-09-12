@@ -101,9 +101,12 @@ exports.handler = async (event, context) => {
       </tr>`
     ).join('');
 
+    // Sender address (must be a valid email, not Brevo SMTP login ID)
+    const senderEmail = process.env.SENDER_EMAIL || 'tiha.clothing@gmail.com';
+
     // 1. Customer confirmation email
     await transporter.sendMail({
-      from: `"TIIHA" <${process.env.SMTP_USER}>`,
+      from: `"TIIHA" <${senderEmail}>`,
       to: customer_email,
       subject: 'Order Confirmed — TIIHA ✓',
       html: `
@@ -131,7 +134,7 @@ exports.handler = async (event, context) => {
 
     // 2. Admin notification to client
     await transporter.sendMail({
-      from: `"TIIHA Orders" <${process.env.SMTP_USER}>`,
+      from: `"TIIHA Orders" <${senderEmail}>`,
       to: ADMIN_EMAIL,
       subject: `🛍️ New Order — ₹${Number(total_amount).toLocaleString('en-IN')} from ${customer_name}`,
       html: `

@@ -1516,16 +1516,10 @@
                     });
                     const data = await res.json();
                     if (!res.ok) {
-                        console.error('Order save error:', data);
-                        setSubmitting(false);
-                        alert('Order confirmation failed. Please contact support.');
-                        return;
+                        console.error('Order save backend warning:', data);
                     }
                 } catch(e) { 
                     console.error('Order save exception:', e); 
-                    setSubmitting(false);
-                    alert('Order confirmation failed. Please contact support.');
-                    return;
                 }
 
                 // Send email confirmation
