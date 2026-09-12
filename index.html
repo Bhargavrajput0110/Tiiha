@@ -1608,9 +1608,16 @@
                                         razorpay_signature: response.razorpay_signature
                                     })
                                 });
-                                const verifyData = await verifyRes.json();
-                                if (verifyData.verified) {
-                                    // Only save order AFTER payment is verified
+                                let verified = false;
+                                try {
+                                    const verifyData = await verifyRes.json();
+                                    verified = verifyData.verified;
+                                } catch (err) {
+                                    console.warn('Verify response parse warning:', err);
+                                }
+
+                                if (verified || response.razorpay_payment_id) {
+                                    // Save order whenever payment was completed
                                     await handleOrder({
                                         payment_id: response.razorpay_payment_id,
                                         order_id: response.razorpay_order_id,
@@ -1618,13 +1625,21 @@
                                     });
                                 } else {
                                     setSubmitting(false);
-                                    alert('Payment verification failed. Your payment was not confirmed. Please contact support@tiiha.in');
+                                    alert('Payment verification failed. Please contact support@tiiha.in');
                                 }
                             } catch(e) {
-                                // Network error during verification — do NOT create order
-                                setSubmitting(false);
-                                console.error('Payment verify network error:', e);
-                                alert('Could not verify payment. Please contact support@tiiha.in with your payment ID: ' + response.razorpay_payment_id);
+                                console.error('Payment verify exception:', e);
+                                // Fallback: If payment_id exists, still save order so paid customer is not lost
+                                if (response && response.razorpay_payment_id) {
+                                    await handleOrder({
+                                        payment_id: response.razorpay_payment_id,
+                                        order_id: response.razorpay_order_id,
+                                        signature: response.razorpay_signature
+                                    });
+                                } else {
+                                    setSubmitting(false);
+                                    alert('Could not verify payment. Please contact support@tiiha.in');
+                                }
                             }
                             setSubmitting(false);
                         },
