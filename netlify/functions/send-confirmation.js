@@ -136,19 +136,22 @@ exports.handler = async (event, context) => {
     await transporter.sendMail({
       from: `"TIIHA Orders" <${senderEmail}>`,
       to: ADMIN_EMAIL,
-      subject: `🛍️ New Order — ₹${Number(total_amount).toLocaleString('en-IN')} from ${customer_name}`,
+      subject: `🛍️ NEW ORDER — ₹${Number(total_amount).toLocaleString('en-IN')} from ${customer_name}`,
       html: `
-        <div style="font-family:sans-serif;max-width:600px;margin:auto;padding:32px;border:2px solid #A6957A;">
-          <h2 style="color:#A6957A;">🛍️ New Order Received!</h2>
+        <div style="font-family:sans-serif;max-width:600px;margin:auto;padding:32px;border:2px solid #A6957A;background:#ffffff;">
+          <h2 style="color:#A6957A;margin-top:0;">🛍️ New Order Received!</h2>
+          <p style="color:#555;font-size:14px;">A new prepaid order has been placed on Tiiha.</p>
+
+          <div style="background:#f4f1ea;padding:16px;border-radius:8px;margin:20px 0;">
+            <h3 style="margin:0 0 10px 0;color:#A6957A;font-size:14px;text-transform:uppercase;letter-spacing:1px;">📦 Shipping Details (Copy-Paste Ready)</h3>
+            <p style="margin:4px 0;font-size:15px;color:#222;"><strong>Name:</strong> ${customer_name}</p>
+            <p style="margin:4px 0;font-size:15px;color:#222;"><strong>Phone:</strong> <a href="tel:${customer_phone}" style="color:#A6957A;">${customer_phone || 'N/A'}</a></p>
+            <p style="margin:4px 0;font-size:15px;color:#222;"><strong>Email:</strong> ${customer_email}</p>
+            <p style="margin:8px 0 0 0;font-size:15px;color:#222;line-height:1.4;"><strong>Address:</strong><br>${shipping_address || 'N/A'}</p>
+          </div>
+
+          <h3 style="color:#222;margin-top:24px;">Items Ordered:</h3>
           <table style="width:100%;border-collapse:collapse;margin-bottom:16px;">
-            <tr><td style="padding:6px;color:#999;font-size:12px;">Customer Name</td><td style="padding:6px;font-weight:bold;">${customer_name}</td></tr>
-            <tr style="background:#f9f9f9;"><td style="padding:6px;color:#999;font-size:12px;">Email</td><td style="padding:6px;">${customer_email}</td></tr>
-            <tr><td style="padding:6px;color:#999;font-size:12px;">Phone</td><td style="padding:6px;">${customer_phone || 'N/A'}</td></tr>
-            <tr style="background:#f9f9f9;"><td style="padding:6px;color:#999;font-size:12px;">Address</td><td style="padding:6px;">${shipping_address || 'N/A'}</td></tr>
-            <tr><td style="padding:6px;color:#999;font-size:12px;">Total Paid</td><td style="padding:6px;font-size:20px;font-weight:bold;color:#A6957A;">₹${Number(total_amount).toLocaleString('en-IN')}</td></tr>
-          </table>
-          <h3 style="color:#222;">Items Ordered:</h3>
-          <table style="width:100%;border-collapse:collapse;">
             <thead><tr style="background:#f9f9f9;">
               <th style="padding:8px;text-align:left;font-size:11px;color:#999;">ITEM</th>
               <th style="padding:8px;text-align:left;font-size:11px;color:#999;">SIZE</th>
@@ -156,7 +159,13 @@ exports.handler = async (event, context) => {
             </tr></thead>
             <tbody>${itemsHtml}</tbody>
           </table>
-          <p style="margin-top:20px;color:#888;font-size:12px;">Login to your admin panel to manage this order.</p>
+          
+          <div style="text-align:right;font-size:18px;color:#A6957A;margin-top:12px;">
+            <strong>Total Amount Paid: ₹${Number(total_amount).toLocaleString('en-IN')}</strong>
+          </div>
+
+          <hr style="border:0;border-top:1px solid #eee;margin:20px 0;">
+          <p style="color:#888;font-size:12px;margin-bottom:0;">View and manage this order anytime in your <a href="https://tiiha.in/admin.html" style="color:#A6957A;">Tiiha Admin Dashboard</a>.</p>
         </div>
       `
     });
