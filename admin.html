@@ -412,6 +412,7 @@ function renderProducts(){
     <td>
       <div style="display:flex;gap:8px">
         <button class="btn btn-outline" style="padding:6px 12px;font-size:11px" onclick="editProduct('${p.id}')">Edit</button>
+        <button class="btn btn-outline" style="padding:6px 12px;font-size:11px;color:#ef4444;border-color:#991b1b" onclick="markSoldOut('${p.id}')" title="Instantly mark as Sold Out">Out</button>
         <button class="btn btn-danger" style="padding:6px 12px;font-size:11px" onclick="askDelete('products','${p.id}','Remove product: ${(p.name||'').replace(/'/g,"\\'")}?')">Del</button>
       </div>
     </td>
@@ -479,6 +480,30 @@ function openProductModal(id=null){
   document.getElementById('prod-modal').classList.add('open');
 }
 function editProduct(id){openProductModal(id);}
+async function markSoldOut(id) {
+  if(!confirm('Mark this product as Sold Out (set all stock to 0)?')) return;
+  const p = products.find(x => x.id === id);
+  if(!p) return;
+  
+  const currentSizes = p.sizes ? p.sizes.split(',').map(s => s.trim()) : ['S', 'M', 'L'];
+  const newSizes = currentSizes.map(s => {
+    let name = s;
+    if (s.includes(':')) name = s.split(':')[0];
+    return name + ':0';
+  }).join(', ');
+
+  const data = { stock: 0, sizes: newSizes };
+  const r = await sb.from('products').update(data).eq('id', id);
+  if(!r.error) {
+    p.stock = 0;
+    p.sizes = newSizes;
+    toast('Product marked as Sold Out!');
+    renderProducts();
+    renderDashboard();
+  } else {
+    toast('Error: ' + r.error.message, false);
+  }
+}
 function closeProdModal(){document.getElementById('prod-modal').classList.remove('open');document.getElementById('pf-id').disabled=false;}
 
 document.getElementById('prod-form').addEventListener('submit',async e=>{

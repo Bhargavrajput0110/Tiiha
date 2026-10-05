@@ -1285,54 +1285,116 @@
                                 </div>
                             )}
 
-                            {/* Size Selection */}
-                            <div className="flex justify-between items-center mb-3">
-                                <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#0D0D0D]">Select Size</span>
-                                <button onClick={() => onSizeGuide && onSizeGuide()} className="text-[9px] tracking-[0.15em] uppercase text-[#A6957A] underline hover:text-[#0D0D0D] transition-colors">Size Guide</button>
-                            </div>
-                            <div className="flex gap-2 flex-wrap mb-3">
-                                {(product.sizes ? product.sizes.split(',').map(s=>s.trim()) : ['S','M','L']).map(size => {
-                                    const stockCount = (product.stock && typeof product.stock === 'object') ? product.stock[size] : 10;
-                                    const isOutOfStock = stockCount === 0;
+                            {/* Size Selection & CTA */}
+                            {(() => {
+                                let totalStock = 0;
+                                if (typeof product.stock === 'number') {
+                                    totalStock = product.stock;
+                                } else if (typeof product.stock === 'object' && product.stock !== null) {
+                                    totalStock = Object.values(product.stock).reduce((a, b) => a + (Number(b) || 0), 0);
+                                }
+                                
+                                if (totalStock === 0) {
                                     return (
-                                    <button key={size} onClick={() => setSelectedSize(size)}
-                                        className={`min-w-[52px] h-[52px] flex flex-col items-center justify-center text-[11px] tracking-[0.1em] uppercase font-bold border-2 transition-all duration-200 rounded relative ${
-                                            selectedSize === size
-                                                ? 'bg-[#0D0D0D] text-white border-[#0D0D0D]'
-                                                : 'bg-white text-black/60 border-black/20 hover:border-black hover:text-black'
-                                        }`}>
-                                        <span className={`${stockCount > 0 && stockCount <= 5 ? '-mt-1' : ''}`}>{size}</span>
-                                        {stockCount > 0 && stockCount <= 5 && <span className={`block text-[8px] font-normal normal-case leading-none mt-1 ${selectedSize === size ? 'text-white/70' : 'text-black/40'}`}>{stockCount} left</span>}
-                                        {isOutOfStock && <span className="absolute top-1/2 left-0 w-full h-[1px] bg-black/20 -rotate-45"></span>}
-                                    </button>
-                                )})}
-                            </div>
-                            {!['TII-01', 'TII-02', 'TII-03', 'TII-04', 'TII-05', 'TII-06'].includes(product.id) && (
-                                <p className="text-[9px] text-black/40 mt-1 mb-3 tracking-[0.05em] italic">For <strong className="font-bold text-black/60">2XL, 3XL</strong> or custom sizing, <a href="https://wa.me/919213578396" target="_blank" rel="noopener noreferrer" className="underline hover:text-black font-bold">DM us on WhatsApp</a></p>
-                            )}
-                            {!selectedSize && <p className="text-[9px] text-black/35 mb-2 tracking-[0.15em] uppercase">Please select a size to continue</p>}
-                            {selectedSize && product.stock && product.stock[selectedSize] === 0 && (
-                                <p className="text-[11px] text-red-600 font-bold mb-2 uppercase">Out of stock. <a href={`https://wa.me/919213578396?text=${encodeURIComponent('Hi! I am looking for ' + product.name + ' in size ' + selectedSize + '. Can I place an order for it?')}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-red-800">DM on WhatsApp</a></p>
-                            )}
-                            {selectedSize && product.stock && product.stock[selectedSize] <= 3 && product.stock[selectedSize] > 0 && (
-                                <p className="text-[9px] text-orange-600 font-bold mb-2 tracking-[0.15em] uppercase animate-pulse">⚡ Only {product.stock[selectedSize]} left in stock — grab it fast!</p>
-                            )}
-                            
-                            {/* CTA Buttons */}
-                            <div className="flex gap-3 mt-6 mb-4">
-                                <button onClick={() => { if(selectedSize && product.stock?.[selectedSize] !== 0){onAdd(product,selectedSize);setSelectedSize(null);}else if (!selectedSize){alert('Please select a size first.');} }}
-                                    className={`flex-1 py-4 text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold border-2 flex items-center justify-center gap-3 transition-all ${
-                                        selectedSize && product.stock?.[selectedSize] !== 0 ? 'border-[#0D0D0D] text-[#0D0D0D] hover:bg-[#0D0D0D] hover:text-white' : 'border-black/15 text-black/25 cursor-not-allowed'
-                                    }`}>
-                                    <ShoppingBag className="w-4 h-4" /> Add to Bag
-                                </button>
-                                <button onClick={() => { if(selectedSize && product.stock?.[selectedSize] !== 0){ onAdd(product,selectedSize); }else if(!selectedSize){ alert('Please select a size first.'); } }}
-                                    className={`flex-1 py-4 text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold flex items-center justify-center gap-3 transition-all ${
-                                        selectedSize && product.stock?.[selectedSize] !== 0 ? 'bg-[#A6957A] text-white hover:bg-[#0D0D0D]' : 'bg-black/8 text-black/25 cursor-not-allowed'
-                                    }`}>
-                                    Buy Now <ArrowRight className="w-4 h-4" />
-                                </button>
-                            </div>
+                                        <div className="mt-8 mb-4">
+                                            <div className="w-full py-6 bg-red-50/60 border border-red-900/10 text-center flex flex-col items-center justify-center">
+                                                <span className="text-[13px] tracking-[0.25em] md:tracking-[0.3em] uppercase font-bold text-red-700">Out of Stock</span>
+                                                <span className="text-[9px] tracking-[0.1em] uppercase text-red-600/60 mt-1.5">This item is currently unavailable</span>
+                                            </div>
+                                            <a href={`https://wa.me/919213578396?text=${encodeURIComponent('Hi! I want to know when ' + product.name + ' will be back in stock.')}`} target="_blank" rel="noopener noreferrer" className="mt-4 w-full flex items-center justify-center gap-2 py-4 text-[10px] tracking-[0.15em] uppercase font-bold border-2 border-[#0D0D0D] text-[#0D0D0D] hover:bg-[#0D0D0D] hover:text-white transition-colors">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                                                Notify Me on WhatsApp
+                                            </a>
+                                        </div>
+                                    );
+                                }
+
+                                return (
+                                    <>
+                                        <div className="flex justify-between items-center mb-3">
+                                            <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-[#0D0D0D]">Select Size</span>
+                                            <button onClick={() => onSizeGuide && onSizeGuide()} className="text-[9px] tracking-[0.15em] uppercase text-[#A6957A] underline hover:text-[#0D0D0D] transition-colors">Size Guide</button>
+                                        </div>
+                                        <div className="flex gap-2 flex-wrap mb-3">
+                                            {(product.sizes ? product.sizes.split(',').map(s=>s.trim()) : ['S','M','L']).map(rawSize => {
+                                                let size = rawSize;
+                                                let dbStock = null;
+                                                if (rawSize.includes(':')) {
+                                                    const parts = rawSize.split(':');
+                                                    size = parts[0];
+                                                    dbStock = parseInt(parts[1], 10);
+                                                }
+
+                                                let stockCount = 10;
+                                                if (dbStock !== null && !isNaN(dbStock)) {
+                                                    stockCount = dbStock;
+                                                } else if (product.stock && typeof product.stock === 'object') {
+                                                    stockCount = product.stock[size] ?? 10;
+                                                }
+
+                                                const isOutOfStock = stockCount === 0;
+                                                return (
+                                                    <button key={size} onClick={() => !isOutOfStock && setSelectedSize(size)} disabled={isOutOfStock}
+                                                        className={`min-w-[52px] h-[52px] flex flex-col items-center justify-center text-[11px] tracking-[0.1em] uppercase font-bold border-2 transition-all duration-200 rounded relative ${
+                                                            selectedSize === size
+                                                                ? 'bg-[#0D0D0D] text-white border-[#0D0D0D]'
+                                                                : isOutOfStock
+                                                                    ? 'bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed opacity-60'
+                                                                    : 'bg-white text-black/60 border-black/20 hover:border-black hover:text-black'
+                                                        }`}>
+                                                        <span className={`${stockCount > 0 && stockCount <= 5 ? '-mt-1' : ''}`}>{size}</span>
+                                                        {stockCount > 0 && stockCount <= 5 && <span className={`block text-[8px] font-normal normal-case leading-none mt-1 ${selectedSize === size ? 'text-white/70' : 'text-black/40'}`}>{stockCount} left</span>}
+                                                        {isOutOfStock && <span className="absolute top-1/2 left-0 w-full h-[1px] bg-black/30 -rotate-45"></span>}
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                        {!['TII-01', 'TII-02', 'TII-03', 'TII-04', 'TII-05', 'TII-06'].includes(product.id) && (
+                                            <p className="text-[9px] text-black/40 mt-1 mb-3 tracking-[0.05em] italic">For <strong className="font-bold text-black/60">2XL, 3XL</strong> or custom sizing, <a href="https://wa.me/919213578396" target="_blank" rel="noopener noreferrer" className="underline hover:text-black font-bold">DM us on WhatsApp</a></p>
+                                        )}
+                                        {!selectedSize && <p className="text-[9px] text-black/35 mb-2 tracking-[0.15em] uppercase">Please select a size to continue</p>}
+                                        {selectedSize && (
+                                            (() => {
+                                                let selSizeName = selectedSize;
+                                                let selDbStock = null;
+                                                const rawS = (product.sizes ? product.sizes.split(',').map(s=>s.trim()) : []).find(s => s.startsWith(selectedSize + ':'));
+                                                if (rawS) selDbStock = parseInt(rawS.split(':')[1], 10);
+                                                
+                                                let selStockCount = 10;
+                                                if (selDbStock !== null && !isNaN(selDbStock)) {
+                                                    selStockCount = selDbStock;
+                                                } else if (product.stock && typeof product.stock === 'object') {
+                                                    selStockCount = product.stock[selectedSize] ?? 10;
+                                                }
+                                                
+                                                if (selStockCount === 0) {
+                                                    return <p className="text-[11px] text-red-600 font-bold mb-2 uppercase">Out of stock. <a href={`https://wa.me/919213578396?text=${encodeURIComponent('Hi! I am looking for ' + product.name + ' in size ' + selectedSize + '. Can I place an order for it?')}`} target="_blank" rel="noopener noreferrer" className="underline hover:text-red-800">DM on WhatsApp</a></p>;
+                                                }
+                                                if (selStockCount > 0 && selStockCount <= 3) {
+                                                    return <p className="text-[9px] text-orange-600 font-bold mb-2 tracking-[0.15em] uppercase animate-pulse">⚡ Only {selStockCount} left in stock — grab it fast!</p>;
+                                                }
+                                                return null;
+                                            })()
+                                        )}
+                                        
+                                        {/* CTA Buttons */}
+                                        <div className="flex gap-3 mt-6 mb-4">
+                                            <button onClick={() => { if(selectedSize){onAdd(product,selectedSize);setSelectedSize(null);}else{alert('Please select a size first.');} }}
+                                                className={`flex-1 py-4 text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold border-2 flex items-center justify-center gap-3 transition-all ${
+                                                    selectedSize ? 'border-[#0D0D0D] text-[#0D0D0D] hover:bg-[#0D0D0D] hover:text-white' : 'border-black/15 text-black/25 cursor-not-allowed'
+                                                }`}>
+                                                <ShoppingBag className="w-4 h-4" /> Add to Bag
+                                            </button>
+                                            <button onClick={() => { if(selectedSize){ onAdd(product,selectedSize); }else{ alert('Please select a size first.'); } }}
+                                                className={`flex-1 py-4 text-[11px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold flex items-center justify-center gap-3 transition-all ${
+                                                    selectedSize ? 'bg-[#A6957A] text-white hover:bg-[#0D0D0D]' : 'bg-black/8 text-black/25 cursor-not-allowed'
+                                                }`}>
+                                                Buy Now <ArrowRight className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    </>
+                                );
+                            })()}
                             <p className="text-center text-[9px] text-black/35 tracking-[0.1em] mb-8">✓ Free delivery in 6 days &nbsp;·&nbsp; ✓ Easy 7-day returns &nbsp;·&nbsp; ✓ 100% authentic</p>
 
                             {/* Description */}
