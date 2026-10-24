@@ -1908,6 +1908,7 @@
                         body: JSON.stringify({
                             action: 'create',
                             amount: Math.round(total * 100), // paise
+                            items: cart.map(item => ({ id: item.id, quantity: item.quantity || 1, size: item.size })),
                             currency: 'INR',
                             receipt: `rcpt_${Date.now()}`
                         })

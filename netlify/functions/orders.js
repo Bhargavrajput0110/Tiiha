@@ -71,6 +71,31 @@ exports.handler = async (event, context) => {
           body: JSON.stringify({ error: 'Invalid payment signature — payment not verified' })
         };
       }
+
+      // Cross-check Razorpay API for actual captured payment amount
+      const RZP_KEY_ID = process.env.RAZORPAY_KEY_ID;
+      if (RZP_KEY_ID && RAZORPAY_KEY_SECRET && razorpay_order_id) {
+        try {
+          const auth = Buffer.from(`${RZP_KEY_ID}:${RAZORPAY_KEY_SECRET}`).toString('base64');
+          const rzpRes = await fetch(`https://api.razorpay.com/v1/orders/${razorpay_order_id}`, {
+            headers: { 'Authorization': `Basic ${auth}` }
+          });
+          if (rzpRes.ok) {
+            const rzpOrder = await rzpRes.json();
+            const paidPaise = Number(rzpOrder.amount_paid || rzpOrder.amount || 0);
+            const expectedPaise = Math.round(Number(total_amount) * 100);
+            if (paidPaise > 0 && paidPaise < expectedPaise) {
+              console.error(`Fraud attempt blocked: Paid ${paidPaise} paise but expected ${expectedPaise} paise`);
+              return {
+                statusCode: 400,
+                body: JSON.stringify({ error: 'Payment amount mismatch. Order verification failed.' })
+              };
+            }
+          }
+        } catch (fetchErr) {
+          console.warn('Razorpay order amount check warning:', fetchErr.message);
+        }
+      }
     } else if (!process.env.DISABLE_PAYMENT) {
       // No payment info provided at all
       return {
