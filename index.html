@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tiiha | Premium Women's Clothing, Festive Wear & Summer Dresses</title>
-    <meta name="description" content="Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, summer dresses, co-ord sets, and party outfits designed with intent. Free delivery across India.">
-    <meta name="keywords" content="Tiiha, premium women's clothing, festive wear, summer dresses, co-ord sets, party outfits, Indian fashion brand, luxury women clothing online, designer ethnic wear, women's slip dresses, bandhani suits, gharara sets, silk kurta sets, luxury co-ord sets, one-shoulder dresses">
+    <title>Tiiha | Premium Women's Clothing, Festive Wear & Everyday Dresses</title>
+    <meta name="description" content="Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, everyday dresses, co-ord sets, and party outfits designed with intent. Free delivery across India.">
+    <meta name="keywords" content="Tiiha, premium women's clothing, festive wear, everyday dresses, co-ord sets, party outfits, Indian fashion brand, luxury women clothing online, designer ethnic wear, women's slip dresses, bandhani suits, gharara sets, silk kurta sets, luxury co-ord sets, one-shoulder dresses">
     <link rel="canonical" href="https://tiiha.in" />
     <meta name="theme-color" content="#0D0D0D">
     <meta property="og:title" content="Tiiha | Premium Women's Clothing & Festive Wear">
-    <meta property="og:description" content="Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, summer dresses, and party outfits.">
+    <meta property="og:description" content="Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, everyday dresses, and party outfits.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://tiiha.in">
     <meta property="og:site_name" content="Tiiha">
@@ -17,7 +17,7 @@
     <meta property="og:image" content="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778870332/Tiiha_Logo_-_Ivory_BG_Black_1_jkdbmw.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Tiiha | Premium Women's Clothing & Festive Wear">
-    <meta name="twitter:description" content="Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, summer dresses, and party outfits.">
+    <meta name="twitter:description" content="Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, everyday dresses, and party outfits.">
     <meta name="twitter:image" content="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778870332/Tiiha_Logo_-_Ivory_BG_Black_1_jkdbmw.png">
     <link rel="preconnect" href="https://rswhedtgkfdbhsicllrj.supabase.co" crossorigin>
     <link rel="preconnect" href="https://res.cloudinary.com" crossorigin>
@@ -174,12 +174,235 @@
 
         // --- DATA ---
         const PRODUCTS = [
-          { id: 'TII-01', slug: 'the-cloudnine-dress', name: 'The Cloudnine Dress', category: 'SUMMER EDIT', price: 4799, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4332.JPG_ba0fau.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755490/IMG_4336.JPG_s0szc1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755486/IMG_4338.JPG_q0qxy1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755483/IMG_4337.JPG_tqgrmn.jpg"]', desc: 'The Cloudnine Dress is a premium powder blue linen corset midi dress perfect for summer brunches and daytime events. It features a structured corset bodice that softly flows into a flared midi skirt.', detail: 'Fabric: 100% Linen. Silhouette: Corset bodice, square neck, flared midi skirt. Sleeves: Sleeveless with structured shoulder straps. Colour: Powder Blue. Care: Gentle machine wash, cold water. Do not tumble dry. Iron on low heat.', sizes: 'S, M, L', stock: { S: 2, M: 2, L: 2 } },
-          { id: 'TII-02', slug: 'a-navy-affair', name: 'A Navy Affair', category: 'SUMMER EDIT', price: 2499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4299.JPG_g8dg2c.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755294/IMG_4303.JPG_p3tz3z.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4302.JPG_yvwkyw.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4300.JPG_oxjytp.jpg"]', desc: 'A Navy Affair is an elegant one-shoulder midi dress in deep navy blue, ideal for evening parties and summer wear. It features a flattering self-tie waist and a single statement puff sleeve.', detail: 'Fabric: Rayon. Silhouette: One-shoulder midi dress with self-tie waist. Sleeves: Single puff sleeve. Colour: Navy Blue. Care: Gentle machine wash, cold water. Do not wring. Iron on low heat.', sizes: 'S, M, L', stock: { S: 5, M: 4, L: 5 } },
-          { id: 'TII-03', slug: 'the-muted-sage-coord-set', name: 'The Muted Sage Co-ord Set', category: 'SUMMER EDIT', price: 2999, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6707_f31zrz.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6711_gsjvmi.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6708_eal5kc.jpg"]', desc: 'The Muted Sage Co-ord Set is a luxury two-piece satin silk outfit featuring a relaxed collared shirt and straight-leg trousers. Finished with delicate champagne-toned embroidery, it\'s a sophisticated designer co-ord set for women.', detail: 'Fabric: Satin Silk. Includes: Collared shirt + Straight-leg trousers (sold as a set). Embroidery: Delicate silver embroidery on placket and cuffs. Colour: Muted Sage Green. Care: Dry clean recommended. If hand washing, use cold water and mild detergent. SIZE & FIT: The Muted Sage Set is relaxed through the shirt and straight through the trousers. Fits true to size.', sizes: 'S, M, L', stock: { S: 3, M: 3, L: 5 } },
-          { id: 'TII-04', slug: 'satin-cinema', name: 'Satin Cinema', category: 'PARTY EDIT', price: 5499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4324.JPG_vixvg0.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754964/IMG_4327.JPG_s2s6ej.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754963/IMG_4326.JPG_vsrpw1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754960/IMG_4328.JPG_qjmnyx.jpg"]', desc: 'Satin Cinema is a stunning black floor-length modal silk slip dress paired with a dramatic 90s-inspired scarf dupatta. This elegant designer party outfit is perfect for your most memorable evenings.', detail: 'Dress Fabric: Modal Silk. Silhouette: Floor-length slip dress. Colour: Deep Black. Inspiration: 90s Bollywood. Care: Dry clean recommended.', sizes: 'S, M, L', stock: { S: 4, M: 4, L: 4 } },
-          { id: 'TII-05', slug: 'noor-gharara-set', name: 'Noor Gharara Set', category: 'FESTIVE EDIT', price: 5499, image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4314.JPG_vuivoe.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4315.JPG_ljzg65.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4316.JPG_in1xjv.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754761/IMG_4318.JPG_k4cxmu.jpg"]', desc: 'The Noor Gharara Set is a luxurious two-piece festive outfit featuring a deep violet hand-tied bandhani peplum kurta and a flared gharara. Embellished with premium gold zari borders, it\'s the ultimate designer ethnic wear.', detail: 'Fabric: Modal silk. Craft: Original hand-tied bandhani. Includes: Peplum kurta + Flared gharara (2-piece set). Embellishment: Gold zari borders. Colour: Deep Violet. Care: Dry clean recommended to preserve the bandhani and zari work.', sizes: 'S, M, L', stock: { S: 2, M: 2, L: 2 } },
-          { id: 'TII-06', slug: 'chandni-suit-set', name: 'Chandni Suit Set', category: 'FESTIVE EDIT', price: 3999, oldPrice: 5999, stockAlert: '🔥 ONLY FEW PIECES LEFT', image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg', hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg', gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6717_frho8n.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6716_w19s0m.jpg"]', desc: 'The Chandni Suit Set is an opulent 3-piece luxury ethnic outfit featuring an ivory silk straight kurta, matching palazzo pants, and a vibrant rani pink bandhani dupatta. A masterpiece of traditional Indian festive wear.', detail: 'Kurta & Palazzo Pant Fabric: Ivory Silk with woven gold detailing. Dupatta Fabric: Rani Pink Bandhani. Includes: Kurta + Straight Palazzo Pant + Bandhani Dupatta (3-piece set). Colour: Ivory with Rani Pink. Care: Dry clean recommended to preserve the silk and bandhani dupatta. SIZE & FIT: Chandni fits true to size with a relaxed, straight silhouette. For a more oversized drape, size up.', sizes: 'S, M, L', stock: { S: 5, M: 4, L: 4 } },
+          // ─── 1. NEW ARRIVALS (4 NEW PRODUCTS) ──────────────────────────
+          {
+            id: 'TII-506',
+            slug: 'teal-bloom-kaftaan',
+            name: 'Teal Bloom Kaftaan',
+            category: 'FESTIVE EDIT',
+            price: 3500,
+            oldPrice: 3899,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853250/1_s2jsyv.png',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853253/2_l3iymw.png',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853250/1_s2jsyv.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853253/2_l3iymw.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853253/3_nzlwtx.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853254/5_gqfolr.png"]',
+            desc: 'A rich teal base, delicate floral prints, and intricate lacework come together in the Teal Bloom Kaftaan. Designed in a flowing, full-length silhouette, this long kaftaan features a V-neckline with ornate lace detailing, wide sleeves finished with decorative lace trim, and a statement lace border along the hem. The multicoloured floral pattern adds a touch of softness, while the gold-toned detailing lends a festive finish. Style it with statement earrings and embellished footwear for festive gatherings, celebrations, or elegant evening occasions.',
+            detail: 'Fabric: Pure Crepe Fabric. Includes: One long kaftaan. Colour: Teal with multicoloured floral print. Neckline: V-neck with lace detailing. Sleeves: Wide sleeves with decorative lace trim. Hemline: Full-length hem with ornate lace border. Sizing: XS – 3XL. Care: Dry clean recommended to preserve fabric and embellishment work. SIZE & FIT: The Teal Bloom Kaftaan features a long, flowing silhouette for an elegant and relaxed look. For the best fit, please refer to the size chart before placing your order. For sizing assistance, our team is available on WhatsApp and email before you order.',
+            sizes: 'XS, S, M, L, XL, XXL, 3XL',
+            stock: { XS: 5, S: 5, M: 5, L: 5, XL: 5, XXL: 5, '3XL': 5 }
+          },
+          {
+            id: 'TII-507',
+            slug: 'gulnaar-lehenga-set',
+            name: 'Gulnaar Lehenga Set',
+            category: 'FESTIVE EDIT',
+            price: 5400,
+            oldPrice: 5999,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853519/1_yxgrcd.png',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853519/2_zqfun1.png',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853519/1_yxgrcd.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853519/2_zqfun1.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853519/3_ihvznk.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853521/4_tetp3j.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853520/5_un9sq0.png"]',
+            desc: 'Elegant in colour and graceful in detail, the Gulnaar Lehenga Set brings timeless elegance to festive dressing. Crafted in luxurious Pure Fendi Crush fabric, this three-piece ensemble features intricate floral embroidery, complemented by delicate cut-dana detailing along the lehenga daman. Designed for special occasions, each set is made to order for a considered and exclusive feel.',
+            detail: 'Fabric: Luxe Fendi Silk. Includes: 3-piece set — Lehenga, Blouse and Dupatta. Colour: Maroon. Work: Floral embroidery with cut-dana detailing on the lehenga daman (bottom hem). Style: Festive & Occasion Wear. Sizing: Made To Order - Whatsapp option - DM us. Care: Dry clean recommended to preserve fabric and embellishment work. SIZE & FIT: Made to order. Please confirm your preferred size and measurements when placing your order.',
+            sizes: 'XS, S, M, L, XL, XXL, 3XL',
+            stock: { XS: 3, S: 3, M: 3, L: 3, XL: 3, XXL: 3, '3XL': 3 }
+          },
+          {
+            id: 'TII-508',
+            slug: 'noir-royale-coord-set',
+            name: 'Noir Royale Co-ord Set',
+            category: 'PARTY EDIT',
+            price: 3500,
+            oldPrice: 3899,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853729/1_etdbzq.png',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853727/2_yinbbk.png',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853729/1_etdbzq.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853727/2_yinbbk.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853728/3_nogzxb.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792853729/4_aa3hmm.png"]',
+            desc: 'Elegant in black with intricate beige-gold detailing, the Noir Royale Co-ord Set brings a regal touch to contemporary ethnic wear. Crafted from Luxe Fendi Silk, this two-piece ensemble pairs a regular-length blazer-style top with wide-leg trousers, beautifully adorned with traditional motifs and statement embroidered borders. The criss-cross back dori adds a distinctive design element while allowing an adjustable fit at the waist. A graceful blend of modern tailoring and traditional artistry, this set is perfect for festive gatherings and special occasions.',
+            detail: 'Fabric: Luxe Fendi Silk. Includes: 2-piece set — Blazer-Style Top and Palazzo Trousers. Colour: Black with gold detailing. Neckline: Collar-style neckline. Sleeves: Full-length bell sleeves with intricate embroidered detailing. Back Detail: Criss-cross adjustable dori for a more defined waist fit. Work & Detailing: Scattered motifs with intricate floral and elephant-inspired embroidery along the top hem, sleeve edges and trouser hems. Fit: Regular-length blazer-style top paired with flowy palazzo trousers. Sizes Available: XS to 3XL. Care: Dry clean recommended to preserve fabric and embellishment work. SIZE & FIT: The Noir Royale Co-ord Set features a regular-length blazer-style top with a criss-cross adjustable back dori and flowy palazzo trousers. For the best fit, please refer to the size chart before ordering. For any sizing assistance, reach us on WhatsApp or email before placing your order.',
+            sizes: 'XS, S, M, L, XL, XXL, 3XL',
+            stock: { XS: 4, S: 4, M: 4, L: 4, XL: 4, XXL: 4, '3XL': 4 }
+          },
+          {
+            id: 'TII-509',
+            slug: 'mauve-mehfil-suit-set',
+            name: 'Mauve Mehfil Suit Set',
+            category: 'FESTIVE EDIT',
+            price: 3000,
+            oldPrice: 3299,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792854131/1_is2pev.png',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792854132/2_yajiam.png',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792854131/1_is2pev.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792854132/2_yajiam.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792854134/3_e0qjg7.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792854134/4_w3a6kh.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1792854133/5_fv0wq7.png"]',
+            desc: 'Graceful and timeless, the Mauve Mehfil Suit Set brings together contemporary elegance and traditional craftsmanship. Crafted from Luxe Fendi Silk, this three-piece ensemble features a peplum-style short kurta paired with a voluminous flared palazzo and a beautifully embroidered dupatta. Delicate floral detailing adds a refined finish, making it an elegant choice for festive celebrations, wedding functions and special occasions.',
+            detail: 'Fabric: Luxe Fendi Silk. Set Includes: 3-piece set — Short Kurta, Flared Palazzo and Dupatta. Colour: Mauve Lilac. Top Style: Short peplum-style kurta with a square neckline. Bottom Style: Wide-flare palazzo. Work & Detailing: Intricate floral embroidery on the kurta and dupatta, with an ornate embroidered border on the dupatta. Occasion: Festive wear, wedding functions and celebrations. Sizes Available: XS to 3XL. Care: Dry clean recommended to preserve fabric and embellishment work. SIZE & FIT: The Mauve Mehfil Suit Set features a short, peplum-style kurta paired with a voluminous flared palazzo for a graceful and elegant silhouette. For the best fit, please refer to the size chart before placing your order. For sizing assistance, our team is available on WhatsApp and email to help you before you order.',
+            sizes: 'XS, S, M, L, XL, XXL, 3XL',
+            stock: { XS: 4, S: 4, M: 4, L: 4, XL: 4, XXL: 4, '3XL': 4 }
+          },
+
+          // ─── 2. REST OF OUTFITS (IN SEQUENCE SPECIFIED BY USER) ─────────
+          {
+            id: 'TII-502',
+            slug: 'mustard-glow-suit-set',
+            name: 'Mustard Glow Suit Set',
+            category: 'FESTIVE EDIT',
+            price: 2250,
+            oldPrice: 2799,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581880/Mustard_Glow_Suit_Set_jr2e5o.png',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581880/Mustard_Glow_Suit_Set_jr2e5o.png',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581880/Mustard_Glow_Suit_Set_jr2e5o.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581879/Mustard_Glow_Suit_Set_1_mv2ezk.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581878/Mustard_Glow_Suit_Set_2_aee17n.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581878/Mustard_Glow_Suit_Set_3_sgpfv3.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581877/Mustard_Glow_Suit_Set_4_fntcpo.png"]',
+            desc: 'Mustard is a colour that knows what it is. The Mustard Glow Suit Set wears that certainty well, a strappy Salsa crush kurta adorned with intricate zari thread work that shimmer with every movement. This radiant kurta is paired with a wide-leg palazzo and a matching dupatta.',
+            detail: 'Fabric: Salsa Crush. Includes: Strappy Kurta + Wide-leg Palazzo + Dupatta (3-piece set). Embellishment: Zari thread work with cutdana and sequin detailing. Colour: Mustard Yellow. Care: Dry clean recommended. Sizing: XS – XL (True to size).',
+            sizes: 'XS, S, M, L, XL',
+            stock: { XS: 1, S: 1, M: 1, L: 1, XL: 1 }
+          },
+          {
+            id: 'TII-05',
+            slug: 'noor-gharara-set',
+            name: 'Noor Gharara Set',
+            category: 'FESTIVE EDIT',
+            price: 3500,
+            oldPrice: 4599,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4314.JPG_vuivoe.jpg',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4317.JPG_mebhgl.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4315.JPG_ljzg65.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754763/IMG_4316.JPG_in1xjv.jpg", "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754761/IMG_4318.JPG_k4cxmu.jpg"]',
+            desc: 'The Noor Gharara Set is a luxurious two-piece festive outfit featuring a deep violet hand-tied bandhani peplum kurta and a flared gharara. Embellished with premium gold zari borders, it\'s the ultimate designer ethnic wear.',
+            detail: 'Fabric: Modal silk. Craft: Original hand-tied bandhani. Includes: Peplum kurta + Flared gharara (2-piece set). Embellishment: Gold zari borders. Colour: Deep Violet. Care: Dry clean recommended to preserve the bandhani and zari work.',
+            sizes: 'S, M, L',
+            stock: { S: 2, M: 2, L: 2 }
+          },
+          {
+            id: 'TII-06',
+            slug: 'chandni-suit-set',
+            name: 'Chandni Suit Set',
+            category: 'FESTIVE EDIT',
+            price: 3500,
+            oldPrice: 5999,
+            stockAlert: '🔥 ONLY FEW PIECES LEFT',
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6712_lj3skh.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6718_cnzo53.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694711/IMG_6717_frho8n.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694712/IMG_6716_w19s0m.jpg"]',
+            desc: 'The Chandni Suit Set is an opulent 3-piece luxury ethnic outfit featuring an ivory silk straight kurta, matching palazzo pants, and a vibrant rani pink bandhani dupatta. A masterpiece of traditional Indian festive wear.',
+            detail: 'Kurta & Palazzo Pant Fabric: Ivory Silk with woven gold detailing. Dupatta Fabric: Rani Pink Bandhani. Includes: Kurta + Straight Palazzo Pant + Bandhani Dupatta (3-piece set). Colour: Ivory with Rani Pink. Care: Dry clean recommended to preserve the silk and bandhani dupatta. SIZE & FIT: Chandni fits true to size with a relaxed, straight silhouette. For a more oversized drape, size up.',
+            sizes: 'S, M, L',
+            stock: { S: 3, M: 3, L: 3 }
+          },
+          {
+            id: 'TII-501',
+            slug: 'lilac-haze-suit-set',
+            name: 'Lilac Haze Suit Set',
+            category: 'FESTIVE EDIT',
+            price: 2250,
+            oldPrice: 2799,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581863/Lilac_Haze_Suit_Set_jeigrf.png',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581863/Lilac_Haze_Suit_Set_jeigrf.png',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581863/Lilac_Haze_Suit_Set_jeigrf.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1788086474/IMG_5243_skosnw.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581862/Lilac_Haze_Suit_Set_2_heeh4c.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581862/Lilac_Haze_Suit_Set_3_jnayiw.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581861/Lilac_Haze_Suit_Set_4_hxvz27.png"]',
+            desc: 'There is something about lilac that belongs to festive evenings, soft enough to feel effortless, rich enough to be remembered. The Lilac Haze Suit Set is exactly that. A Fendi crush kurta covered in intricate zari detailing that catches the light at every turn, paired with a straight palazzo and a matching dupatta that completes the look with quiet grace.',
+            detail: 'Fabric: Fendi Crush. Includes: Kurta + Straight Palazzo + Dupatta (3-piece set). Embellishment: Zari thread work with cutdana and sequin detailing. Colour: Lilac. Care: Dry clean recommended. Sizing: XS – XL (True to size).',
+            sizes: 'XS, S, M, L, XL',
+            stock: { XS: 5, S: 5, M: 5, L: 5, XL: 5 }
+          },
+          {
+            id: 'TII-503',
+            slug: 'neel-farshi-set',
+            name: 'Neel Farshi Set',
+            category: 'FESTIVE EDIT',
+            price: 1500,
+            oldPrice: 1999,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581944/Neel_Farshi_Set_zpgtnk.png',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581944/Neel_Farshi_Set_zpgtnk.png',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581944/Neel_Farshi_Set_zpgtnk.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581943/Neel_Farshi_Set_1_hacidy.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581942/Neel_Farshi_Set_2_ql2mu1.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581942/Neel_Farshi_Set_3_fzuwbq.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581941/Neel_Farshi_Set_4_rzfhbm.png"]',
+            desc: 'Block print is one of India\'s oldest and most honest crafts, each motif placed with intention. The Navy Print Farshi Set carries that craft forward in a deep navy cotton kurta and farshi salwar, covered in a fine block print that moves quietly across every inch.',
+            detail: 'Fabric: Cotton. Includes: Kurta + Farshi Salwar (2-piece set). Print: Block print. Colour: Navy Blue. Care: Gentle machine wash, cold water. Sizing: XS – XL (Relaxed silhouette).',
+            sizes: 'XS, S, M, L, XL',
+            stock: { XS: 5, S: 5, M: 5, L: 5, XL: 5 }
+          },
+          {
+            id: 'TII-505',
+            slug: 'the-quiet-luxury-coord-set',
+            name: 'The Quiet Luxury Co-ord Set',
+            category: 'PARTY EDIT',
+            price: 1500,
+            oldPrice: 1999,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581379/The_Quiet_Luxury_Co-ord_Set_uzlbgq.png',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581379/The_Quiet_Luxury_Co-ord_Set_uzlbgq.png',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581379/The_Quiet_Luxury_Co-ord_Set_uzlbgq.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581379/The_Quiet_Luxury_Co-ord_Set_1_zv8tcq.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581379/The_Quiet_Luxury_Co-ord_Set_2_z7bclf.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1788087273/IMG_5246_e10arn.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787581379/The_Quiet_Luxury_Co-ord_Set_3_cbe1hk.png"]',
+            desc: 'A sleeveless, round-neck top with delicate lace trim at the neckline, paired with a skirt that falls in one clean line. In black with a soft satin sheen, this co-ord does what the best basics always do. Wear it to the office with block heels and a structured bag. Wear it to dinner with simple and dainty gold jewellery.',
+            detail: 'Fabric: Modal Silk. Includes: Sleeveless top + Skirt (2-piece set). Embellishment: Delicate lace trim. Colour: Black. Care: Dry clean recommended. Sizing: XS – XL (True to size).',
+            sizes: 'XS, S, M, L, XL',
+            stock: { XS: 5, S: 5, M: 5, L: 5, XL: 5 }
+          },
+          {
+            id: 'TII-04',
+            slug: 'satin-cinema',
+            name: 'Satin Cinema',
+            category: 'PARTY EDIT',
+            price: 2100,
+            oldPrice: 2999,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4324.JPG_vixvg0.jpg',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4325.JPG_ur2ooy.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754964/IMG_4327.JPG_s2s6ej.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754963/IMG_4326.JPG_vsrpw1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778754960/IMG_4328.JPG_qjmnyx.jpg"]',
+            desc: 'Satin Cinema is a stunning black floor-length modal silk slip dress paired with a dramatic 90s-inspired scarf dupatta. This elegant designer party outfit is perfect for your most memorable evenings.',
+            detail: 'Dress Fabric: Modal Silk. Silhouette: Floor-length slip dress. Colour: Deep Black. Inspiration: 90s Bollywood. Care: Dry clean recommended.',
+            sizes: 'S, M, L',
+            stock: { S: 4, M: 4, L: 4 }
+          },
+          {
+            id: 'TII-01',
+            slug: 'the-cloudnine-dress',
+            name: 'The Cloudnine Dress',
+            category: 'EVERYDAY EDIT',
+            price: 2500,
+            oldPrice: 4999,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4332.JPG_ba0fau.jpg',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755490/IMG_4336.JPG_s0szc1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755486/IMG_4338.JPG_q0qxy1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755483/IMG_4337.JPG_tqgrmn.jpg"]',
+            desc: 'The Cloudnine Dress is a premium powder blue linen corset midi dress perfect for summer brunches and daytime events. It features a structured corset bodice that softly flows into a flared midi skirt.',
+            detail: 'Fabric: 100% Linen. Silhouette: Corset bodice, square neck, flared midi skirt. Sleeves: Sleeveless with structured shoulder straps. Colour: Powder Blue. Care: Gentle machine wash, cold water. Do not tumble dry. Iron on low heat.',
+            sizes: 'S, M, L',
+            stock: { S: 2, M: 2, L: 2 }
+          },
+          {
+            id: 'TII-02',
+            slug: 'a-navy-affair',
+            name: 'A Navy Affair',
+            category: 'EVERYDAY EDIT',
+            price: 1500,
+            oldPrice: 2799,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4299.JPG_g8dg2c.jpg',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4301.JPG_ojvsel.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755294/IMG_4303.JPG_p3tz3z.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4302.JPG_yvwkyw.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778755291/IMG_4300.JPG_oxjytp.jpg"]',
+            desc: 'A Navy Affair is an elegant one-shoulder midi dress in deep navy blue, ideal for evening parties and summer wear. It features a flattering self-tie waist and a single statement puff sleeve.',
+            detail: 'Fabric: Rayon. Silhouette: One-shoulder midi dress with self-tie waist. Sleeves: Single puff sleeve. Colour: Navy Blue. Care: Gentle machine wash, cold water. Do not wring. Iron on low heat.',
+            sizes: 'S, M, L',
+            stock: { S: 5, M: 4, L: 5 }
+          },
+          {
+            id: 'TII-03',
+            slug: 'the-muted-sage-coord-set',
+            name: 'The Muted Sage Co-ord Set',
+            category: 'EVERYDAY EDIT',
+            price: 1999,
+            oldPrice: 2999,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694923/IMG_6706_pwwawx.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694926/IMG_6704_nejgv1.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6707_f31zrz.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6711_gsjvmi.jpg","https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1779694921/IMG_6708_eal5kc.jpg"]',
+            desc: 'The Muted Sage Co-ord Set is a luxury two-piece satin silk outfit featuring a relaxed collared shirt and straight-leg trousers. Finished with delicate champagne-toned embroidery, it\'s a sophisticated designer co-ord set for women.',
+            detail: 'Fabric: Satin Silk. Includes: Collared shirt + Straight-leg trousers (sold as a set). Embroidery: Delicate silver embroidery on placket and cuffs. Colour: Muted Sage Green. Care: Dry clean recommended. If hand washing, use cold water and mild detergent. SIZE & FIT: The Muted Sage Set is relaxed through the shirt and straight through the trousers. Fits true to size.',
+            sizes: 'S, M, L',
+            stock: { S: 3, M: 3, L: 5 }
+          },
+          {
+            id: 'TII-504',
+            slug: 'crimson-grace-kaftaan-set',
+            name: 'Crimson Grace Kaftaan Set',
+            category: 'FESTIVE EDIT',
+            price: 2499,
+            oldPrice: 2499,
+            image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787582044/Crimson_Grace_Kaftan_Set_erurkt.png',
+            hoverImage: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787582044/Crimson_Grace_Kaftan_Set_erurkt.png',
+            gallery: '["https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787582044/Crimson_Grace_Kaftan_Set_erurkt.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787582044/Crimson_Grace_Kaftan_Set_1_wnhgep.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787582041/Crimson_Grace_Kaftan_Set_4_sdvoyk.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787582042/Crimson_Grace_Kaftan_Set_3_zq1ges.png","https://res.cloudinary.com/dlxiy6aiq/image/upload/v1787582328/Crimson_Grace_Kaftan_Set_5_x9qefg.png"]',
+            desc: 'The crimson red carries that grace in every way, a mul chanderi silk kaftan with deliberate golden lace trim at the neckline and cuffs is the only embellishment this piece needs. Paired with a wide-leg palazzo, this is the set for the festive evening where you walk in and the room simply knows.',
+            detail: 'Fabric: Mul Chanderi Silk. Includes: Kaftan + Wide-leg Palazzo (2-piece set). Embellishment: Gold lace trim at neckline and cuffs. Colour: Crimson Red. Care: Dry clean recommended. Sizing: XS – XL (Relaxed fluid).',
+            sizes: 'S:0, M:0, L:0, XL:0',
+            stock: 0
+          }
         ];
 
 
@@ -206,12 +429,12 @@
             categoryMatch: 'FESTIVE EDIT'
           },
           {
-            id: 'summer-edit',
-            name: 'The Summer Edit',
-            subtitle: 'Light as the season itself',
-            desc: 'Breathable fabrics and effortless prints, made for sun-soaked days and every golden hour that follows.',
+            id: 'everyday-edit',
+            name: 'The Everyday Edit',
+            subtitle: 'Effortless for every day',
+            desc: 'Breathable fabrics and relaxed silhouettes designed for your daily rhythm and quiet luxury.',
             image: 'https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg',
-            categoryMatch: 'SUMMER EDIT'
+            categoryMatch: 'EVERYDAY EDIT'
           },
           {
             id: 'party-edit',
@@ -226,7 +449,13 @@
         const buildCollections = (productList) => COLLECTIONS_META.map(col => ({
           ...col,
           productIds: productList
-            .filter(p => (p.category || '').toUpperCase() === col.categoryMatch)
+            .filter(p => {
+              const cat = (p.category || '').toUpperCase();
+              if (col.categoryMatch === 'EVERYDAY EDIT') {
+                return cat === 'EVERYDAY EDIT' || cat === 'SUMMER EDIT';
+              }
+              return cat === col.categoryMatch;
+            })
             .map(p => p.id)
         }));
         const COLLECTIONS = buildCollections(PRODUCTS);
@@ -350,9 +579,8 @@
         // --- ANNOUNCEMENT BANNER ---
         const AnnouncementBanner = ({ onDismiss }) => {
             const msgs = [
-                '🎉 NEW SUMMER EDIT NOW LIVE — Shop the latest drops',
+                '🎉 NEW EVERYDAY EDIT NOW LIVE — Shop the latest drops',
                 '🚚 FREE DELIVERY across all of India on every order',
-                '✨ New customer? Use code WELCOME10 for 10% off your first order',
                 '🔄 Easy 7-day returns — No questions asked',
             ];
             const [idx, setIdx] = useState(0);
@@ -606,7 +834,7 @@
             );
         };
 
-        const CATEGORIES = ['ALL', 'SUMMER EDIT', 'PARTY EDIT', 'FESTIVE EDIT'];
+        const CATEGORIES = ['ALL', 'FESTIVE EDIT', 'PARTY EDIT', 'EVERYDAY EDIT'];
 
         const InteractiveArchive = ({ products: propProducts, setProduct, activeCollection, clearCollection }) => {
           const [activeFilter, setActiveFilter] = useState('ALL');
@@ -632,7 +860,12 @@
             ? archiveProducts.filter(p => activeCollection.productIds.includes(p.id))
             : activeFilter === 'ALL'
               ? archiveProducts
-              : archiveProducts.filter(p => p.cat === activeFilter);
+              : archiveProducts.filter(p => {
+                  if (activeFilter === 'EVERYDAY EDIT') {
+                    return p.cat === 'EVERYDAY EDIT' || p.cat === 'SUMMER EDIT';
+                  }
+                  return p.cat === activeFilter;
+                });
 
 
           return (
@@ -695,10 +928,22 @@
                           >
                             {isWishlisted(product.id) ? <HeartFilled className="w-4 h-4 text-[#A6957A]" /> : <Heart className="w-4 h-4 text-black/40" />}
                           </button>
-                          {/* Index badge */}
-                          <span className="absolute top-4 left-4 text-[9px] font-mono text-white/60 bg-black/30 px-2 py-1 backdrop-blur-sm">
-                            {String(i + 1).padStart(2, '0')}
-                          </span>
+                          {(() => {
+                            let isOut = false;
+                            const s = product._product.stock;
+                            if (s === 0) isOut = true;
+                            else if (typeof s === 'object' && s !== null) {
+                              isOut = Object.values(s).reduce((a, b) => a + (Number(b) || 0), 0) === 0;
+                            }
+                            if (isOut) {
+                              return (
+                                <span className="absolute bottom-4 left-4 text-[8px] tracking-[0.2em] uppercase font-bold text-white bg-red-900/90 px-2.5 py-1 backdrop-blur-sm">
+                                  Sold Out
+                                </span>
+                              );
+                            }
+                            return null;
+                          })()}
                         </div>
                         {/* Info */}
                         <div className="flex justify-between items-start px-1">
@@ -706,7 +951,12 @@
                             <h3 className="font-serif text-base md:text-lg tracking-tight mb-1 group-hover:italic transition-all duration-500 truncate">{product._product.name}</h3>
                             <p className="text-[9px] tracking-[0.15em] md:tracking-[0.3em] uppercase text-black/40 font-bold">{product.cat}</p>
                           </div>
-                          <span className="font-serif text-lg italic text-[#A6957A] shrink-0">₹{product.price.toLocaleString('en-IN')}</span>
+                          <div className="text-right shrink-0">
+                            <span className="font-serif text-lg italic text-[#A6957A] block">₹{product.price.toLocaleString('en-IN')}</span>
+                            {product._product.oldPrice && product._product.oldPrice > product.price && (
+                              <span className="font-serif text-xs text-black/40 line-through block -mt-1">₹{product._product.oldPrice.toLocaleString('en-IN')}</span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </Reveal>
@@ -819,12 +1069,12 @@
                                     </Reveal>
                                 </div>
 
-                                {/* Bottom: 5 product thumbnails in a row */}
+                                {/* Bottom: 4 product thumbnails in a row */}
                                 <div style={{marginTop:'48px'}}>
                                     <span style={{fontSize:'8px',letterSpacing:'0.4em',textTransform:'uppercase',color:'rgba(166,149,122,0.6)',fontWeight:700,display:'block',marginBottom:'16px'}}>Just Dropped</span>
                                     <div style={{display:'flex',gap:'10px',overflowX:'auto'}} className="no-scrollbar launch-thumbs">
                                         {(() => {
-                                            const ids = ['TII-504','TII-502','TII-501','TII-503','TII-505'];
+                                            const ids = ['TII-506','TII-507','TII-508','TII-509'];
                                             const all = propProducts || PRODUCTS;
                                             return ids.map(id => all.find(p => p.id === id)).filter(Boolean);
                                         })().map((prod, i) => (
@@ -841,7 +1091,12 @@
                                                     <div style={{position:'absolute',top:4,left:4,background:'#A6957A',color:'#0D0D0D',fontSize:'6px',fontWeight:900,letterSpacing:'0.15em',padding:'2px 6px'}}>NEW</div>
                                                 </div>
                                                 <p style={{fontSize:'8px',color:'rgba(240,235,225,0.6)',letterSpacing:'0.05em',margin:0,lineHeight:1.3}}>{prod.name}</p>
-                                                <p style={{fontSize:'9px',color:'#A6957A',fontFamily:'DM Serif Display, serif',fontStyle:'italic',margin:'2px 0 0'}}>₹{prod.price.toLocaleString('en-IN')}</p>
+                                                <div style={{display:'flex',alignItems:'baseline',gap:'6px',margin:'2px 0 0'}}>
+                                                    <p style={{fontSize:'9px',color:'#A6957A',fontFamily:'DM Serif Display, serif',fontStyle:'italic',margin:0}}>₹{prod.price.toLocaleString('en-IN')}</p>
+                                                    {prod.oldPrice && prod.oldPrice > prod.price && (
+                                                        <span style={{fontSize:'8px',color:'rgba(240,235,225,0.4)',textDecoration:'line-through',fontFamily:'DM Serif Display, serif'}}>₹{prod.oldPrice.toLocaleString('en-IN')}</span>
+                                                    )}
+                                                </div>
                                             </div>
                                         ))}
                                     </div>
@@ -963,12 +1218,12 @@
                                 <RevealText><h2 className="font-serif text-3xl md:text-5xl tracking-[-0.02em]">New Arrivals</h2></RevealText>
                                 <button onClick={() => { window.scrollTo(0,0); setPage('shop'); }} className="text-[10px] tracking-[0.15em] md:tracking-[0.3em] uppercase font-bold border-b border-black pb-2">View All</button>
                             </div>
-                            {/* Mobile: horizontal scroll | Desktop: 3-column grid */}
-                            <div className="flex md:grid md:grid-cols-3 gap-5 md:gap-16 items-start overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar px-6 md:px-16 pb-4 md:pb-0">
-                                {(() => { const newArrivalIds = ['TII-504', 'TII-502', 'TII-501']; const all = propProducts || PRODUCTS; return newArrivalIds.map(id => all.find(p => p.id === id)).filter(Boolean); })().map((prod, index) => {
+                            {/* Mobile: horizontal scroll | Desktop: 4-column grid */}
+                            <div className="flex md:grid md:grid-cols-4 gap-5 md:gap-10 items-start overflow-x-auto md:overflow-visible snap-x snap-mandatory no-scrollbar px-6 md:px-16 pb-4 md:pb-0">
+                                {(() => { const newArrivalIds = ['TII-506', 'TII-507', 'TII-508', 'TII-509']; const all = propProducts || PRODUCTS; return newArrivalIds.map(id => all.find(p => p.id === id)).filter(Boolean); })().map((prod, index) => {
                                     return (
                                         <div key={prod.id} className="flex-shrink-0 w-[72vw] md:w-auto snap-center">
-                                        <Reveal delay={index * 200} className="">
+                                        <Reveal delay={index * 150} className="">
                                             <div className="group cursor-pointer md:cursor-none flex flex-col h-full" onClick={() => onSelect(prod)} onMouseEnter={() => setCursor('text', 'VIEW')} onMouseLeave={() => setCursor('default')}>
                                              <div className="aspect-[3/4] bg-neutral-200 w-full overflow-hidden relative mb-4 md:mb-10 shadow-xl border border-black/5">
                                                     <img src={prod.image} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700 group-hover:opacity-0" alt={prod.name} />
@@ -979,8 +1234,13 @@
                                                     </button>
                                                 </div>
                                                 <div className="flex justify-between items-start">
-                                                    <div><h3 className="font-serif text-lg md:text-2xl mb-1 md:mb-3 group-hover:italic transition-all duration-700 tracking-tight leading-tight">{prod.name}</h3><p className="text-[9px] tracking-[0.2em] md:tracking-[0.4em] uppercase text-black/40 font-bold">{prod.category}</p></div>
-                                                    <span className="font-serif text-base md:text-xl italic text-[#A6957A] whitespace-nowrap ml-2">₹{prod.price.toLocaleString('en-IN')}</span>
+                                                    <div><h3 className="font-serif text-lg md:text-xl mb-1 md:mb-2 group-hover:italic transition-all duration-700 tracking-tight leading-tight">{prod.name}</h3><p className="text-[9px] tracking-[0.2em] md:tracking-[0.3em] uppercase text-black/40 font-bold">{prod.category}</p></div>
+                                                    <div className="text-right ml-2 whitespace-nowrap">
+                                                        <span className="font-serif text-base md:text-xl italic text-[#A6957A]">₹{prod.price.toLocaleString('en-IN')}</span>
+                                                        {prod.oldPrice && prod.oldPrice > prod.price && (
+                                                            <span className="block text-[10px] md:text-[11px] text-black/40 line-through font-serif">₹{prod.oldPrice.toLocaleString('en-IN')}</span>
+                                                        )}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </Reveal>
@@ -1272,9 +1532,9 @@
                                 {product.oldPrice && (
                                     <p className="font-serif text-xl text-[#0D0D0D]/40 line-through">₹{product.oldPrice.toLocaleString('en-IN')}</p>
                                 )}
-                                {product.oldPrice && (
+                                {product.oldPrice && product.oldPrice > product.price && (
                                     <span className="text-[9px] tracking-[0.12em] font-bold bg-[#A6957A] text-white px-2 py-0.5">
-                                        35% OFF
+                                        {Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}% OFF
                                     </span>
                                 )}
                                 <span className="text-[10px] tracking-[0.1em] text-green-600 font-bold">FREE Delivery in 6 Days</span>
@@ -1335,21 +1595,20 @@
                                                 const isOutOfStock = stockCount === 0;
                                                 return (
                                                     <button key={size} onClick={() => !isOutOfStock && setSelectedSize(size)} disabled={isOutOfStock}
-                                                        className={`min-w-[52px] h-[52px] flex flex-col items-center justify-center text-[11px] tracking-[0.1em] uppercase font-bold border-2 transition-all duration-200 rounded relative ${
+                                                        className={`min-w-[52px] h-[52px] px-3 flex items-center justify-center text-[11px] tracking-[0.1em] uppercase font-bold border-2 transition-all duration-200 rounded relative ${
                                                             selectedSize === size
                                                                 ? 'bg-[#0D0D0D] text-white border-[#0D0D0D]'
                                                                 : isOutOfStock
                                                                     ? 'bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed opacity-60'
                                                                     : 'bg-white text-black/60 border-black/20 hover:border-black hover:text-black'
                                                         }`}>
-                                                        <span className={`${stockCount > 0 && stockCount <= 5 ? '-mt-1' : ''}`}>{size}</span>
-                                                        {stockCount > 0 && stockCount <= 5 && <span className={`block text-[8px] font-normal normal-case leading-none mt-1 ${selectedSize === size ? 'text-white/70' : 'text-black/40'}`}>{stockCount} left</span>}
+                                                        <span>{size}</span>
                                                         {isOutOfStock && <span className="absolute top-1/2 left-0 w-full h-[1px] bg-black/30 -rotate-45"></span>}
                                                     </button>
                                                 )
                                             })}
                                         </div>
-                                        {!['TII-01', 'TII-02', 'TII-03', 'TII-04', 'TII-05', 'TII-06'].includes(product.id) && (
+                                        {!['TII-01', 'TII-02', 'TII-03', 'TII-04', 'TII-05', 'TII-06', 'TII-506', 'TII-507', 'TII-508', 'TII-509'].includes(product.id) && !product.sizes?.includes('3XL') && (
                                             <p className="text-[9px] text-black/40 mt-1 mb-3 tracking-[0.05em] italic">For <strong className="font-bold text-black/60">2XL, 3XL</strong> or custom sizing, <a href="https://wa.me/919213578396" target="_blank" rel="noopener noreferrer" className="underline hover:text-black font-bold">DM us on WhatsApp</a></p>
                                         )}
                                         {!selectedSize && <p className="text-[9px] text-black/35 mb-2 tracking-[0.15em] uppercase">Please select a size to continue</p>}
@@ -1793,13 +2052,11 @@
                                 </div>
                                 {cart.length > 0 && (
                                     <div className="p-8 border-t border-black/5 bg-white/60 backdrop-blur-md">
-                                        {!couponMsg && <p className="text-[10px] tracking-[0.1em] text-[#A6957A] font-bold mb-3">💡 New here? Try code <span className="underline cursor-pointer" onClick={() => setCouponCode('WELCOME10')}>WELCOME10</span> for 10% off</p>}
                                         <div className="mb-5 flex gap-2">
                                             <input type="text" value={couponCode} onChange={e=>setCouponCode(e.target.value)} placeholder="Enter coupon code" className="w-full bg-white border border-black/20 px-4 py-3 text-[10px] tracking-[0.15em] uppercase focus:outline-none focus:border-[#A6957A] placeholder-black/30" />
                                             <button onClick={() => {
                                                 const code = couponCode.toUpperCase().trim();
-                                                if(code==='WELCOME10'){setDiscount(0.1);setCouponMsg('✓ 10% off applied!');}
-                                                else if(code==='TIIHA20'){setDiscount(0.2);setCouponMsg('✓ 20% off applied!');}
+                                                if(code==='TIIHA20'){setDiscount(0.2);setCouponMsg('✓ 20% off applied!');}
                                                 else if(code==='H@RI15'){setDiscount(0.15);setCouponMsg('✓ Exclusive 15% off applied!');}
                                                 else{setDiscount(0);setCouponMsg('Invalid code.');}
                                             }} className="px-8 bg-[#0D0D0D] text-white text-[9px] tracking-[0.2em] uppercase font-bold hover:bg-[#A6957A] transition-colors whitespace-nowrap">APPLY</button>
@@ -2059,7 +2316,7 @@
                                     <div className="relative aspect-[4/5] overflow-hidden shadow-xl bg-neutral-200 border border-black/5">
                                         <img 
                                             src="https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/IMG_4335.JPG_mfcaqp.jpg" 
-                                            alt="Tiiha Summer Edit Model in Powder Blue Linen"
+                                            alt="Tiiha Everyday Edit Model in Powder Blue Linen"
                                             className="absolute inset-0 w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-1000" 
                                             loading="lazy"
                                         />
@@ -2295,7 +2552,7 @@
                     if (prod) return { page: 'shop', product: prod };
                 }
                 if (parts[0] === 'collections' && parts[1]) {
-                    const slug = parts[1];
+                    const slug = parts[1] === 'summer-edit' ? 'everyday-edit' : parts[1];
                     const col = (allCollections || COLLECTIONS).find(c => slugify(c.id) === slug || slugify(c.name) === slug);
                     if (col) return { page: 'shop', collection: col };
                 }
@@ -2400,6 +2657,15 @@
 
                                 const localFallback = PRODUCTS.find(lp => lp.id === p.id) || {};
                                 return { ...localFallback, ...p, hoverImage: hImg, sizes: normalizedSizes, stock: normalizedStock };
+                            });
+                            const sequenceOrder = PRODUCTS.map(p => p.id);
+                            normalized.sort((a, b) => {
+                                const idxA = sequenceOrder.indexOf(a.id);
+                                const idxB = sequenceOrder.indexOf(b.id);
+                                if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+                                if (idxA !== -1) return -1;
+                                if (idxB !== -1) return 1;
+                                return 0;
                             });
                             setLiveProducts(normalized);
                             setLiveCollections(buildCollections(normalized));
@@ -2599,8 +2865,8 @@
 
             // Dynamic Head Management (SEO Optimization)
             useEffect(() => {
-                let title = "Tiiha | Premium Women's Clothing, Festive Wear & Summer Dresses";
-                let description = "Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, summer dresses, co-ord sets, and party outfits designed with intent. Free delivery across India.";
+                let title = "Tiiha | Premium Women's Clothing, Festive Wear & Everyday Dresses";
+                let description = "Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, everyday dresses, co-ord sets, and party outfits designed with intent. Free delivery across India.";
                 let ogImage = "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778870332/Tiiha_Logo_-_Ivory_BG_Black_1_jkdbmw.png";
 
                 if (selectedProduct) {
@@ -2612,8 +2878,8 @@
                 } else {
                     switch (currentPage) {
                         case 'home':
-                            title = "Tiiha | Premium Women's Clothing, Festive Wear & Summer Dresses";
-                            description = "Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, summer dresses, co-ord sets, and party outfits designed with intent. Free delivery across India.";
+                            title = "Tiiha | Premium Women's Clothing, Festive Wear & Everyday Dresses";
+                            description = "Shop Tiiha's premium collection of women's clothing. Discover elegant festive wear, everyday dresses, co-ord sets, and party outfits designed with intent. Free delivery across India.";
                             break;
 
                         case 'shop':
@@ -2622,7 +2888,7 @@
                                 description = activeCollection.desc || `Explore the curated ${activeCollection.name} collection at Tiiha. Premium women's fashion with free shipping across India.`;
                             } else {
                                 title = "Collections & Shop - Premium Indian Fashion | Tiiha";
-                                description = "Browse our full range of premium womenswear, including the Summer Edit, Party Edit, and Festive Edit. Quality you can feel.";
+                                description = "Browse our full range of premium womenswear, including the Everyday Edit, Party Edit, and Festive Edit. Quality you can feel.";
                             }
                             break;
                         case 'about':
@@ -2702,7 +2968,7 @@
                     "name": "Tiiha",
                     "url": "https://tiiha.in",
                     "logo": "https://res.cloudinary.com/dlxiy6aiq/image/upload/q_auto/f_auto/v1778870332/Tiiha_Logo_-_Ivory_BG_Black_1_jkdbmw.png",
-                    "description": "Tiiha — Made with intent! Shop premium women's clothing: festive wear, summer dresses, and party outfits.",
+                    "description": "Tiiha — Made with intent! Shop premium women's clothing: festive wear, everyday dresses, and party outfits.",
                     "sameAs": [
                         "https://www.instagram.com/tiiha.in"
                     ],
